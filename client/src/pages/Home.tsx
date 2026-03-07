@@ -220,7 +220,7 @@ export default function Home() {
             </div>
 
             {/* -- COL 2: Specialist PNG -- */}
-            <div style={{ position: "relative", overflow: "visible" }}>
+            <div style={{ position: "relative", overflow: "visible", marginRight: "138px" }}>
               {/* Glow under specialist */}
               <div style={{
                 position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)",
@@ -257,7 +257,10 @@ export default function Home() {
                 background: "rgba(255,255,255,0.04)",
                 border: "1px solid rgba(255,255,255,0.1)",
                 backdropFilter: "blur(20px)",
-                padding: "2rem",
+                padding: "35px 42px 19px 11px",
+                marginTop: "12px",
+                marginRight: "19px",
+                marginLeft: "-21px",
                 borderRadius: 4,
                 boxShadow: "0 24px 64px rgba(0,0,0,0.4)",
               }}>
@@ -405,7 +408,7 @@ export default function Home() {
                   <div className="card-accent" style={{ position: "absolute", top: 0, left: 0, height: 3, width: "0%", background: RED, transition: "width 0.3s ease", borderRadius: "8px 8px 0 0" }} />
                   {/* Icon with colored bg */}
                   <div style={{
-                    width: 56, height: 56, borderRadius: 12,
+                    width: 56, height: 56, borderRadius: 19,
                     background: s.iconBg,
                     display: "flex", alignItems: "center", justifyContent: "center",
                     marginBottom: "1.1rem", flexShrink: 0,
@@ -420,7 +423,7 @@ export default function Home() {
                   <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "0.35rem", marginBottom: "1.1rem" }}>
                     {s.methods.map((m, mi) => (
                       <span key={mi} style={{
-                        fontSize: "0.68rem", fontWeight: 600,
+                        fontSize: "0.625rem", fontWeight: 600,
                         background: mi === 0 ? `${s.iconColor}18` : "#f3f4f6",
                         color: mi === 0 ? s.iconColor : "#6b7280",
                         border: mi === 0 ? `1px solid ${s.iconColor}30` : "1px solid #e5e7eb",
