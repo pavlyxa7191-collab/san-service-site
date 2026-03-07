@@ -842,6 +842,7 @@
   .hero-grid { grid-template-columns: 1fr 360px !important; }
   .hero-grid > div:nth-child(2) { display: none !important; }
   .services-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .services-grid-new { grid-template-columns: repeat(2, 1fr) !important; }
   .methods-grid { grid-template-columns: repeat(2, 1fr) !important; }
   .objects-grid { grid-template-columns: repeat(2, 1fr) !important; }
   .steps-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 1.5rem !important; }
@@ -857,6 +858,7 @@
   .hero-grid > div:nth-child(1) { padding-right: 0 !important; }
   .hero-grid > div:nth-child(3) { padding-left: 0 !important; }
   .services-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .services-grid-new { grid-template-columns: repeat(2, 1fr) !important; }
   .methods-grid { grid-template-columns: 1fr !important; }
   .objects-grid { grid-template-columns: 1fr !important; }
   .steps-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 1.5rem !important; }
@@ -867,6 +869,7 @@
 /* 480px: mobile */
 @media (max-width: 480px) {
   .services-grid { grid-template-columns: 1fr !important; }
+  .services-grid-new { grid-template-columns: 1fr !important; }
   .steps-grid { grid-template-columns: 1fr !important; }
   .advantages-grid { grid-template-columns: 1fr !important; }
 }

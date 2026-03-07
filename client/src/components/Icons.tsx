@@ -7,6 +7,7 @@
 interface IconProps {
   size?: number;
   className?: string;
+  color?: string;
 }
 
 const NAVY = "#000919";

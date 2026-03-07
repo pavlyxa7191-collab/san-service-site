@@ -19,14 +19,14 @@ const GRAY_TEXT = "#6b7280";
 
 // ─── DATA ─────────────────────────────────────────────────────────────────────
 const services = [
-  { slug: "klopov",       Icon: IconBedbugs,      title: "Уничтожение клопов",    desc: "Горячий и холодный туман. Гарантия 3 года.",                   price: "от 1 500 ₽", guarantee: "3 года" },
-  { slug: "tarakanov",    Icon: IconCockroaches,   title: "Уничтожение тараканов", desc: "Гелевые приманки + опрыскивание. Гарантия 1 год.",             price: "от 1 500 ₽", guarantee: "1 год" },
-  { slug: "gryzunov",     Icon: IconRodents,       title: "Уничтожение грызунов",  desc: "Дератизация: мыши, крысы. Приманочные станции.",               price: "от 2 000 ₽", guarantee: "6 месяцев" },
-  { slug: "kleshhej",     Icon: IconTicks,         title: "Уничтожение клещей",    desc: "Обработка участков и помещений от клещей и комаров.",          price: "от 2 000 ₽", guarantee: "1 сезон" },
-  { slug: "pleseni",      Icon: IconMold,          title: "Удаление плесени",      desc: "Профессиональное удаление плесени и грибка.",                  price: "от 3 500 ₽", guarantee: "2 года" },
-  { slug: "dezinfektsii", Icon: IconDeodorization, title: "Дезинфекция",           desc: "Уничтожение патогенных микроорганизмов.",                      price: "от 20 ₽/м²", guarantee: "по договору" },
-  { slug: "zapahov",      Icon: IconOdor,          title: "Борьба с запахами",     desc: "Устранение неприятных запахов. Озонирование.",                 price: "от 2 500 ₽", guarantee: "по договору" },
-  { slug: "uborka",       Icon: IconGuarantee,     title: "Уборка после смерти",   desc: "Профессиональная биологическая уборка и дезинфекция.",         price: "от 5 000 ₽", guarantee: "по договору" },
+  { slug: "klopov",       Icon: IconBedbugs,      title: "Уничтожение клопов",    desc: "Полное уничтожение клопов горячим и холодным туманом. Обработка без запаха.",   price: "от 1 500 ₽", guarantee: "3 года",      iconBg: "#fff0f0", iconColor: "#cc0000",  methods: ["Горячий туман", "Холодный туман", "Опрыскивание"] },
+  { slug: "tarakanov",    Icon: IconCockroaches,   title: "Уничтожение тараканов", desc: "Гелевые приманки и опрыскивание. Результат с первой обработки.",               price: "от 1 500 ₽", guarantee: "1 год",       iconBg: "#fff7e6", iconColor: "#d97706",  methods: ["Гелевые приманки", "Опрыскивание", "Холодный туман"] },
+  { slug: "gryzunov",     Icon: IconRodents,       title: "Уничтожение грызунов",  desc: "Дератизация мышей и крыс. Приманочные станции. Без запаха.",                   price: "от 2 000 ₽", guarantee: "6 месяцев",  iconBg: "#f0fff4", iconColor: "#059669",  methods: ["Приманочные станции", "Клей-ловушки", "Газация"] },
+  { slug: "kleshhej",     Icon: IconTicks,         title: "Уничтожение клещей",    desc: "Обработка участков и помещений от клещей и комаров. Сезонная защита.",         price: "от 2 000 ₽", guarantee: "1 сезон",    iconBg: "#f0f9ff", iconColor: "#0284c7",  methods: ["Опрыскивание", "Холодный туман", "Барьерная обработка"] },
+  { slug: "pleseni",      Icon: IconMold,          title: "Удаление плесени",      desc: "Профессиональное удаление плесени и грибка. Обработка антисептиком.",          price: "от 3 500 ₽", guarantee: "2 года",      iconBg: "#f5f3ff", iconColor: "#7c3aed",  methods: ["Антисептик", "Озонация", "УФ-обработка"] },
+  { slug: "dezinfektsii", Icon: IconDeodorization, title: "Дезинфекция",           desc: "Уничтожение патогенных микроорганизмов. Для медицины и общепита.",              price: "от 20 ₽/м²", guarantee: "по договору", iconBg: "#ecfdf5", iconColor: "#10b981",  methods: ["Холодный туман", "Опрыскивание", "Озонация"] },
+  { slug: "zapahov",      Icon: IconOdor,          title: "Борьба с запахами",     desc: "Устранение неприятных запахов. Озонирование воздуха. Безопасно.",              price: "от 2 500 ₽", guarantee: "по договору", iconBg: "#fffbeb", iconColor: "#f59e0b",  methods: ["Озонация", "Дезодорация", "Обработка вентиляции"] },
+  { slug: "uborka",       Icon: IconGuarantee,     title: "Уборка после смерти",   desc: "Профессиональная биологическая уборка и дезинфекция помещения.",               price: "от 5 000 ₽", guarantee: "по договору", iconBg: "#fef2f2", iconColor: "#dc2626",  methods: ["Биологическая уборка", "Дезинфекция", "Дезодорация"] },
 ];
 
 const methods = [
@@ -219,13 +219,14 @@ export default function Home() {
             </div>
 
             {/* -- COL 2: Specialist PNG -- */}
-            <div style={{ position: "relative", display: "flex", alignItems: "flex-end", justifyContent: "center", overflow: "visible", paddingBottom: 0 }}>
+            <div style={{ position: "relative", display: "flex", alignItems: "flex-end", justifyContent: "center", overflow: "visible", paddingBottom: 0, minHeight: 480 }}>
               {/* Glow under specialist */}
               <div style={{
                 position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)",
-                width: "80%", height: "35%",
-                background: "radial-gradient(ellipse at bottom, rgba(204,0,0,0.3) 0%, transparent 70%)",
+                width: "100%", height: "40%",
+                background: "radial-gradient(ellipse at bottom, rgba(204,0,0,0.35) 0%, transparent 70%)",
                 pointerEvents: "none",
+                zIndex: 0,
               }} />
               <img
                 src="https://private-us-east-1.manuscdn.com/user_upload_by_module/session_file/310519663313765274/GYbcCeYKAKjIWOOv.png?Expires=1804426519&Signature=Nzmptx3v99XLD9EK8EBGlk5Mi6IFOmQzv5JhydT4qxkPUUwpu9-YBbIQI6fKX9ZWii9SZA~XVh8FCqpT~911EcnixsPe57~73u8i1OpcKndX5JYROpDsl93CGN73TQFF3-86e2f39dHwFHJzdp~IC6PUBNjGD2oSeci0sU4np50SRV3U991qxJGIvAsEJps0VqmgZ~TfhMBcrohv9xveOZ-~xgxIR~lKg2GG3ofMSnlMnLFK7w8rQKFtyTyZ9Qv2HoptsKRWl397Mf1VYv-zrVbdHkeDbnvrb1HW~eai4vF5CTVfjFJ1sfwy82g7J-Ylp40yClEGWE5TEXkkZIPszQ__&Key-Pair-Id=K2HSFNDJXOU9YS"
@@ -234,13 +235,15 @@ export default function Home() {
                 style={{
                   display: "block",
                   width: "100%",
-                  maxWidth: 350,
+                  maxWidth: 420,
                   height: "auto",
+                  maxHeight: "calc(100% + 2rem)",
                   objectFit: "contain",
                   objectPosition: "center bottom",
-                  filter: "drop-shadow(0 12px 40px rgba(0,0,0,0.8))",
+                  filter: "drop-shadow(0 16px 48px rgba(0,0,0,0.9))",
                   position: "relative",
                   zIndex: 1,
+                  alignSelf: "flex-end",
                 }}
               />
             </div>
@@ -348,100 +351,108 @@ export default function Home() {
       </div>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          SERVICES — 4-column grid
+          SERVICES — unified block with method chips
       ═══════════════════════════════════════════════════════════════════ */}
       <section style={{ padding: "5rem 0", background: WHITE }}>
         <div className="container">
           <div ref={refServices} className="reveal" style={{ marginBottom: "3rem" }}>
             <SectionLabel text="Услуги" />
             <h2 style={{ fontSize: "clamp(1.75rem, 3vw, 2.4rem)", fontWeight: 900, color: NAVY_TEXT, letterSpacing: "-0.03em", marginBottom: "0.5rem" }}>
-              Полный спектр санитарных обработок
+              Услуги санитарной обработки
             </h2>
-            <p style={{ color: GRAY_TEXT, fontSize: "1rem", maxWidth: 540 }}>
-              Профессиональная дезинсекция, дезинфекция и дератизация для жилых и коммерческих объектов
+            <p style={{ color: GRAY_TEXT, fontSize: "1rem", maxWidth: 560 }}>
+              Выберите вашу проблему — подберём оптимальный метод и рассчитаем стоимость
             </p>
           </div>
 
-          <div className="services-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1px", background: "#e8ecf2" }}>
-            {services.map((s, i) => {
-              const isFirst = i === 0;
-              return (
-                <Link key={s.slug} href={`/services/${s.slug}`} style={{ textDecoration: "none" }}>
-                  <div
-                    className={`service-card${isFirst ? " service-card--active" : ""}`}
-                    style={{
-                      background: isFirst ? NAVY : WHITE,
-                      padding: "1.75rem 1.5rem",
-                      transition: "all 0.22s ease",
-                      cursor: "pointer",
-                      height: "100%",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "0.75rem",
-                      position: "relative",
-                    }}
-                  >
-                    {isFirst && <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: RED }} />}
-                    <s.Icon size={32} />
-                    <h3 style={{ fontSize: "0.95rem", fontWeight: 800, color: isFirst ? WHITE : NAVY_TEXT, lineHeight: 1.3, margin: 0 }}>{s.title}</h3>
-                    <p style={{ fontSize: "0.8rem", color: isFirst ? "rgba(255,255,255,0.6)" : GRAY_TEXT, lineHeight: 1.6, margin: 0, flex: 1 }}>{s.desc}</p>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "0.25rem" }}>
-                      <span style={{ fontSize: "1rem", fontWeight: 800, color: RED }}>{s.price}</span>
-                      <span style={{ fontSize: "0.7rem", color: isFirst ? "rgba(255,255,255,0.45)" : "#9ca3af" }}>Гарантия {s.guarantee}</span>
-                    </div>
+          <div className="services-grid-new" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1.25rem" }}>
+            {services.map((s, i) => (
+              <Link key={s.slug} href={`/services/${s.slug}`} style={{ textDecoration: "none", display: "flex" }}>
+                <div
+                  style={{
+                    background: WHITE,
+                    border: "1px solid #e8ecf2",
+                    borderRadius: 8,
+                    padding: "1.75rem 1.5rem",
+                    transition: "all 0.25s ease",
+                    cursor: "pointer",
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0",
+                    position: "relative",
+                    overflow: "hidden",
+                    boxShadow: "0 1px 4px rgba(0,9,25,0.06)",
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.transform = "translateY(-4px)";
+                    e.currentTarget.style.boxShadow = "0 12px 40px rgba(0,9,25,0.12)";
+                    e.currentTarget.style.borderColor = RED;
+                    const accent = e.currentTarget.querySelector(".card-accent") as HTMLElement;
+                    if (accent) accent.style.width = "100%";
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow = "0 1px 4px rgba(0,9,25,0.06)";
+                    e.currentTarget.style.borderColor = "#e8ecf2";
+                    const accent = e.currentTarget.querySelector(".card-accent") as HTMLElement;
+                    if (accent) accent.style.width = "0%";
+                  }}
+                >
+                  {/* Red accent line top */}
+                  <div className="card-accent" style={{ position: "absolute", top: 0, left: 0, height: 3, width: "0%", background: RED, transition: "width 0.3s ease", borderRadius: "8px 8px 0 0" }} />
+                  {/* Icon with colored bg */}
+                  <div style={{
+                    width: 56, height: 56, borderRadius: 12,
+                    background: s.iconBg,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    marginBottom: "1.1rem", flexShrink: 0,
+                  }}>
+                    <s.Icon size={28} color={s.iconColor} />
                   </div>
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════════════════════════════════════════════════════════
-          METHODS — 3×2 grid on dark bg
-      ═══════════════════════════════════════════════════════════════════ */}
-      <section style={{ padding: "5rem 0", background: NAVY, position: "relative", overflow: "hidden" }}>
-        <div style={{
-          position: "absolute", inset: 0, pointerEvents: "none",
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)`,
-          backgroundSize: "64px 64px",
-        }} />
-        <div className="container" style={{ position: "relative", zIndex: 1 }}>
-          <div ref={refMethods} className="reveal" style={{ marginBottom: "3rem" }}>
-            <SectionLabel text="Методы" />
-            <h2 style={{ fontSize: "clamp(1.75rem, 3vw, 2.4rem)", fontWeight: 900, color: WHITE, letterSpacing: "-0.03em", marginBottom: "0.5rem" }}>
-              Виды санитарных обработок
-            </h2>
-            <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "1rem", maxWidth: 540 }}>
-              Подбираем метод под конкретную задачу и тип объекта
-            </p>
-          </div>
-
-          <div className="methods-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1px", background: "rgba(255,255,255,0.06)" }}>
-            {methods.map((m, i) => (
-              <div key={i} style={{
-                padding: "2rem 1.75rem",
-                background: i === 0 ? "rgba(204,0,0,0.12)" : "rgba(255,255,255,0.02)",
-                transition: "background 0.2s",
-                position: "relative",
-              }}
-                onMouseEnter={e => (e.currentTarget.style.background = i === 0 ? "rgba(204,0,0,0.2)" : "rgba(255,255,255,0.06)")}
-                onMouseLeave={e => (e.currentTarget.style.background = i === 0 ? "rgba(204,0,0,0.12)" : "rgba(255,255,255,0.02)")}
-              >
-                <div style={{ position: "absolute", left: 0, top: "1.5rem", bottom: "1.5rem", width: 3, background: i === 0 ? RED : "rgba(204,0,0,0.3)", borderRadius: "0 2px 2px 0" }} />
-                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "1rem" }}>
-                  <m.Icon size={28} />
-                  {m.tag && (
-                    <span style={{ fontSize: "0.6rem", fontWeight: 800, letterSpacing: "0.12em", background: RED, color: WHITE, padding: "0.2rem 0.55rem", borderRadius: 2 }}>{m.tag}</span>
-                  )}
+                  {/* Title */}
+                  <h3 style={{ fontSize: "1rem", fontWeight: 800, color: NAVY_TEXT, lineHeight: 1.3, margin: "0 0 0.5rem" }}>{s.title}</h3>
+                  {/* Description */}
+                  <p style={{ fontSize: "0.82rem", color: GRAY_TEXT, lineHeight: 1.6, margin: "0 0 1rem", flexGrow: 1 }}>{s.desc}</p>
+                  {/* Method chips */}
+                  <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "0.35rem", marginBottom: "1.1rem" }}>
+                    {s.methods.map((m, mi) => (
+                      <span key={mi} style={{
+                        fontSize: "0.68rem", fontWeight: 600,
+                        background: mi === 0 ? `${s.iconColor}18` : "#f3f4f6",
+                        color: mi === 0 ? s.iconColor : "#6b7280",
+                        border: mi === 0 ? `1px solid ${s.iconColor}30` : "1px solid #e5e7eb",
+                        padding: "0.2rem 0.55rem", borderRadius: 20,
+                        letterSpacing: "0.02em",
+                      }}>{m}</span>
+                    ))}
+                  </div>
+                  {/* Price + guarantee row */}
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem", paddingTop: "0.75rem", borderTop: "1px solid #f3f4f6" }}>
+                    <span style={{ fontSize: "1.1rem", fontWeight: 900, color: RED }}>{s.price}</span>
+                    <span style={{ fontSize: "0.7rem", color: "#9ca3af", background: "#f9fafb", padding: "0.2rem 0.6rem", borderRadius: 20, border: "1px solid #e5e7eb" }}>Гарантия {s.guarantee}</span>
+                  </div>
+                  {/* CTA Button */}
+                  <div style={{
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    background: RED, color: WHITE, fontWeight: 700, fontSize: "0.78rem",
+                    letterSpacing: "0.05em", textTransform: "uppercase" as const,
+                    padding: "0.7rem 1rem", borderRadius: 4,
+                    transition: "background 0.2s",
+                  }}>
+                    Рассчитать стоимость →
+                  </div>
                 </div>
-                <h3 style={{ fontSize: "0.95rem", fontWeight: 800, color: WHITE, marginBottom: "0.5rem", lineHeight: 1.3 }}>{m.title}</h3>
-                <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.5)", lineHeight: 1.65, margin: 0 }}>{m.desc}</p>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
       </section>
+
+      {/* refMethods placeholder (methods block removed, merged into service cards) */}
+      <div ref={refMethods} style={{ display: "none" }} />
+
+
 
       {/* ═══════════════════════════════════════════════════════════════════
           OBJECT TYPES
