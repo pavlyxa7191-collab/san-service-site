@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Phone, Menu, X, ChevronDown } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 
 /* Design Tokens */
 const NAVY = "#0d1f3c";
@@ -37,15 +37,55 @@ export default function SiteHeader() {
     setServicesOpen(true);
   };
   const closeServices = () => {
-    closeTimer.current = setTimeout(() => setServicesOpen(false), 120);
+    closeTimer.current = setTimeout(() => setServicesOpen(false), 150);
   };
-
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [location]);
 
   return (
     <>
+      {/* CSS for responsive nav */}
+      <style>{`
+        .site-nav-desktop {
+          display: flex;
+          align-items: center;
+          flex: 1;
+          overflow: visible;
+          gap: 0;
+        }
+        .site-nav-mobile-toggle {
+          display: none;
+        }
+        .site-phone-link {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .site-cta-btn {
+          display: inline-flex;
+          align-items: center;
+        }
+        @media (max-width: 900px) {
+          .site-nav-desktop {
+            display: none !important;
+          }
+          .site-nav-mobile-toggle {
+            display: flex !important;
+          }
+          .site-phone-link {
+            display: none !important;
+          }
+          .site-cta-btn {
+            display: none !important;
+          }
+        }
+        .nav-link-item:hover {
+          color: white !important;
+        }
+        .dropdown-item:hover {
+          background: rgba(255,255,255,0.07) !important;
+          color: white !important;
+        }
+      `}</style>
+
       <header
         style={{
           position: "fixed",
@@ -60,7 +100,7 @@ export default function SiteHeader() {
       >
         {/* Top bar */}
         <div style={{ background: NAVY_DARK, borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "0.3rem 0" }}>
-          <div className="container flex items-center justify-between">
+          <div className="container" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <span style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.4)", letterSpacing: "0.05em" }}>Работаем 24/7 · Выезд в день обращения</span>
             <span style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.4)", letterSpacing: "0.05em" }}>Москва и Московская область</span>
           </div>
@@ -95,8 +135,8 @@ export default function SiteHeader() {
             </div>
           </Link>
 
-          {/* Desktop nav — always visible on lg+ */}
-          <nav className="hidden lg:flex items-center" style={{ gap: "0", flex: 1, overflow: "visible" }}>
+          {/* Desktop nav — visible on ≥900px via CSS */}
+          <nav className="site-nav-desktop">
             {navLinks.map((link) =>
               link.children ? (
                 <div
@@ -106,6 +146,7 @@ export default function SiteHeader() {
                   onMouseLeave={closeServices}
                 >
                   <button
+                    className="nav-link-item"
                     style={{
                       display: "flex",
                       alignItems: "center",
@@ -125,7 +166,13 @@ export default function SiteHeader() {
                     }}
                   >
                     {link.label}
-                    <ChevronDown size={13} style={{ transition: "transform 0.2s", transform: servicesOpen ? "rotate(180deg)" : "rotate(0deg)" }} />
+                    <ChevronDown
+                      size={13}
+                      style={{
+                        transition: "transform 0.2s",
+                        transform: servicesOpen ? "rotate(180deg)" : "rotate(0deg)",
+                      }}
+                    />
                   </button>
                   {servicesOpen && (
                     <div
@@ -149,6 +196,7 @@ export default function SiteHeader() {
                         <Link
                           key={child.href}
                           href={child.href}
+                          className="dropdown-item"
                           style={{
                             display: "block",
                             padding: "0.65rem 1.25rem",
@@ -158,14 +206,6 @@ export default function SiteHeader() {
                             textDecoration: "none",
                             transition: "all 0.15s",
                             borderLeft: location === child.href ? `3px solid ${RED}` : "3px solid transparent",
-                          }}
-                          onMouseEnter={(e) => {
-                            (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.07)";
-                            (e.currentTarget as HTMLElement).style.color = "white";
-                          }}
-                          onMouseLeave={(e) => {
-                            (e.currentTarget as HTMLElement).style.background = "transparent";
-                            (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.75)";
                           }}
                         >
                           {child.label}
@@ -178,6 +218,7 @@ export default function SiteHeader() {
                 <Link
                   key={link.href}
                   href={link.href!}
+                  className="nav-link-item"
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -192,12 +233,6 @@ export default function SiteHeader() {
                     whiteSpace: "nowrap",
                     borderBottom: location === link.href ? `2px solid ${RED}` : "2px solid transparent",
                   }}
-                  onMouseEnter={(e) => {
-                    if (location !== link.href) (e.currentTarget as HTMLElement).style.color = "white";
-                  }}
-                  onMouseLeave={(e) => {
-                    if (location !== link.href) (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.75)";
-                  }}
                 >
                   {link.label}
                 </Link>
@@ -206,10 +241,10 @@ export default function SiteHeader() {
           </nav>
 
           {/* Right side */}
-          <div className="flex items-center" style={{ gap: "0.75rem", flexShrink: 0, marginLeft: "auto" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexShrink: 0, marginLeft: "auto" }}>
             <a
               href="tel:+79300354841"
-              className="hidden md:flex items-center gap-2"
+              className="site-phone-link"
               style={{
                 fontSize: "0.82rem",
                 fontWeight: 700,
@@ -223,7 +258,7 @@ export default function SiteHeader() {
             </a>
             <Link
               href="/calculator"
-              className="hidden md:inline-flex items-center"
+              className="site-cta-btn"
               style={{
                 background: "linear-gradient(135deg, #CC0000, #880000)",
                 color: "white",
@@ -240,9 +275,9 @@ export default function SiteHeader() {
             >
               Заявка
             </Link>
-            {/* Mobile menu toggle */}
+            {/* Mobile menu toggle — hidden on ≥900px via CSS */}
             <button
-              className="lg:hidden"
+              className="site-nav-mobile-toggle"
               onClick={() => setMobileOpen(!mobileOpen)}
               style={{
                 background: "rgba(255,255,255,0.07)",
@@ -251,6 +286,8 @@ export default function SiteHeader() {
                 padding: "0.5rem",
                 color: "white",
                 cursor: "pointer",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
               {mobileOpen ? <X size={18} /> : <Menu size={18} />}
@@ -258,22 +295,30 @@ export default function SiteHeader() {
           </div>
         </div>
 
-        {/* Mobile menu */}
+        {/* Mobile menu — shown only when mobileOpen */}
         {mobileOpen && (
           <div
             style={{
               background: "rgba(13,31,51,0.99)",
-              backdropFilter: "blur(16px)",
               borderTop: "1px solid rgba(255,255,255,0.07)",
               padding: "1rem 0 1.5rem",
             }}
           >
-            <div className="container flex flex-col gap-1">
+            <div className="container" style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
               {navLinks.map((link) => (
                 <div key={link.label}>
                   {link.children ? (
                     <>
-                      <div style={{ padding: "0.6rem 0", fontSize: "0.75rem", fontWeight: 700, color: "rgba(255,255,255,0.4)", letterSpacing: "0.12em", textTransform: "uppercase" }}>
+                      <div
+                        style={{
+                          padding: "0.6rem 0",
+                          fontSize: "0.75rem",
+                          fontWeight: 700,
+                          color: "rgba(255,255,255,0.4)",
+                          letterSpacing: "0.12em",
+                          textTransform: "uppercase",
+                        }}
+                      >
                         {link.label}
                       </div>
                       {link.children.map((child) => (
@@ -282,12 +327,13 @@ export default function SiteHeader() {
                           href={child.href}
                           style={{
                             display: "block",
-                            padding: "0.5rem 0.75rem",
-                            fontSize: "0.85rem",
+                            padding: "0.6rem 0.75rem",
+                            fontSize: "0.88rem",
                             fontWeight: 500,
-                            color: "rgba(255,255,255,0.7)",
+                            color: location === child.href ? RED : "rgba(255,255,255,0.75)",
                             textDecoration: "none",
-                            borderRadius: "3px",
+                            borderRadius: "4px",
+                            borderLeft: location === child.href ? `3px solid ${RED}` : "3px solid transparent",
                           }}
                         >
                           {child.label}
@@ -299,12 +345,13 @@ export default function SiteHeader() {
                       href={link.href!}
                       style={{
                         display: "block",
-                        padding: "0.6rem 0",
-                        fontSize: "0.9rem",
+                        padding: "0.7rem 0.75rem",
+                        fontSize: "0.95rem",
                         fontWeight: 600,
-                        color: location === link.href ? RED : "rgba(255,255,255,0.8)",
+                        color: location === link.href ? RED : "white",
                         textDecoration: "none",
-                        borderBottom: "1px solid rgba(255,255,255,0.05)",
+                        borderRadius: "4px",
+                        borderLeft: location === link.href ? `3px solid ${RED}` : "3px solid transparent",
                       }}
                     >
                       {link.label}
@@ -312,56 +359,46 @@ export default function SiteHeader() {
                   )}
                 </div>
               ))}
-              <div className="flex gap-3 mt-4">
+              <div style={{ marginTop: "1rem", paddingTop: "1rem", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
                 <a
                   href="tel:+79300354841"
                   style={{
-                    flex: 1,
                     display: "flex",
                     alignItems: "center",
-                    justifyContent: "center",
                     gap: "8px",
-                    padding: "0.75rem",
-                    background: "rgba(255,255,255,0.07)",
-                    border: "1px solid rgba(255,255,255,0.1)",
-                    borderRadius: "3px",
-                    color: "white",
+                    fontSize: "1rem",
                     fontWeight: 700,
-                    fontSize: "0.85rem",
+                    color: "white",
                     textDecoration: "none",
+                    marginBottom: "0.75rem",
                   }}
                 >
-                  <Phone size={15} />
-                  Позвонить
+                  <Phone size={16} style={{ color: RED }} />
+                  8(930)035-48-41
                 </a>
                 <Link
                   href="/calculator"
                   style={{
-                    flex: 1,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    display: "block",
                     background: "linear-gradient(135deg, #CC0000, #880000)",
                     color: "white",
                     fontWeight: 700,
-                    fontSize: "0.82rem",
-                    letterSpacing: "0.05em",
+                    fontSize: "0.85rem",
+                    letterSpacing: "0.07em",
                     textTransform: "uppercase",
-                    padding: "0.75rem",
-                    borderRadius: "3px",
+                    padding: "0.75rem 1.5rem",
+                    borderRadius: "4px",
                     textDecoration: "none",
-                    boxShadow: "0 3px 12px rgba(204,0,0,0.35)",
+                    textAlign: "center",
                   }}
                 >
-                  Рассчитать
+                  Рассчитать стоимость
                 </Link>
               </div>
             </div>
           </div>
         )}
       </header>
-      {/* Spacer for fixed header */}
-      <div style={{ height: "97px" }} />
     </>
   );
 }
