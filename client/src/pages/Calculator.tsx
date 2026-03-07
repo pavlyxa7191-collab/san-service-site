@@ -4,7 +4,7 @@ import { trpc } from "@/lib/trpc";
 import {
   ChevronLeft, ChevronRight, Check,
   Home, Building2, Warehouse, BedDouble, Building,
-  Phone, ArrowLeft,
+  Phone, ArrowLeft, MessageCircle, Send,
 } from "lucide-react";
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
@@ -25,12 +25,12 @@ const propertyTypes = [
 ];
 
 const areaRanges = [
-  { id: "under30",   label: "до 30 м²",      sub: "Комната / студия" },
-  { id: "30_50",     label: "30–50 м²",      sub: "1-комнатная квартира" },
-  { id: "50_80",     label: "50–80 м²",      sub: "2-комнатная квартира" },
-  { id: "80_120",    label: "80–120 м²",     sub: "3-комнатная квартира" },
-  { id: "120_200",   label: "120–200 м²",    sub: "Большая квартира / дом" },
-  { id: "over200",   label: "более 200 м²",  sub: "Коммерческий объект" },
+  { id: "under30",  label: "до 30 м²",     sub: "Небольшое помещение" },
+  { id: "30_50",    label: "30–50 м²",     sub: "Малая площадь" },
+  { id: "50_80",    label: "50–80 м²",     sub: "Средняя площадь" },
+  { id: "80_120",   label: "80–120 м²",    sub: "Большая площадь" },
+  { id: "120_200",  label: "120–200 м²",   sub: "Просторный объект" },
+  { id: "over200",  label: "более 200 м²", sub: "Крупный объект" },
 ];
 
 const pestTypes = [
@@ -42,7 +42,14 @@ const pestTypes = [
   { id: "zapahov",   label: "Запахи",   emoji: "💨" },
 ];
 
-const STEPS = ["Тип объекта", "Площадь", "Вид проблемы", "Контакты"];
+const contactMethods = [
+  { id: "whatsapp",  label: "WhatsApp",  color: "#25D366", emoji: "💬" },
+  { id: "telegram",  label: "Telegram",  color: "#0088cc", emoji: "✈️" },
+  { id: "max",       label: "Max",       color: "#7B61FF", emoji: "💜" },
+  { id: "call",      label: "Позвонить", color: RED,       emoji: "📞" },
+];
+
+const STEPS = ["Тип объекта", "Площадь", "Вид проблемы", "Способ связи", "Контакты"];
 
 // ─── STEP PROGRESS ────────────────────────────────────────────────────────────
 function StepProgress({ current }: { current: number }) {
@@ -69,7 +76,7 @@ function StepProgress({ current }: { current: number }) {
         {STEPS.map((label, i) => (
           <div key={i} style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", gap: "0.35rem" }}>
             <div style={{
-              width: 30, height: 30, borderRadius: "50%",
+              width: 28, height: 28, borderRadius: "50%",
               background: i < current ? RED : i === current ? RED : WHITE,
               border: `2px solid ${i <= current ? RED : BORDER}`,
               display: "flex", alignItems: "center", justifyContent: "center",
@@ -77,15 +84,15 @@ function StepProgress({ current }: { current: number }) {
               boxShadow: i === current ? `0 0 0 4px rgba(204,0,0,0.12)` : "none",
             }}>
               {i < current
-                ? <Check size={13} color={WHITE} strokeWidth={3} />
-                : <span style={{ fontSize: "0.68rem", fontWeight: 800, color: i === current ? WHITE : GRAY }}>{i + 1}</span>
+                ? <Check size={12} color={WHITE} strokeWidth={3} />
+                : <span style={{ fontSize: "0.65rem", fontWeight: 800, color: i === current ? WHITE : GRAY }}>{i + 1}</span>
               }
             </div>
             <span style={{
-              fontSize: "0.62rem", color: i <= current ? NAVY : GRAY,
+              fontSize: "0.58rem", color: i <= current ? NAVY : GRAY,
               fontWeight: i === current ? 700 : 400,
               textAlign: "center" as const, lineHeight: 1.2,
-              maxWidth: 60,
+              maxWidth: 52,
             }}>
               {label}
             </span>
@@ -142,12 +149,72 @@ function SelectCard({
   );
 }
 
+// ─── CHECKBOX CARD ────────────────────────────────────────────────────────────
+function CheckboxCard({
+  selected, onClick, children,
+}: {
+  selected: boolean; onClick: () => void; children: React.ReactNode;
+}) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={onClick}
+      onKeyDown={e => e.key === "Enter" && onClick()}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        display: "flex", alignItems: "center", gap: "1rem",
+        padding: "1rem 1.25rem",
+        borderRadius: 14,
+        border: `2px solid ${selected ? RED : hovered ? "#c0c8d8" : BORDER}`,
+        background: selected ? "#fff5f5" : WHITE,
+        cursor: "pointer",
+        transition: "all 0.2s ease",
+        boxShadow: selected
+          ? `0 4px 20px rgba(204,0,0,0.14)`
+          : hovered ? "0 4px 16px rgba(0,0,0,0.08)" : "0 1px 4px rgba(0,0,0,0.04)",
+        userSelect: "none" as const,
+        outline: "none",
+      }}
+    >
+      {/* Checkbox */}
+      <div style={{
+        width: 22, height: 22, borderRadius: 6, flexShrink: 0,
+        border: `2px solid ${selected ? RED : BORDER}`,
+        background: selected ? RED : WHITE,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        transition: "all 0.2s",
+      }}>
+        {selected && <Check size={12} color={WHITE} strokeWidth={3} />}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+// ─── PHONE MASK ───────────────────────────────────────────────────────────────
+function formatPhone(raw: string): string {
+  let v = raw.replace(/\D/g, "");
+  if (v.startsWith("8")) v = "7" + v.slice(1);
+  if (v.startsWith("7")) v = v.slice(1);
+  v = v.slice(0, 10);
+  let f = "+7 (";
+  if (v.length > 0) f += v.slice(0, 3);
+  if (v.length >= 3) f += ") " + v.slice(3, 6);
+  if (v.length >= 6) f += "-" + v.slice(6, 8);
+  if (v.length >= 8) f += "-" + v.slice(8, 10);
+  return f;
+}
+
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
 export default function CalculatorPage() {
   const [step, setStep] = useState(0);
   const [property, setProperty] = useState("");
   const [area, setArea] = useState("");
   const [pest, setPest] = useState("");
+  const [contactWays, setContactWays] = useState<string[]>([]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("+7 (");
   const [submitted, setSubmitted] = useState(false);
@@ -157,17 +224,14 @@ export default function CalculatorPage() {
     onSuccess: () => setSubmitted(true),
   });
 
+  function toggleContactWay(id: string) {
+    setContactWays(prev =>
+      prev.includes(id) ? prev.filter(w => w !== id) : [...prev, id]
+    );
+  }
+
   function handlePhone(e: React.ChangeEvent<HTMLInputElement>) {
-    let v = e.target.value.replace(/\D/g, "");
-    if (v.startsWith("8")) v = "7" + v.slice(1);
-    if (v.startsWith("7")) v = v.slice(1);
-    v = v.slice(0, 10);
-    let formatted = "+7 (";
-    if (v.length > 0) formatted += v.slice(0, 3);
-    if (v.length >= 3) formatted += ") " + v.slice(3, 6);
-    if (v.length >= 6) formatted += "-" + v.slice(6, 8);
-    if (v.length >= 8) formatted += "-" + v.slice(8, 10);
-    setPhone(formatted);
+    setPhone(formatPhone(e.target.value));
   }
 
   function validate() {
@@ -181,12 +245,17 @@ export default function CalculatorPage() {
 
   function handleSubmit() {
     if (!validate()) return;
+    const selectedWays = contactMethods
+      .filter(m => contactWays.includes(m.id))
+      .map(m => m.label)
+      .join(", ");
     submitLead.mutate({
       name,
       phone,
       service: pestTypes.find(p => p.id === pest)?.label,
       propertyType: property,
       area: areaRanges.find(a => a.id === area)?.label,
+      method: selectedWays || undefined,
       source: "calculator",
     });
   }
@@ -194,7 +263,8 @@ export default function CalculatorPage() {
   const canNext =
     (step === 0 && !!property) ||
     (step === 1 && !!area) ||
-    (step === 2 && !!pest);
+    (step === 2 && !!pest) ||
+    (step === 3 && contactWays.length > 0);
 
   // ── Success screen ──
   if (submitted) {
@@ -212,7 +282,7 @@ export default function CalculatorPage() {
           </div>
           <h2 style={{ fontSize: "1.85rem", fontWeight: 900, color: NAVY, marginBottom: "0.75rem", letterSpacing: "-0.03em" }}>Заявка принята!</h2>
           <p style={{ color: GRAY, lineHeight: 1.8, marginBottom: "2rem", fontSize: "0.95rem" }}>
-            Наш специалист перезвонит вам в течение 5 минут и уточнит детали обработки.
+            Наш специалист свяжется с вами в течение 5 минут удобным для вас способом.
           </p>
           <Link href="/" style={{
             display: "inline-flex", alignItems: "center", gap: "0.5rem",
@@ -260,7 +330,7 @@ export default function CalculatorPage() {
             Рассчитайте стоимость обработки
           </h1>
           <p style={{ fontSize: "0.875rem", color: GRAY, marginTop: "0.5rem" }}>
-            4 простых шага — и специалист назовёт точную цену
+            5 простых шагов — и специалист назовёт точную цену
           </p>
         </div>
 
@@ -309,7 +379,7 @@ export default function CalculatorPage() {
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: "0.875rem" }}>
                   {areaRanges.map(({ id, label, sub }) => (
                     <SelectCard key={id} selected={area === id} onClick={() => setArea(id)} compact>
-                      <div style={{ display: "flex", flexDirection: "column" as const, gap: "0.25rem" }}>
+                      <div style={{ display: "flex", flexDirection: "column" as const, gap: "0.3rem" }}>
                         <span style={{ fontSize: "1rem", fontWeight: 800, color: area === id ? RED : NAVY }}>{label}</span>
                         <span style={{ fontSize: "0.72rem", color: GRAY, lineHeight: 1.4 }}>{sub}</span>
                       </div>
@@ -346,8 +416,48 @@ export default function CalculatorPage() {
               </div>
             )}
 
-            {/* ── Step 3: Contacts ── */}
+            {/* ── Step 3: Contact method ── */}
             {step === 3 && (
+              <div>
+                <h2 style={{ fontSize: "1.2rem", fontWeight: 800, color: NAVY, marginBottom: "0.35rem" }}>Удобный способ связи</h2>
+                <p style={{ fontSize: "0.83rem", color: GRAY, marginBottom: "1.75rem" }}>Выберите один или несколько вариантов</p>
+                <div style={{ display: "flex", flexDirection: "column" as const, gap: "0.75rem" }}>
+                  {contactMethods.map(({ id, label, color, emoji }) => (
+                    <CheckboxCard key={id} selected={contactWays.includes(id)} onClick={() => toggleContactWay(id)}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "0.875rem", flex: 1 }}>
+                        <div style={{
+                          width: 42, height: 42, borderRadius: "50%", flexShrink: 0,
+                          background: contactWays.includes(id) ? color + "18" : LIGHT_BG,
+                          border: `2px solid ${contactWays.includes(id) ? color : BORDER}`,
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                          fontSize: "1.2rem",
+                          transition: "all 0.2s",
+                        }}>
+                          {emoji}
+                        </div>
+                        <div>
+                          <div style={{ fontSize: "0.95rem", fontWeight: 700, color: contactWays.includes(id) ? NAVY : NAVY }}>{label}</div>
+                          <div style={{ fontSize: "0.72rem", color: GRAY, marginTop: "0.1rem" }}>
+                            {id === "whatsapp" && "Сообщение или голосовой звонок"}
+                            {id === "telegram" && "Сообщение или звонок в Telegram"}
+                            {id === "max" && "Сообщение через Max"}
+                            {id === "call" && "Обычный звонок на телефон"}
+                          </div>
+                        </div>
+                      </div>
+                    </CheckboxCard>
+                  ))}
+                </div>
+                {contactWays.length === 0 && (
+                  <p style={{ fontSize: "0.75rem", color: "#f59e0b", marginTop: "0.875rem", fontWeight: 500 }}>
+                    ⚠ Выберите хотя бы один способ связи
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* ── Step 4: Contacts ── */}
+            {step === 4 && (
               <div>
                 <h2 style={{ fontSize: "1.2rem", fontWeight: 800, color: NAVY, marginBottom: "0.35rem" }}>Оставьте контакты</h2>
                 <p style={{ fontSize: "0.83rem", color: GRAY, marginBottom: "1.75rem" }}>Специалист перезвонит и назовёт точную стоимость</p>
@@ -369,6 +479,11 @@ export default function CalculatorPage() {
                     {pest && (
                       <span style={{ fontSize: "0.78rem", fontWeight: 600, color: NAVY, background: WHITE, border: `1px solid ${BORDER}`, padding: "0.3rem 0.875rem", borderRadius: 20 }}>
                         {pestTypes.find(p => p.id === pest)?.label}
+                      </span>
+                    )}
+                    {contactWays.length > 0 && (
+                      <span style={{ fontSize: "0.78rem", fontWeight: 600, color: NAVY, background: WHITE, border: `1px solid ${BORDER}`, padding: "0.3rem 0.875rem", borderRadius: 20 }}>
+                        {contactMethods.filter(m => contactWays.includes(m.id)).map(m => m.label).join(", ")}
                       </span>
                     )}
                   </div>
@@ -466,7 +581,7 @@ export default function CalculatorPage() {
             )}
 
             {/* Next / Submit */}
-            {step < 3 ? (
+            {step < 4 ? (
               <button
                 onClick={() => canNext && setStep(step + 1)}
                 disabled={!canNext}
