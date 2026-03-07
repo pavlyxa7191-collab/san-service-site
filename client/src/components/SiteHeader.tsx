@@ -1,11 +1,11 @@
 import { Link, useLocation } from "wouter";
 import { Phone, Menu, X, ChevronDown } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 /* Design Tokens */
-const DARK = "#000919";   // --color-primary: Deep navy (almost black-blue)
-const DARK_MID = "#001230"; // --color-primary-mid
-const RED = "#CC0000";     // --color-accent
+const NAVY = "#0d1f3c";
+const NAVY_DARK = "#091729";
+const RED = "#CC0000";
 
 const navLinks = [
   {
@@ -29,14 +29,16 @@ const navLinks = [
 export default function SiteHeader() {
   const [location] = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  const openServices = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setServicesOpen(true);
+  };
+  const closeServices = () => {
+    closeTimer.current = setTimeout(() => setServicesOpen(false), 120);
+  };
 
   useEffect(() => {
     setMobileOpen(false);
@@ -51,42 +53,23 @@ export default function SiteHeader() {
           left: 0,
           right: 0,
           zIndex: 100,
-          background: scrolled
-            ? "rgba(13, 31, 51, 0.97)"
-            : "rgba(13, 31, 51, 0.90)",
-          backdropFilter: "blur(16px)",
-          borderBottom: scrolled
-            ? "1px solid rgba(255,255,255,0.15)"
-            : "1px solid rgba(255,255,255,0.08)",
-          transition: "all 0.3s ease",
-          boxShadow: scrolled ? "0 4px 24px rgba(8, 21, 38, 0.5)" : "none",
+          background: NAVY,
+          borderBottom: "1px solid rgba(255,255,255,0.1)",
+          boxShadow: "0 4px 24px rgba(0,0,0,0.35)",
         }}
       >
         {/* Top bar */}
-        <div
-          style={{
-            borderBottom: "1px solid rgba(255,255,255,0.05)",
-            padding: "0.35rem 0",
-          }}
-        >
+        <div style={{ background: NAVY_DARK, borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "0.3rem 0" }}>
           <div className="container flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <span style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.35)", letterSpacing: "0.05em" }}>
-                Работаем 24/7 · Выезд в день обращения
-              </span>
-            </div>
-            <div className="flex items-center gap-4">
-              <span style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.35)", letterSpacing: "0.05em" }}>
-                Москва и Московская область
-              </span>
-            </div>
+            <span style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.4)", letterSpacing: "0.05em" }}>Работаем 24/7 · Выезд в день обращения</span>
+            <span style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.4)", letterSpacing: "0.05em" }}>Москва и Московская область</span>
           </div>
         </div>
 
         {/* Main nav */}
-        <div className="container flex items-center justify-between" style={{ height: "64px", overflow: "visible" }}>
+        <div className="container" style={{ display: "flex", alignItems: "center", height: "64px", overflow: "visible", gap: 0 }}>
           {/* Logo */}
-          <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "10px" }}>
+          <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "10px", flexShrink: 0, marginRight: "28px" }}>
             <div
               style={{
                 width: "36px",
@@ -112,31 +95,32 @@ export default function SiteHeader() {
             </div>
           </Link>
 
-          {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center" style={{ gap: "0px", flexShrink: 1, overflow: "visible" }}>
+          {/* Desktop nav — always visible on lg+ */}
+          <nav className="hidden lg:flex items-center" style={{ gap: "0", flex: 1, overflow: "visible" }}>
             {navLinks.map((link) =>
               link.children ? (
                 <div
                   key={link.label}
                   style={{ position: "relative" }}
-                  onMouseEnter={() => setServicesOpen(true)}
-                  onMouseLeave={() => setServicesOpen(false)}
+                  onMouseEnter={openServices}
+                  onMouseLeave={closeServices}
                 >
                   <button
                     style={{
                       display: "flex",
                       alignItems: "center",
+                      height: "64px",
                       gap: "4px",
-                      padding: "0.45rem 0.65rem",
-                      fontSize: "0.74rem",
+                      padding: "0 0.85rem",
+                      fontSize: "0.82rem",
                       fontWeight: 600,
-                      color: location.startsWith("/services") ? RED : "rgba(255,255,255,0.75)",
+                      color: location.startsWith("/services") ? RED : "rgba(255,255,255,0.85)",
                       letterSpacing: "0.02em",
                       background: "none",
                       border: "none",
+                      borderBottom: location.startsWith("/services") ? `2px solid ${RED}` : "2px solid transparent",
                       cursor: "pointer",
-                      borderRadius: "3px",
-                      transition: "color 0.15s",
+                      transition: "all 0.15s",
                       whiteSpace: "nowrap",
                     }}
                   >
@@ -149,15 +133,17 @@ export default function SiteHeader() {
                         position: "absolute",
                         top: "100%",
                         left: 0,
-                        minWidth: "240px",
-                        background: "rgba(13,31,51,0.98)",
-                        backdropFilter: "blur(16px)",
-                        border: "1px solid rgba(255,255,255,0.1)",
-                        borderRadius: "6px",
-                        padding: "0.5rem",
-                        boxShadow: "0 16px 48px rgba(0,0,0,0.4)",
+                        minWidth: "260px",
+                        background: NAVY,
+                        border: "1px solid rgba(255,255,255,0.12)",
+                        borderTop: `2px solid ${RED}`,
+                        borderRadius: "0 0 8px 8px",
+                        padding: "0.5rem 0",
+                        boxShadow: "0 16px 48px rgba(0,0,0,0.5)",
                         zIndex: 200,
                       }}
+                      onMouseEnter={openServices}
+                      onMouseLeave={closeServices}
                     >
                       {link.children.map((child) => (
                         <Link
@@ -165,13 +151,13 @@ export default function SiteHeader() {
                           href={child.href}
                           style={{
                             display: "block",
-                            padding: "0.6rem 0.875rem",
-                            fontSize: "0.78rem",
+                            padding: "0.65rem 1.25rem",
+                            fontSize: "0.83rem",
                             fontWeight: 500,
-                            color: "rgba(255,255,255,0.75)",
+                            color: location === child.href ? RED : "rgba(255,255,255,0.8)",
                             textDecoration: "none",
-                            borderRadius: "4px",
                             transition: "all 0.15s",
+                            borderLeft: location === child.href ? `3px solid ${RED}` : "3px solid transparent",
                           }}
                           onMouseEnter={(e) => {
                             (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.07)";
@@ -193,15 +179,18 @@ export default function SiteHeader() {
                   key={link.href}
                   href={link.href!}
                   style={{
-                    padding: "0.45rem 0.65rem",
-                    fontSize: "0.74rem",
+                    display: "flex",
+                    alignItems: "center",
+                    height: "64px",
+                    padding: "0 0.85rem",
+                    fontSize: "0.82rem",
                     fontWeight: 600,
-                    color: location === link.href ? RED : "rgba(255,255,255,0.75)",
+                    color: location === link.href ? RED : "rgba(255,255,255,0.85)",
                     letterSpacing: "0.02em",
                     textDecoration: "none",
-                    borderRadius: "3px",
-                    transition: "color 0.15s",
+                    transition: "all 0.15s",
                     whiteSpace: "nowrap",
+                    borderBottom: location === link.href ? `2px solid ${RED}` : "2px solid transparent",
                   }}
                   onMouseEnter={(e) => {
                     if (location !== link.href) (e.currentTarget as HTMLElement).style.color = "white";
@@ -217,7 +206,7 @@ export default function SiteHeader() {
           </nav>
 
           {/* Right side */}
-          <div className="flex items-center" style={{ gap: "0.5rem", flexShrink: 0 }}>
+          <div className="flex items-center" style={{ gap: "0.75rem", flexShrink: 0, marginLeft: "auto" }}>
             <a
               href="tel:+79300354841"
               className="hidden md:flex items-center gap-2"
