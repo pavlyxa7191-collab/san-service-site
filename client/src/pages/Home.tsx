@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "wouter";
+import SchemaMarkup from "@/components/SchemaMarkup";
 import { trpc } from "@/lib/trpc";
 import {
   IconBedbugs, IconCockroaches, IconRodents, IconTicks, IconMold,
@@ -118,6 +119,7 @@ export default function Home() {
 
   return (
     <div style={{ fontFamily: "'Inter', 'Helvetica Neue', sans-serif", background: WHITE }}>
+      <SchemaMarkup />
 
       {/* ═══════════════════════════════════════════════════════════════════
           HERO — 3 columns: text | specialist | form

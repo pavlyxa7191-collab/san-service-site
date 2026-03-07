@@ -1,4 +1,5 @@
 import { Link, useParams } from "wouter";
+import SchemaMarkup from "@/components/SchemaMarkup";
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
@@ -426,8 +427,27 @@ export default function ServicePage() {
   const cityName = citySlug ? (CITY_NAMES[citySlug] || citySlug.charAt(0).toUpperCase() + citySlug.slice(1)) : null;
   const pageTitle = cityName ? `${service.title} в ${cityName}` : service.title;
 
+  const serviceUrl = `https://sanservice-l8sjslkh.manus.space/services/${serviceSlug}${citySlug ? `/${citySlug}` : ''}`;
+
   return (
     <div style={{ minHeight: "100vh", background: WHITE }}>
+      <SchemaMarkup
+        type="service"
+        name={pageTitle}
+        description={service.subtitle}
+        priceFrom={service.priceFrom}
+        url={serviceUrl}
+        faq={service.faq}
+      />
+      <SchemaMarkup
+        type="breadcrumb"
+        items={[
+          { name: "Главная", url: "/" },
+          { name: "Услуги", url: "/services" },
+          { name: service.title, url: `/services/${serviceSlug}` },
+          ...(cityName ? [{ name: cityName, url: serviceUrl }] : []),
+        ]}
+      />
 
       {/* ── HERO ── */}
       <section style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_MID} 100%)`, position: "relative", overflow: "hidden" }}>

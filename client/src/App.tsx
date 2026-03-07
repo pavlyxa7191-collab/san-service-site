@@ -13,8 +13,11 @@ import Contacts from "./pages/Contacts";
 import Blog from "./pages/Blog";
 import SiteHeader from "./components/SiteHeader";
 import SiteFooter from "./components/SiteFooter";
+import AdminLeads from "./pages/AdminLeads";
+import StickyCallButton from "./components/StickyCallButton";
+import ExitIntentPopup from "./components/ExitIntentPopup";
 
-function Router() {
+function PublicRouter() {
   return (
     <div className="flex flex-col min-h-screen">
       <SiteHeader />
@@ -36,7 +39,20 @@ function Router() {
         </Switch>
       </main>
       <SiteFooter />
+      <StickyCallButton />
+      <ExitIntentPopup />
     </div>
+  );
+}
+
+function Router() {
+  return (
+    <Switch>
+      {/* Admin panel — no site header/footer */}
+      <Route path="/admin/leads" component={AdminLeads} />
+      {/* All public pages */}
+      <Route component={PublicRouter} />
+    </Switch>
   );
 }
 
