@@ -74,7 +74,7 @@ export default function Prices() {
   return (
     <div className="bg-white">
       {/* Header */}
-      <section style={{ background: "#0d2b5e", borderBottom: "2px solid #CC0000" }}>
+      <section style={{ background: "#0D1F33", borderBottom: "2px solid #CC0000" }}>
         <div className="container py-16">
           <div className="flex items-center gap-3 mb-4">
             <div className="red-square" />
@@ -96,9 +96,9 @@ export default function Prices() {
       <div className="container py-16">
         {/* Price table */}
         <div className="mb-16">
-          <div className="flex items-center gap-3 mb-8" style={{ borderBottom: "2px solid #0d2b5e", paddingBottom: "1rem" }}>
+          <div className="flex items-center gap-3 mb-8" style={{ borderBottom: "2px solid #0D1F33", paddingBottom: "1rem" }}>
             <div className="red-square" />
-            <h2 className="font-black text-xl" style={{ color: "#0d2b5e", letterSpacing: "-0.02em" }}>
+            <h2 className="font-black text-xl" style={{ color: "#0D1F33", letterSpacing: "-0.02em" }}>
               Цены по типам помещений
             </h2>
           </div>
@@ -106,7 +106,7 @@ export default function Prices() {
           <div className="overflow-x-auto">
             <table className="w-full" style={{ borderCollapse: "collapse" }}>
               <thead>
-                <tr style={{ background: "#0d2b5e" }}>
+                <tr style={{ background: "#0D1F33" }}>
                   <th className="text-left p-4 text-sm font-bold text-white" style={{ minWidth: "200px" }}>
                     Услуга
                   </th>
@@ -124,7 +124,7 @@ export default function Prices() {
                     key={row.service}
                     style={{ background: i % 2 === 0 ? "white" : "#F9F9F9", borderBottom: "1px solid #E0E0E0" }}
                   >
-                    <td className="p-4 font-semibold text-sm" style={{ color: "#0d2b5e" }}>
+                    <td className="p-4 font-semibold text-sm" style={{ color: "#0D1F33" }}>
                       {row.service}
                     </td>
                     <td className="p-4 text-center font-bold text-sm" style={{ color: "#CC0000" }}>
@@ -136,10 +136,10 @@ export default function Prices() {
                     <td className="p-4 text-center font-bold text-sm" style={{ color: "#CC0000" }}>
                       {row.apartment3} ₽
                     </td>
-                    <td className="p-4 text-center text-sm" style={{ color: "#0d2b5e" }}>
+                    <td className="p-4 text-center text-sm" style={{ color: "#0D1F33" }}>
                       {row.house}
                     </td>
-                    <td className="p-4 text-center text-sm" style={{ color: "#0d2b5e" }}>
+                    <td className="p-4 text-center text-sm" style={{ color: "#0D1F33" }}>
                       {row.office}
                     </td>
                     <td className="p-4">
@@ -163,9 +163,9 @@ export default function Prices() {
 
         {/* Methods */}
         <div className="mb-16">
-          <div className="flex items-center gap-3 mb-8" style={{ borderBottom: "2px solid #0d2b5e", paddingBottom: "1rem" }}>
+          <div className="flex items-center gap-3 mb-8" style={{ borderBottom: "2px solid #0D1F33", paddingBottom: "1rem" }}>
             <div className="red-square" />
-            <h2 className="font-black text-xl" style={{ color: "#0d2b5e", letterSpacing: "-0.02em" }}>
+            <h2 className="font-black text-xl" style={{ color: "#0D1F33", letterSpacing: "-0.02em" }}>
               Методы обработки
             </h2>
           </div>
@@ -180,7 +180,7 @@ export default function Prices() {
                     {m.tag}
                   </div>
                 )}
-                <h3 className="font-bold text-base mb-3" style={{ color: "#0d2b5e" }}>{m.name}</h3>
+                <h3 className="font-bold text-base mb-3" style={{ color: "#0D1F33" }}>{m.name}</h3>
                 <p className="text-sm leading-relaxed mb-4" style={{ color: "#666" }}>{m.desc}</p>
                 <div className="text-sm font-bold" style={{ color: "#CC0000" }}>{m.coefficient}</div>
               </div>
@@ -190,9 +190,9 @@ export default function Prices() {
 
         {/* Included */}
         <div className="mb-16">
-          <div className="flex items-center gap-3 mb-8" style={{ borderBottom: "2px solid #0d2b5e", paddingBottom: "1rem" }}>
+          <div className="flex items-center gap-3 mb-8" style={{ borderBottom: "2px solid #0D1F33", paddingBottom: "1rem" }}>
             <div className="red-square" />
-            <h2 className="font-black text-xl" style={{ color: "#0d2b5e", letterSpacing: "-0.02em" }}>
+            <h2 className="font-black text-xl" style={{ color: "#0D1F33", letterSpacing: "-0.02em" }}>
               Что входит в стоимость
             </h2>
           </div>
@@ -209,7 +209,7 @@ export default function Prices() {
             ].map((item) => (
               <div key={item} className="flex items-center gap-3">
                 <CheckCircle size={16} style={{ color: "#CC0000", flexShrink: 0 }} />
-                <span className="text-sm" style={{ color: "#0d2b5e" }}>{item}</span>
+                <span className="text-sm" style={{ color: "#0D1F33" }}>{item}</span>
               </div>
             ))}
           </div>

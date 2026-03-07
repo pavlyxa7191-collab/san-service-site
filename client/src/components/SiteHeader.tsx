@@ -2,8 +2,10 @@ import { Link, useLocation } from "wouter";
 import { Phone, Menu, X, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
 
-const DARK = "#0d2b5e";   // Navy-blue (NOT black)
-const RED = "#CC0000";
+/* Design Tokens */
+const DARK = "#0D1F33";   // --color-primary: Deep navy (almost black-blue)
+const DARK_MID = "#122840"; // --color-primary-mid
+const RED = "#CC0000";     // --color-accent
 
 const navLinks = [
   {
@@ -50,14 +52,14 @@ export default function SiteHeader() {
           right: 0,
           zIndex: 100,
           background: scrolled
-            ? "rgba(13, 43, 94, 0.97)"
-            : "rgba(13, 43, 94, 0.88)",
+            ? "rgba(13, 31, 51, 0.97)"
+            : "rgba(13, 31, 51, 0.90)",
           backdropFilter: "blur(16px)",
           borderBottom: scrolled
             ? "1px solid rgba(255,255,255,0.15)"
             : "1px solid rgba(255,255,255,0.08)",
           transition: "all 0.3s ease",
-          boxShadow: scrolled ? "0 4px 24px rgba(13, 43, 94, 0.4)" : "none",
+          boxShadow: scrolled ? "0 4px 24px rgba(8, 21, 38, 0.5)" : "none",
         }}
       >
         {/* Top bar */}
@@ -82,7 +84,7 @@ export default function SiteHeader() {
         </div>
 
         {/* Main nav */}
-        <div className="container flex items-center justify-between" style={{ height: "64px" }}>
+        <div className="container flex items-center justify-between" style={{ height: "64px", overflow: "visible" }}>
           {/* Logo */}
           <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "10px" }}>
             <div
@@ -111,7 +113,7 @@ export default function SiteHeader() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center" style={{ gap: "0px", flexShrink: 1, overflow: "visible" }}>
             {navLinks.map((link) =>
               link.children ? (
                 <div
@@ -125,16 +127,17 @@ export default function SiteHeader() {
                       display: "flex",
                       alignItems: "center",
                       gap: "4px",
-                      padding: "0.5rem 0.875rem",
-                      fontSize: "0.78rem",
+                      padding: "0.45rem 0.65rem",
+                      fontSize: "0.74rem",
                       fontWeight: 600,
                       color: location.startsWith("/services") ? RED : "rgba(255,255,255,0.75)",
-                      letterSpacing: "0.03em",
+                      letterSpacing: "0.02em",
                       background: "none",
                       border: "none",
                       cursor: "pointer",
                       borderRadius: "3px",
                       transition: "color 0.15s",
+                      whiteSpace: "nowrap",
                     }}
                   >
                     {link.label}
@@ -147,7 +150,7 @@ export default function SiteHeader() {
                         top: "100%",
                         left: 0,
                         minWidth: "240px",
-                        background: "rgba(13,43,94,0.98)",
+                        background: "rgba(13,31,51,0.98)",
                         backdropFilter: "blur(16px)",
                         border: "1px solid rgba(255,255,255,0.1)",
                         borderRadius: "6px",
@@ -190,14 +193,15 @@ export default function SiteHeader() {
                   key={link.href}
                   href={link.href!}
                   style={{
-                    padding: "0.5rem 0.875rem",
-                    fontSize: "0.78rem",
+                    padding: "0.45rem 0.65rem",
+                    fontSize: "0.74rem",
                     fontWeight: 600,
                     color: location === link.href ? RED : "rgba(255,255,255,0.75)",
-                    letterSpacing: "0.03em",
+                    letterSpacing: "0.02em",
                     textDecoration: "none",
                     borderRadius: "3px",
                     transition: "color 0.15s",
+                    whiteSpace: "nowrap",
                   }}
                   onMouseEnter={(e) => {
                     if (location !== link.href) (e.currentTarget as HTMLElement).style.color = "white";
@@ -213,7 +217,7 @@ export default function SiteHeader() {
           </nav>
 
           {/* Right side */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center" style={{ gap: "0.5rem", flexShrink: 0 }}>
             <a
               href="tel:+79300354841"
               className="hidden md:flex items-center gap-2"
@@ -269,7 +273,7 @@ export default function SiteHeader() {
         {mobileOpen && (
           <div
             style={{
-              background: "rgba(13,43,94,0.99)",
+              background: "rgba(13,31,51,0.99)",
               backdropFilter: "blur(16px)",
               borderTop: "1px solid rgba(255,255,255,0.07)",
               padding: "1rem 0 1.5rem",

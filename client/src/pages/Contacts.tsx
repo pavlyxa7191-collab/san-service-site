@@ -27,7 +27,7 @@ export default function Contacts() {
   return (
     <div className="bg-white">
       {/* Header */}
-      <section style={{ background: "#0d2b5e", borderBottom: "2px solid #CC0000" }}>
+      <section style={{ background: "#0D1F33", borderBottom: "2px solid #CC0000" }}>
         <div className="container py-16">
           <div className="flex items-center gap-3 mb-4">
             <div className="red-square" />
@@ -49,9 +49,9 @@ export default function Contacts() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact info */}
           <div>
-            <div className="flex items-center gap-3 mb-8" style={{ borderBottom: "2px solid #0d2b5e", paddingBottom: "1rem" }}>
+            <div className="flex items-center gap-3 mb-8" style={{ borderBottom: "2px solid #0D1F33", paddingBottom: "1rem" }}>
               <div className="red-square" />
-              <h2 className="font-black text-xl" style={{ color: "#0d2b5e", letterSpacing: "-0.02em" }}>
+              <h2 className="font-black text-xl" style={{ color: "#0D1F33", letterSpacing: "-0.02em" }}>
                 Контактная информация
               </h2>
             </div>
@@ -63,7 +63,7 @@ export default function Contacts() {
                   <div className="text-xs font-bold mb-1" style={{ color: "#666", textTransform: "uppercase", letterSpacing: "0.05em" }}>
                     Телефон
                   </div>
-                  <a href="tel:+79300354841" className="font-black text-xl no-underline" style={{ color: "#0d2b5e" }}>
+                  <a href="tel:+79300354841" className="font-black text-xl no-underline" style={{ color: "#0D1F33" }}>
                     8(930)035-48-41
                   </a>
                   <div className="text-xs mt-1" style={{ color: "#666" }}>Работаем 24/7</div>
@@ -76,7 +76,7 @@ export default function Contacts() {
                   <div className="text-xs font-bold mb-1" style={{ color: "#666", textTransform: "uppercase", letterSpacing: "0.05em" }}>
                     Email
                   </div>
-                  <a href="mailto:info@ses88.ru" className="font-semibold no-underline" style={{ color: "#0d2b5e" }}>
+                  <a href="mailto:info@ses88.ru" className="font-semibold no-underline" style={{ color: "#0D1F33" }}>
                     info@ses88.ru
                   </a>
                 </div>
@@ -88,7 +88,7 @@ export default function Contacts() {
                   <div className="text-xs font-bold mb-1" style={{ color: "#666", textTransform: "uppercase", letterSpacing: "0.05em" }}>
                     Адрес
                   </div>
-                  <div className="font-semibold text-sm" style={{ color: "#0d2b5e" }}>
+                  <div className="font-semibold text-sm" style={{ color: "#0D1F33" }}>
                     г. Москва, ул. Профсоюзная, д. 56
                   </div>
                   <div className="text-xs mt-1" style={{ color: "#666" }}>
@@ -103,7 +103,7 @@ export default function Contacts() {
                   <div className="text-xs font-bold mb-1" style={{ color: "#666", textTransform: "uppercase", letterSpacing: "0.05em" }}>
                     Режим работы
                   </div>
-                  <div className="font-semibold text-sm" style={{ color: "#0d2b5e" }}>
+                  <div className="font-semibold text-sm" style={{ color: "#0D1F33" }}>
                     Круглосуточно, без выходных
                   </div>
                   <div className="text-xs mt-1" style={{ color: "#666" }}>
@@ -114,7 +114,7 @@ export default function Contacts() {
             </div>
 
             {/* Quick facts */}
-            <div className="p-6" style={{ background: "#0d2b5e" }}>
+            <div className="p-6" style={{ background: "#0D1F33" }}>
               <div className="section-label mb-4">Почему выбирают нас</div>
               <div className="space-y-3">
                 {[
@@ -135,9 +135,9 @@ export default function Contacts() {
 
           {/* Form */}
           <div>
-            <div className="flex items-center gap-3 mb-8" style={{ borderBottom: "2px solid #0d2b5e", paddingBottom: "1rem" }}>
+            <div className="flex items-center gap-3 mb-8" style={{ borderBottom: "2px solid #0D1F33", paddingBottom: "1rem" }}>
               <div className="red-square" />
-              <h2 className="font-black text-xl" style={{ color: "#0d2b5e", letterSpacing: "-0.02em" }}>
+              <h2 className="font-black text-xl" style={{ color: "#0D1F33", letterSpacing: "-0.02em" }}>
                 Оставить заявку
               </h2>
             </div>
@@ -145,7 +145,7 @@ export default function Contacts() {
             {submitted ? (
               <div className="p-12 text-center" style={{ background: "#F5F5F5", border: "1px solid #E0E0E0" }}>
                 <CheckCircle size={48} style={{ color: "#CC0000", margin: "0 auto 1.5rem" }} />
-                <h3 className="font-black text-xl mb-3" style={{ color: "#0d2b5e" }}>Заявка принята!</h3>
+                <h3 className="font-black text-xl mb-3" style={{ color: "#0D1F33" }}>Заявка принята!</h3>
                 <p className="text-sm" style={{ color: "#666" }}>
                   Наш специалист перезвонит вам в течение 15 минут.
                 </p>
@@ -153,7 +153,7 @@ export default function Contacts() {
             ) : (
               <div className="flex flex-col gap-4">
                 <div>
-                  <label className="block text-xs font-bold mb-2" style={{ color: "#0d2b5e", letterSpacing: "0.05em", textTransform: "uppercase" }}>
+                  <label className="block text-xs font-bold mb-2" style={{ color: "#0D1F33", letterSpacing: "0.05em", textTransform: "uppercase" }}>
                     Ваше имя *
                   </label>
                   <input
@@ -167,7 +167,7 @@ export default function Contacts() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold mb-2" style={{ color: "#0d2b5e", letterSpacing: "0.05em", textTransform: "uppercase" }}>
+                  <label className="block text-xs font-bold mb-2" style={{ color: "#0D1F33", letterSpacing: "0.05em", textTransform: "uppercase" }}>
                     Телефон *
                   </label>
                   <input
@@ -181,7 +181,7 @@ export default function Contacts() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold mb-2" style={{ color: "#0d2b5e", letterSpacing: "0.05em", textTransform: "uppercase" }}>
+                  <label className="block text-xs font-bold mb-2" style={{ color: "#0D1F33", letterSpacing: "0.05em", textTransform: "uppercase" }}>
                     Email
                   </label>
                   <input
@@ -194,7 +194,7 @@ export default function Contacts() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold mb-2" style={{ color: "#0d2b5e", letterSpacing: "0.05em", textTransform: "uppercase" }}>
+                  <label className="block text-xs font-bold mb-2" style={{ color: "#0D1F33", letterSpacing: "0.05em", textTransform: "uppercase" }}>
                     Сообщение
                   </label>
                   <textarea

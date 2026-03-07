@@ -102,33 +102,59 @@
 
   --radius: 0.25rem;
 
-  /* ── Custom Design Tokens ── */
-  /* Dark sections: deep navy-graphite instead of pure black */
-  --dark-bg: #0d2b5e;           /* Deep navy-blue (NOT black) */
-  --dark-bg-2: #1a3a6b;         /* Medium navy */
-  --dark-surface: #1e4080;      /* Card surface in dark sections */
-  --dark-border: rgba(255,255,255,0.12);
-  --dark-text: rgba(255,255,255,0.95);
-  --dark-text-muted: rgba(255,255,255,0.65);
-  --dark-text-subtle: rgba(255,255,255,0.45);
+  /* ═══════════════════════════════════════════════════════
+   *  DESIGN TOKENS — Санитарная служба
+   *  Palette: Deep Navy (#0D1F33) · White · Red (#CC0000)
+   * ═══════════════════════════════════════════════════════ */
 
-  /* Red */
-  --red: #CC0000;
-  --red-light: rgba(204,0,0,0.12);
-  --red-glow: rgba(204,0,0,0.25);
+  /* ── PRIMARY: Deep Navy-Blue (almost black-blue) ── */
+  --color-primary:        #0D1F33;   /* Main dark bg: header, footer, hero */
+  --color-primary-dark:   #081526;   /* Deeper variant: hover, overlay */
+  --color-primary-mid:    #122840;   /* Mid variant: card surfaces in dark sections */
+  --color-primary-light:  #1A3050;   /* Lighter variant: borders, dividers */
 
-  /* Light grays */
-  --gray-f5: #F5F7FA;
-  --gray-f0: #F0F3F7;
-  --gray-e0: #E0E5ED;
-  --gray-66: #6B7280;
+  /* ── ACCENT: Crimson Red ── */
+  --color-accent:         #CC0000;   /* Primary CTA, highlights */
+  --color-accent-dark:    #990000;   /* Hover state */
+  --color-accent-light:   rgba(204,0,0,0.12); /* Tinted backgrounds */
+  --color-accent-glow:    rgba(204,0,0,0.30); /* Glow/shadow */
 
-  /* Gradients */
-  --gradient-dark: linear-gradient(135deg, #0d2b5e 0%, #1a3a6b 50%, #2952a3 100%);
-  --gradient-dark-radial: radial-gradient(ellipse at 30% 50%, #1e4080 0%, #0d2b5e 70%);
-  --gradient-hero: linear-gradient(135deg, #0a2347 0%, #1a3a6b 40%, #2952a3 100%);
-  --gradient-red-accent: linear-gradient(135deg, #CC0000 0%, #990000 100%);
-  --gradient-card-light: linear-gradient(145deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 100%);
+  /* ── BACKGROUND: White + Light Grays ── */
+  --color-bg:             #FFFFFF;   /* Page background */
+  --color-bg-subtle:      #F5F7FA;   /* Subtle section bg */
+  --color-bg-muted:       #F0F3F7;   /* Muted section bg */
+  --color-border:         #E0E5ED;   /* Dividers, card borders */
+  --color-border-mid:     #C8D0DC;   /* Stronger borders */
+
+  /* ── TEXT ── */
+  --color-text-on-dark:         rgba(255,255,255,0.95); /* Primary text on dark */
+  --color-text-on-dark-muted:   rgba(255,255,255,0.60); /* Secondary text on dark */
+  --color-text-on-dark-subtle:  rgba(255,255,255,0.35); /* Tertiary text on dark */
+  --color-text-body:      #1A2535;   /* Body text on white */
+  --color-text-muted:     #6B7280;   /* Muted text on white */
+
+  /* ── LEGACY ALIASES (keep for backward compat) ── */
+  --dark-bg:       var(--color-primary);
+  --dark-bg-2:     var(--color-primary-mid);
+  --dark-surface:  var(--color-primary-light);
+  --dark-border:   rgba(255,255,255,0.12);
+  --dark-text:     var(--color-text-on-dark);
+  --dark-text-muted:   var(--color-text-on-dark-muted);
+  --dark-text-subtle:  var(--color-text-on-dark-subtle);
+  --red:           var(--color-accent);
+  --red-light:     var(--color-accent-light);
+  --red-glow:      var(--color-accent-glow);
+  --gray-f5:       var(--color-bg-subtle);
+  --gray-f0:       var(--color-bg-muted);
+  --gray-e0:       var(--color-border);
+  --gray-66:       var(--color-text-muted);
+
+  /* ── GRADIENTS (use tokens) ── */
+  --gradient-dark:        linear-gradient(160deg, var(--color-primary) 0%, var(--color-primary-mid) 100%);
+  --gradient-dark-radial: radial-gradient(ellipse at 30% 50%, var(--color-primary-light) 0%, var(--color-primary) 70%);
+  --gradient-hero:        linear-gradient(160deg, var(--color-primary-dark) 0%, var(--color-primary) 60%, var(--color-primary-mid) 100%);
+  --gradient-red-accent:  linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
+  --gradient-card-light:  linear-gradient(145deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 100%);
 }
 
 .dark {
@@ -510,11 +536,11 @@
   right: 0;
   z-index: 50;
   padding: 0.75rem 1rem;
-  background: rgba(13, 43, 94, 0.95);
+  background: rgba(13, 31, 51, 0.97);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-top: 1px solid rgba(255,255,255,0.15);
-  box-shadow: 0 -4px 24px rgba(13, 43, 94, 0.4);
+  box-shadow: 0 -4px 24px rgba(13, 31, 51, 0.5);
 }
 
 @media (min-width: 768px) {
@@ -533,7 +559,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(13, 43, 94, 0.75) 0%, rgba(26, 58, 107, 0.4) 100%);
+  background: linear-gradient(135deg, rgba(13, 31, 51, 0.78) 0%, rgba(18, 40, 64, 0.45) 100%);
 }
 
 /* ── SCROLLBAR ── */

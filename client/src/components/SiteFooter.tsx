@@ -1,9 +1,10 @@
 import { Link } from "wouter";
 import { Phone, Mail, MapPin, Clock, Shield, FileText } from "lucide-react";
 
-const DARK = "#0d2b5e";   // Navy-blue (NOT black)
-const DARK2 = "#091e42";  // Deep navy
-const RED = "#CC0000";
+/* Design Tokens */
+const DARK = "#0D1F33";   // --color-primary: Deep navy (almost black-blue)
+const DARK2 = "#081526";  // --color-primary-dark: Deeper variant
+const RED = "#CC0000";    // --color-accent
 
 const services = [
   { label: "Уничтожение клопов", href: "/services/klopov" },

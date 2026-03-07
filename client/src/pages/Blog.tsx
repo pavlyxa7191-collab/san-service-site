@@ -192,7 +192,7 @@ function ArticlePage({ slug }: { slug: string }) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h1 className="font-black text-2xl mb-4" style={{ color: "#0d2b5e" }}>Статья не найдена</h1>
+          <h1 className="font-black text-2xl mb-4" style={{ color: "#0D1F33" }}>Статья не найдена</h1>
           <Link href="/blog" className="btn-red no-underline">К статьям</Link>
         </div>
       </div>
@@ -203,7 +203,7 @@ function ArticlePage({ slug }: { slug: string }) {
 
   return (
     <div className="bg-white">
-      <section style={{ background: "#0d2b5e", borderBottom: "2px solid #CC0000" }}>
+      <section style={{ background: "#0D1F33", borderBottom: "2px solid #CC0000" }}>
         <div className="container py-16">
           <div className="flex items-center gap-2 mb-4 text-sm" style={{ color: "#666" }}>
             <Link href="/" className="no-underline" style={{ color: "#666" }}>Главная</Link>
@@ -236,14 +236,14 @@ function ArticlePage({ slug }: { slug: string }) {
               {paragraphs.map((para, i) => {
                 if (para.startsWith("## ")) {
                   return (
-                    <h2 key={i} className="font-black text-xl mt-8 mb-4" style={{ color: "#0d2b5e", letterSpacing: "-0.02em" }}>
+                    <h2 key={i} className="font-black text-xl mt-8 mb-4" style={{ color: "#0D1F33", letterSpacing: "-0.02em" }}>
                       {para.replace("## ", "")}
                     </h2>
                   );
                 }
                 if (para.startsWith("**") && para.endsWith("**")) {
                   return (
-                    <p key={i} className="font-bold text-sm mb-3" style={{ color: "#0d2b5e" }}>
+                    <p key={i} className="font-bold text-sm mb-3" style={{ color: "#0D1F33" }}>
                       {para.replace(/\*\*/g, "")}
                     </p>
                   );
@@ -297,7 +297,7 @@ function ArticlePage({ slug }: { slug: string }) {
                     <div className="text-xs font-bold mb-1" style={{ color: "#CC0000", textTransform: "uppercase", letterSpacing: "0.05em" }}>
                       {a.tag}
                     </div>
-                    <div className="text-sm font-semibold group-hover:underline" style={{ color: "#0d2b5e" }}>
+                    <div className="text-sm font-semibold group-hover:underline" style={{ color: "#0D1F33" }}>
                       {a.title}
                     </div>
                   </Link>
@@ -305,7 +305,7 @@ function ArticlePage({ slug }: { slug: string }) {
               </div>
             </div>
 
-            <div className="p-6" style={{ background: "#0d2b5e" }}>
+            <div className="p-6" style={{ background: "#0D1F33" }}>
               <div className="section-label mb-3">Позвонить</div>
               <a href="tel:+79300354841" className="font-black text-xl text-white no-underline block mb-2">
                 8(930)035-48-41
@@ -330,7 +330,7 @@ export default function Blog() {
 
   return (
     <div className="bg-white">
-      <section style={{ background: "#0d2b5e", borderBottom: "2px solid #CC0000" }}>
+      <section style={{ background: "#0D1F33", borderBottom: "2px solid #CC0000" }}>
         <div className="container py-16">
           <div className="flex items-center gap-3 mb-4">
             <div className="red-square" />
@@ -366,7 +366,7 @@ export default function Blog() {
                 </div>
                 <h2
                   className="font-black text-lg mb-3 group-hover:underline"
-                  style={{ color: "#0d2b5e", letterSpacing: "-0.02em", lineHeight: 1.2 }}
+                  style={{ color: "#0D1F33", letterSpacing: "-0.02em", lineHeight: 1.2 }}
                 >
                   {article.title}
                 </h2>

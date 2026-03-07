@@ -9,9 +9,11 @@ import {
 } from "@/components/Icons";
 
 // ─── DESIGN TOKENS ────────────────────────────────────────────────────────────
-const NAVY     = "#0d2b5e";
-const NAVY_MID = "#1a3a6b";
-const RED      = "#CC0000";
+/* ── Design Tokens ── */
+const NAVY     = "#0D1F33";  /* --color-primary */
+const NAVY_MID = "#122840";  /* --color-primary-mid */
+const NAVY_DARK = "#081526"; /* --color-primary-dark */
+const RED      = "#CC0000";  /* --color-accent */
 const WHITE    = "#FFFFFF";
 const GRAY_BG  = "#F5F7FA";
 
@@ -24,6 +26,7 @@ const services = [
   { slug: "pleseni",      Icon: IconMold,         title: "Удаление плесени",      desc: "Профессиональное удаление плесени и грибка. Обработка стен.",        price: "от 3 500 ₽", guarantee: "2 года"       },
   { slug: "dezinfektsii", Icon: IconDeodorization,title: "Дезинфекция",           desc: "Уничтожение патогенных микроорганизмов. Для предприятий.",           price: "от 20 ₽/м²", guarantee: "по договору"  },
   { slug: "zapahov",      Icon: IconOdor,         title: "Борьба с запахами",     desc: "Устранение неприятных запахов. Озонирование и дезодорация.",         price: "от 2 500 ₽", guarantee: "по договору"  },
+  { slug: "uborka",       Icon: IconGuarantee,    title: "Уборка после смерти",   desc: "Профессиональная биологическая уборка. Дезинфекция и дезодорация.",  price: "от 5 000 ₽", guarantee: "по договору"  },
 ];
 
 const methods = [
@@ -51,10 +54,9 @@ const steps = [
 
 const faqs = [
   { q: "Насколько опасна дезинсекция для людей и животных?", a: "Все препараты сертифицированы и разрешены Роспотребнадзором. После обработки достаточно проветрить помещение 2–3 часа. Дети и животные могут вернуться через 4–6 часов." },
-  { q: "Какими средствами производится обработка?", a: "Используем только сертифицированные импортные препараты: Сипаз Про, Дельта Зона, Форс Сайт. Все средства прошли государственную регистрацию и имеют санитарно-эпидемиологические заключения." },
-  { q: "Сколько времени занимает обработка квартиры?", a: "Обработка стандартной квартиры (1–3 комнаты) занимает от 1 до 2 часов. Крупные объекты — от 3 до 8 часов в зависимости от площади." },
-  { q: "Работаете ли вы в Московской области?", a: "Да, работаем по всей Московской области: Воскресенск, Коломна, Жуковский, Раменское, Люберцы и другие города. Выезд в день обращения." },
-  { q: "Даёте ли вы гарантию на результат?", a: "Да. На все виды работ выдаём официальный договор и гарантийный талон. Гарантия на уничтожение клопов — 3 года, тараканов — 1 год, грызунов — 6 месяцев, плесени — 2 года." },
+  { q: "Какими средствами производится обработка?", a: "Используем только сертифицированные препараты: Пушка, Китан, Тельк, Медин Форте. Все средства прошли государственную регистрацию и имеют санитарно-эпидемиологические заключения." },
+  { q: "Сколько времени занимает обработка?", a: "Квартира: 30–40 минут. Крупные объекты: от 1 до 3 часов в зависимости от площади." },
+  { q: "Даёте ли вы гарантию на результат?", a: "Да. На все виды работ выдаём оффициальный договор и гарантийный талон. Гарантия на уничтожение клопов — 3 года, тараканов — 1 год, грызунов — 6 месяцев, плесени — 2 года." },
 ];
 
 // ─── SCROLL REVEAL HOOK ───────────────────────────────────────────────────────
@@ -127,7 +129,7 @@ export default function Home() {
               </h1>
               <p style={{ fontSize: "1.1rem", color: "rgba(255,255,255,0.75)", lineHeight: 1.65, marginBottom: "2.5rem", maxWidth: 520 }}>
                 Уничтожение клопов, тараканов, грызунов и плесени.<br />
-                Москва и Московская область. Гарантия до 3 лет. Выезд в день обращения.
+                Обработка без запаха. Холодный туман от 1 500 ₽. Гарантия до 3 лет.
               </p>
               {/* CTA buttons */}
               <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginBottom: "3rem" }}>
@@ -145,7 +147,7 @@ export default function Home() {
                   { n: "12 000+", label: "обработок" },
                   { n: "3 года", label: "гарантия" },
                 ].map((s, i) => (
-                  <div key={i} className="stat-block" style={{ background: "rgba(13,43,94,0.6)", padding: "1rem 1.25rem" }}>
+                  <div key={i} className="stat-block" style={{ background: "rgba(13,31,51,0.7)", padding: "1rem 1.25rem" }}>
                     <div style={{ fontSize: "1.6rem", fontWeight: 900, color: WHITE, letterSpacing: "-0.04em", lineHeight: 1 }}>{s.n}</div>
                     <div style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.55)", marginTop: "0.3rem", textTransform: "uppercase", letterSpacing: "0.08em" }}>{s.label}</div>
                   </div>
@@ -250,7 +252,7 @@ export default function Home() {
               Выбираем метод в зависимости от типа вредителя, площади и особенностей объекта
             </p>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1px", background: "rgba(255,255,255,0.06)" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1px", background: "rgba(255,255,255,0.06)" }}>
             {methods.map((m, i) => (
               <div key={i} className="glass-card diag-line" style={{ padding: "2rem 1.75rem", transition: "background 0.2s ease" }}
                 onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.08)")}
@@ -298,15 +300,26 @@ export default function Home() {
               Работаем с любыми объектами
             </h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1.5rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0", border: `1px solid ${NAVY}`, borderRadius: 6, overflow: "hidden" }}>
             {objectTypes.map((o, i) => (
-              <div key={i} className="corner-accent" style={{ padding: "2.5rem 2rem", background: i % 2 === 1 ? NAVY : WHITE, border: `1px solid ${i % 2 === 1 ? "rgba(255,255,255,0.1)" : "#E2E8F0"}`, borderRadius: 4, transition: "transform 0.2s ease, box-shadow 0.2s ease" }}
-                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(13,43,94,0.12)"; }}
+              <div key={i} style={{
+                padding: "2.5rem 2rem",
+                background: i === 1 ? NAVY : WHITE,
+                borderRight: i < 2 ? `1px solid ${i === 0 ? "#E2E8F0" : "rgba(255,255,255,0.12)"}` : "none",
+                transition: "transform 0.2s ease, box-shadow 0.2s ease",
+                position: "relative",
+              }}
+                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = `0 12px 32px rgba(13,31,51,0.15)`; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}>
-                <o.Icon size={56} className="mb-4" />
-                <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: i % 2 === 1 ? WHITE : NAVY, marginBottom: "0.5rem", marginTop: "1.25rem" }}>{o.title}</h3>
-                <p style={{ fontSize: "0.875rem", color: i % 2 === 1 ? "rgba(255,255,255,0.65)" : "#6B7280", lineHeight: 1.6, marginBottom: "1.25rem" }}>{o.desc}</p>
-                <div style={{ fontSize: "1.4rem", fontWeight: 900, color: i % 2 === 1 ? WHITE : NAVY, letterSpacing: "-0.03em" }}>{o.price}</div>
+                {/* Red top accent line */}
+                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: i === 1 ? `linear-gradient(90deg, ${RED}, rgba(204,0,0,0.4))` : RED }} />
+                <o.Icon size={52} />
+                <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: i === 1 ? WHITE : NAVY, marginBottom: "0.5rem", marginTop: "1.25rem" }}>{o.title}</h3>
+                <p style={{ fontSize: "0.875rem", color: i === 1 ? "rgba(255,255,255,0.65)" : "#6B7280", lineHeight: 1.6, marginBottom: "1.5rem" }}>{o.desc}</p>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <span style={{ fontSize: "1.4rem", fontWeight: 900, color: i === 1 ? WHITE : NAVY, letterSpacing: "-0.03em" }}>{o.price}</span>
+                  <span style={{ fontSize: "0.78rem", color: RED, fontWeight: 700, letterSpacing: "0.04em" }}>ЗАКАЗАТЬ →</span>
+                </div>
               </div>
             ))}
           </div>
@@ -322,17 +335,27 @@ export default function Home() {
               Наши преимущества
             </h2>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "1.5rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1px", background: "rgba(255,255,255,0.08)" }}>
             {[
-              { Icon: IconGuarantee,   title: "Гарантия до 3 лет",       desc: "Официальный гарантийный талон на каждый вид работ" },
-              { Icon: IconSpecialist,  title: "Выезд в день обращения",   desc: "Специалист приедет в удобное для вас время" },
-              { Icon: IconCalculator,  title: "Фиксированные цены",       desc: "Стоимость указана в договоре и не меняется" },
-              { Icon: IconColdFog,     title: "Безопасные препараты",      desc: "Сертифицированные средства, одобренные Роспотребнадзором" },
+              { Icon: IconGuarantee,   title: "Гарантия до 3 лет",       desc: "Оффициальный гарантийный талон на каждый вид работ", num: "3" },
+              { Icon: IconSpecialist,  title: "Выезд в день обращения",   desc: "Специалист приедет в удобное для вас время. Без предоплаты", num: "24/7" },
+              { Icon: IconCalculator,  title: "Фиксированные цены",       desc: "Стоимость указана в договоре и не меняется после выезда", num: "0%" },
+              { Icon: IconColdFog,     title: "Безопасные препараты",      desc: "Сертифицированные средства, одобренные Роспотребнадзором", num: "100%" },
             ].map((a, i) => (
-              <div key={i} className="glass-card" style={{ padding: "2rem 1.75rem", borderRadius: 4 }}>
-                <a.Icon size={48} />
-                <h3 style={{ fontSize: "1rem", fontWeight: 800, color: WHITE, marginBottom: "0.5rem", marginTop: "1.25rem" }}>{a.title}</h3>
-                <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.6)", lineHeight: 1.6 }}>{a.desc}</p>
+              <div key={i} style={{
+                padding: "2.5rem 2rem",
+                background: "rgba(255,255,255,0.03)",
+                borderTop: `3px solid ${i === 0 ? RED : "rgba(255,255,255,0.08)"}`,
+                transition: "background 0.2s ease",
+                position: "relative",
+              }}
+                onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.07)"; }}
+                onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.03)"; }}>
+                {/* Large number */}
+                <div style={{ fontSize: "2.5rem", fontWeight: 900, color: RED, letterSpacing: "-0.04em", lineHeight: 1, marginBottom: "1rem" }}>{a.num}</div>
+                <a.Icon size={36} />
+                <h3 style={{ fontSize: "1rem", fontWeight: 800, color: WHITE, marginBottom: "0.5rem", marginTop: "0.875rem" }}>{a.title}</h3>
+                <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.55)", lineHeight: 1.6 }}>{a.desc}</p>
               </div>
             ))}
           </div>
