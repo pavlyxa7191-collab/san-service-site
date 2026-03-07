@@ -117,15 +117,15 @@ export default function Home() {
         }} />
         {/* Red top accent line */}
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: `linear-gradient(90deg, ${RED} 0%, rgba(204,0,0,0.4) 60%, transparent 100%)`, zIndex: 2 }} />
-        {/* Decorative geometry */}
-        <div style={{ position: "absolute", top: "10%", right: "-5%", width: 500, height: 500, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.04)", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", top: "18%", right: "2%", width: 300, height: 300, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.06)", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", bottom: "15%", right: "8%", width: 160, height: 160, borderRadius: "50%", border: `1px solid rgba(204,0,0,0.15)`, pointerEvents: "none" }} />
+        {/* Decorative geometry - top left corner */}
+        <div style={{ position: "absolute", top: "5%", left: "-8%", width: 400, height: 400, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.03)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", top: "15%", left: "2%", width: 200, height: 200, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.04)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: "10%", left: "5%", width: 120, height: 120, borderRadius: "50%", border: `1px solid rgba(204,0,0,0.1)`, pointerEvents: "none" }} />
         {/* Diagonal accent */}
         <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "80px", background: `linear-gradient(to bottom right, transparent 49.9%, ${WHITE} 50%)`, pointerEvents: "none" }} />
 
         <div className="container" style={{ position: "relative", zIndex: 1, paddingTop: "7rem", paddingBottom: "7rem" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 400px", gap: "4rem", alignItems: "center" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 380px 360px", gap: "3rem", alignItems: "center" }}>
             {/* Left: text */}
             <div>
               <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", marginBottom: "1.75rem", padding: "0.4rem 1rem", border: `1px solid rgba(204,0,0,0.4)`, borderRadius: 2 }}>
@@ -178,6 +178,26 @@ export default function Home() {
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Center: specialist image */}
+            <div style={{ position: "relative", display: "flex", alignItems: "flex-end", justifyContent: "center", height: "100%", minHeight: 480 }}>
+              {/* Glow effect behind specialist */}
+              <div style={{ position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)", width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, rgba(204,0,0,0.12) 0%, transparent 70%)", pointerEvents: "none" }} />
+              {/* Red circle accent */}
+              <div style={{ position: "absolute", bottom: 20, left: "50%", transform: "translateX(-50%)", width: 340, height: 340, borderRadius: "50%", border: "1px solid rgba(204,0,0,0.15)", pointerEvents: "none" }} />
+              <div style={{ position: "absolute", bottom: 40, left: "50%", transform: "translateX(-50%)", width: 260, height: 260, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.05)", pointerEvents: "none" }} />
+              <img
+                src="/specialist-hero.png"
+                alt="Специалист по дезинфекции"
+                style={{
+                  position: "relative", zIndex: 2,
+                  height: 500, width: "auto", maxWidth: "100%",
+                  objectFit: "contain", objectPosition: "bottom",
+                  filter: "drop-shadow(0 20px 40px rgba(0,0,0,0.5))",
+                  marginBottom: "-2rem",
+                }}
+              />
             </div>
 
             {/* Right: quick form */}
