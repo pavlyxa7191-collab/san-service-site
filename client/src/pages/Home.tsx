@@ -219,12 +219,12 @@ export default function Home() {
             </div>
 
             {/* -- COL 2: Specialist PNG -- */}
-            <div style={{ position: "relative", display: "flex", alignItems: "flex-end", justifyContent: "center", overflow: "visible", paddingBottom: 0, minHeight: 480 }}>
+            <div style={{ position: "relative", display: "flex", alignItems: "flex-end", justifyContent: "center", overflow: "visible", paddingBottom: 0 }}>
               {/* Glow under specialist */}
               <div style={{
                 position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)",
-                width: "100%", height: "40%",
-                background: "radial-gradient(ellipse at bottom, rgba(204,0,0,0.35) 0%, transparent 70%)",
+                width: "110%", height: "30%",
+                background: "radial-gradient(ellipse at bottom, rgba(204,0,0,0.4) 0%, transparent 70%)",
                 pointerEvents: "none",
                 zIndex: 0,
               }} />
@@ -234,16 +234,17 @@ export default function Home() {
                 loading="eager"
                 style={{
                   display: "block",
-                  width: "100%",
-                  maxWidth: 420,
+                  width: "120%",
+                  maxWidth: 620,
                   height: "auto",
-                  maxHeight: "calc(100% + 2rem)",
                   objectFit: "contain",
                   objectPosition: "center bottom",
-                  filter: "drop-shadow(0 16px 48px rgba(0,0,0,0.9))",
+                  filter: "drop-shadow(0 20px 60px rgba(0,0,0,0.95))",
                   position: "relative",
                   zIndex: 1,
                   alignSelf: "flex-end",
+                  marginLeft: "-10%",
+                  marginBottom: 0,
                 }}
               />
             </div>
