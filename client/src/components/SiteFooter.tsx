@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { Phone, Mail, MapPin, Clock, Shield, FileText } from "lucide-react";
 
 /* Design Tokens */
-const DARK = "#0D1F33";   // --color-primary: Deep navy (almost black-blue)
+const DARK = "#000919";   // --color-primary: Deep navy (almost black-blue)
 const DARK2 = "#081526";  // --color-primary-dark: Deeper variant
 const RED = "#CC0000";    // --color-accent
 

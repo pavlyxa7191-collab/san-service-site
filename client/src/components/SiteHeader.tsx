@@ -3,8 +3,8 @@ import { Phone, Menu, X, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
 
 /* Design Tokens */
-const DARK = "#0D1F33";   // --color-primary: Deep navy (almost black-blue)
-const DARK_MID = "#122840"; // --color-primary-mid
+const DARK = "#000919";   // --color-primary: Deep navy (almost black-blue)
+const DARK_MID = "#001230"; // --color-primary-mid
 const RED = "#CC0000";     // --color-accent
 
 const navLinks = [

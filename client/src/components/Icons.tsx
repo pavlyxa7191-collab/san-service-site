@@ -1,6 +1,6 @@
 /**
  * Digital-style SVG icon set for the disinfection service site.
- * Colors: navy #122840 (stroke), red #CC0000 (accent)
+ * Colors: navy #000919 (stroke), red #CC0000 (accent)
  * Style: semi-flat outline, tech/digital look
  */
 
@@ -9,7 +9,7 @@ interface IconProps {
   className?: string;
 }
 
-const NAVY = "#122840";
+const NAVY = "#000919";
 const RED = "#CC0000";
 const NAVY_LIGHT = "#1A3050";
 

@@ -38,7 +38,7 @@ export default function About() {
   return (
     <div className="bg-white">
       {/* Hero */}
-      <section style={{ background: "#0D1F33", borderBottom: "2px solid #CC0000" }}>
+      <section style={{ background: "#000919", borderBottom: "2px solid #CC0000" }}>
         <div className="container py-16">
           <div className="flex items-center gap-3 mb-4">
             <div className="red-square" />
@@ -75,9 +75,9 @@ export default function About() {
         {/* About text */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           <div>
-            <div className="flex items-center gap-3 mb-6" style={{ borderBottom: "2px solid #0D1F33", paddingBottom: "1rem" }}>
+            <div className="flex items-center gap-3 mb-6" style={{ borderBottom: "2px solid #000919", paddingBottom: "1rem" }}>
               <div className="red-square" />
-              <h2 className="font-black text-xl" style={{ color: "#0D1F33", letterSpacing: "-0.02em" }}>
+              <h2 className="font-black text-xl" style={{ color: "#000919", letterSpacing: "-0.02em" }}>
                 О нашей компании
               </h2>
             </div>
@@ -100,9 +100,9 @@ export default function About() {
           </div>
 
           <div>
-            <div className="flex items-center gap-3 mb-6" style={{ borderBottom: "2px solid #0D1F33", paddingBottom: "1rem" }}>
+            <div className="flex items-center gap-3 mb-6" style={{ borderBottom: "2px solid #000919", paddingBottom: "1rem" }}>
               <div className="red-square" />
-              <h2 className="font-black text-xl" style={{ color: "#0D1F33", letterSpacing: "-0.02em" }}>
+              <h2 className="font-black text-xl" style={{ color: "#000919", letterSpacing: "-0.02em" }}>
                 Наши преимущества
               </h2>
             </div>
@@ -116,7 +116,7 @@ export default function About() {
               ].map(({ icon: Icon, text }) => (
                 <div key={text} className="flex items-start gap-4 p-4" style={{ background: "#F5F5F5", border: "1px solid #E0E0E0" }}>
                   <Icon size={18} style={{ color: "#CC0000", flexShrink: 0, marginTop: "2px" }} />
-                  <span className="text-sm" style={{ color: "#0D1F33" }}>{text}</span>
+                  <span className="text-sm" style={{ color: "#000919" }}>{text}</span>
                 </div>
               ))}
             </div>
@@ -125,9 +125,9 @@ export default function About() {
 
         {/* Licenses */}
         <div className="mb-16">
-          <div className="flex items-center gap-3 mb-8" style={{ borderBottom: "2px solid #0D1F33", paddingBottom: "1rem" }}>
+          <div className="flex items-center gap-3 mb-8" style={{ borderBottom: "2px solid #000919", paddingBottom: "1rem" }}>
             <div className="red-square" />
-            <h2 className="font-black text-xl" style={{ color: "#0D1F33", letterSpacing: "-0.02em" }}>
+            <h2 className="font-black text-xl" style={{ color: "#000919", letterSpacing: "-0.02em" }}>
               Лицензии и сертификаты
             </h2>
           </div>
@@ -135,7 +135,7 @@ export default function About() {
             {licenses.map((lic) => (
               <div key={lic} className="flex items-start gap-3 p-4" style={{ border: "1px solid #E0E0E0" }}>
                 <Award size={16} style={{ color: "#CC0000", flexShrink: 0, marginTop: "2px" }} />
-                <span className="text-sm" style={{ color: "#0D1F33" }}>{lic}</span>
+                <span className="text-sm" style={{ color: "#000919" }}>{lic}</span>
               </div>
             ))}
           </div>
@@ -143,9 +143,9 @@ export default function About() {
 
         {/* Requisites */}
         <div className="mb-16">
-          <div className="flex items-center gap-3 mb-8" style={{ borderBottom: "2px solid #0D1F33", paddingBottom: "1rem" }}>
+          <div className="flex items-center gap-3 mb-8" style={{ borderBottom: "2px solid #000919", paddingBottom: "1rem" }}>
             <div className="red-square" />
-            <h2 className="font-black text-xl" style={{ color: "#0D1F33", letterSpacing: "-0.02em" }}>
+            <h2 className="font-black text-xl" style={{ color: "#000919", letterSpacing: "-0.02em" }}>
               Реквизиты компании
             </h2>
           </div>
@@ -165,13 +165,13 @@ export default function About() {
                   ].map(([key, val]) => (
                     <tr key={key} style={{ borderBottom: "1px solid #E0E0E0" }}>
                       <td className="py-2 pr-4 font-semibold" style={{ color: "#666", whiteSpace: "nowrap" }}>{key}</td>
-                      <td className="py-2" style={{ color: "#0D1F33" }}>{val}</td>
+                      <td className="py-2" style={{ color: "#000919" }}>{val}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <div className="p-6" style={{ background: "#0D1F33" }}>
+            <div className="p-6" style={{ background: "#000919" }}>
               <div className="section-label mb-4">Контакты</div>
               <div className="space-y-4">
                 <div>

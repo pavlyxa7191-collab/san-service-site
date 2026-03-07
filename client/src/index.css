@@ -104,13 +104,13 @@
 
   /* ═══════════════════════════════════════════════════════
    *  DESIGN TOKENS — Санитарная служба
-   *  Palette: Deep Navy (#0D1F33) · White · Red (#CC0000)
+   *  Palette: Deep Navy (#000919) · White · Red (#CC0000)
    * ═══════════════════════════════════════════════════════ */
 
   /* ── PRIMARY: Deep Navy-Blue (almost black-blue) ── */
-  --color-primary:        #0D1F33;   /* Main dark bg: header, footer, hero */
+  --color-primary:        #000919;   /* Main dark bg: header, footer, hero */
   --color-primary-dark:   #081526;   /* Deeper variant: hover, overlay */
-  --color-primary-mid:    #122840;   /* Mid variant: card surfaces in dark sections */
+  --color-primary-mid:    #001230;   /* Mid variant: card surfaces in dark sections */
   --color-primary-light:  #1A3050;   /* Lighter variant: borders, dividers */
 
   /* ── ACCENT: Crimson Red ── */

@@ -8,8 +8,8 @@ import {
 } from "@/components/Icons";
 
 // ─── DESIGN TOKENS ────────────────────────────────────────────────────────────
-const NAVY     = "#0D1F33";
-const NAVY_MID = "#122840";
+const NAVY     = "#000919";
+const NAVY_MID = "#001230";
 const RED      = "#CC0000";
 const WHITE    = "#FFFFFF";
 const GRAY_BG  = "#F5F7FA";

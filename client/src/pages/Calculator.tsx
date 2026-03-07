@@ -88,7 +88,7 @@ function StepIndicator({ current, total }: { current: number; total: number }) {
           <div
             className="flex items-center justify-center w-8 h-8 font-bold text-sm"
             style={{
-              background: i < current ? "#CC0000" : i === current ? "#0D1F33" : "#E0E0E0",
+              background: i < current ? "#CC0000" : i === current ? "#000919" : "#E0E0E0",
               color: i <= current ? "white" : "#999",
               transition: "all 0.2s",
             }}
@@ -193,7 +193,7 @@ export default function CalculatorPage() {
           </div>
           <h1
             className="font-black mb-4"
-            style={{ fontSize: "2rem", color: "#0D1F33", letterSpacing: "-0.025em" }}
+            style={{ fontSize: "2rem", color: "#000919", letterSpacing: "-0.025em" }}
           >
             Заявка принята!
           </h1>
@@ -230,7 +230,7 @@ export default function CalculatorPage() {
   return (
     <div className="min-h-screen" style={{ background: "#F5F5F5" }}>
       {/* Header */}
-      <div style={{ background: "#0D1F33", borderBottom: "2px solid #CC0000" }}>
+      <div style={{ background: "#000919", borderBottom: "2px solid #CC0000" }}>
         <div className="container py-8">
           <div className="flex items-center gap-3 mb-2">
             <div className="red-square" />
@@ -252,7 +252,7 @@ export default function CalculatorPage() {
             <div className="bg-white p-8" style={{ border: "1px solid #E0E0E0" }}>
               <StepIndicator current={step} total={steps.length} />
 
-              <h2 className="font-black text-xl mb-1" style={{ color: "#0D1F33", letterSpacing: "-0.02em" }}>
+              <h2 className="font-black text-xl mb-1" style={{ color: "#000919", letterSpacing: "-0.02em" }}>
                 {steps[step].title}
               </h2>
               <p className="text-sm mb-8" style={{ color: "#666" }}>
@@ -269,7 +269,7 @@ export default function CalculatorPage() {
                       onClick={() => setProperty(pt.id)}
                     >
                       <span className="text-2xl">{pt.icon}</span>
-                      <span className="font-semibold text-sm" style={{ color: "#0D1F33" }}>
+                      <span className="font-semibold text-sm" style={{ color: "#000919" }}>
                         {pt.label}
                       </span>
                     </button>
@@ -287,7 +287,7 @@ export default function CalculatorPage() {
                       onClick={() => setArea(ao.id)}
                     >
                       <div>
-                        <div className="font-bold text-sm" style={{ color: "#0D1F33" }}>
+                        <div className="font-bold text-sm" style={{ color: "#000919" }}>
                           {ao.label}
                         </div>
                         <div className="text-xs" style={{ color: "#666" }}>
@@ -310,7 +310,7 @@ export default function CalculatorPage() {
                       onClick={() => setPest(pt.id)}
                     >
                       <span className="text-2xl">{pt.icon}</span>
-                      <span className="font-semibold text-sm" style={{ color: "#0D1F33" }}>
+                      <span className="font-semibold text-sm" style={{ color: "#000919" }}>
                         {pt.label}
                       </span>
                     </button>
@@ -329,7 +329,7 @@ export default function CalculatorPage() {
                     >
                       <span className="text-3xl">{tm.icon}</span>
                       <div className="flex-1 text-left">
-                        <div className="font-bold text-sm" style={{ color: "#0D1F33" }}>
+                        <div className="font-bold text-sm" style={{ color: "#000919" }}>
                           {tm.label}
                         </div>
                         <div className="text-xs" style={{ color: "#666" }}>
@@ -342,7 +342,7 @@ export default function CalculatorPage() {
                         </span>
                       )}
                       {tm.priceAdd < 0 && (
-                        <span className="text-xs font-bold" style={{ color: "#122840" }}>
+                        <span className="text-xs font-bold" style={{ color: "#001230" }}>
                           {tm.priceAdd.toLocaleString()} ₽
                         </span>
                       )}
@@ -355,7 +355,7 @@ export default function CalculatorPage() {
               {step === 4 && (
                 <div className="flex flex-col gap-4">
                   <div>
-                    <label className="block text-xs font-bold mb-2" style={{ color: "#0D1F33", letterSpacing: "0.05em", textTransform: "uppercase" }}>
+                    <label className="block text-xs font-bold mb-2" style={{ color: "#000919", letterSpacing: "0.05em", textTransform: "uppercase" }}>
                       Ваше имя *
                     </label>
                     <input
@@ -372,7 +372,7 @@ export default function CalculatorPage() {
                     )}
                   </div>
                   <div>
-                    <label className="block text-xs font-bold mb-2" style={{ color: "#0D1F33", letterSpacing: "0.05em", textTransform: "uppercase" }}>
+                    <label className="block text-xs font-bold mb-2" style={{ color: "#000919", letterSpacing: "0.05em", textTransform: "uppercase" }}>
                       Телефон *
                     </label>
                     <input
@@ -460,7 +460,7 @@ export default function CalculatorPage() {
                 <div className="text-xs mb-4" style={{ color: "#666" }}>
                   до {price.max.toLocaleString()} ₽ — в зависимости от степени заражения
                 </div>
-                <div className="flex items-center gap-2 text-xs" style={{ color: "#0D1F33" }}>
+                <div className="flex items-center gap-2 text-xs" style={{ color: "#000919" }}>
                   <CheckCircle size={12} style={{ color: "#CC0000" }} />
                   Скидка 10% при онлайн-заявке
                 </div>
@@ -474,7 +474,7 @@ export default function CalculatorPage() {
                 {property && (
                   <div className="flex justify-between text-sm py-2" style={{ borderBottom: "1px solid #F0F0F0" }}>
                     <span style={{ color: "#666" }}>Тип объекта</span>
-                    <span className="font-semibold" style={{ color: "#0D1F33" }}>
+                    <span className="font-semibold" style={{ color: "#000919" }}>
                       {propertyTypes.find((p) => p.id === property)?.label}
                     </span>
                   </div>
@@ -482,7 +482,7 @@ export default function CalculatorPage() {
                 {area && (
                   <div className="flex justify-between text-sm py-2" style={{ borderBottom: "1px solid #F0F0F0" }}>
                     <span style={{ color: "#666" }}>Площадь</span>
-                    <span className="font-semibold" style={{ color: "#0D1F33" }}>
+                    <span className="font-semibold" style={{ color: "#000919" }}>
                       {areaOptions.find((a) => a.id === area)?.label}
                     </span>
                   </div>
@@ -490,7 +490,7 @@ export default function CalculatorPage() {
                 {pest && (
                   <div className="flex justify-between text-sm py-2" style={{ borderBottom: "1px solid #F0F0F0" }}>
                     <span style={{ color: "#666" }}>Вредитель</span>
-                    <span className="font-semibold" style={{ color: "#0D1F33" }}>
+                    <span className="font-semibold" style={{ color: "#000919" }}>
                       {pestTypes.find((p) => p.id === pest)?.label}
                     </span>
                   </div>
@@ -498,7 +498,7 @@ export default function CalculatorPage() {
                 {method && (
                   <div className="flex justify-between text-sm py-2">
                     <span style={{ color: "#666" }}>Метод</span>
-                    <span className="font-semibold" style={{ color: "#0D1F33" }}>
+                    <span className="font-semibold" style={{ color: "#000919" }}>
                       {treatmentMethods.find((m) => m.id === method)?.label}
                     </span>
                   </div>
@@ -507,7 +507,7 @@ export default function CalculatorPage() {
             )}
 
             {/* Contact block */}
-            <div className="p-6" style={{ background: "#0D1F33" }}>
+            <div className="p-6" style={{ background: "#000919" }}>
               <div className="section-label mb-3">Позвонить напрямую</div>
               <a
                 href="tel:+79300354841"
