@@ -117,7 +117,7 @@ export default function Home() {
   const refFaq        = useReveal();
 
   return (
-    <div style={{ fontFamily: "'Inter', 'Helvetica Neue', sans-serif", background: WHITE, overflowX: "hidden" }}>
+    <div style={{ fontFamily: "'Inter', 'Helvetica Neue', sans-serif", background: WHITE }}>
 
       {/* ═══════════════════════════════════════════════════════════════════
           HERO — 3 columns: text | specialist | form
@@ -125,6 +125,7 @@ export default function Home() {
       <section style={{
         background: NAVY, position: "relative", overflow: "visible",
         paddingBottom: "0",
+        isolation: "isolate",
       }}>
         {/* Grid background */}
         <div style={{
@@ -219,11 +220,12 @@ export default function Home() {
             </div>
 
             {/* -- COL 2: Specialist PNG -- */}
-            <div style={{ position: "relative", overflow: "hidden" }}>
+            <div style={{ position: "relative", overflow: "visible" }}>
               {/* Glow under specialist */}
               <div style={{
-                position: "absolute", bottom: 0, left: 0, right: 0, height: "25%",
-                background: "radial-gradient(ellipse at bottom, rgba(204,0,0,0.45) 0%, transparent 70%)",
+                position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)",
+                width: "80%", height: "20%",
+                background: "radial-gradient(ellipse at bottom, rgba(204,0,0,0.5) 0%, transparent 70%)",
                 pointerEvents: "none",
                 zIndex: 2,
               }} />
@@ -237,12 +239,13 @@ export default function Home() {
                   left: "50%",
                   transform: "translateX(-50%)",
                   width: "auto",
-                  height: "100%",
+                  height: "105%",
                   maxHeight: "none",
                   objectFit: "contain",
                   objectPosition: "center bottom",
-                  filter: "drop-shadow(0 20px 60px rgba(0,0,0,0.95))",
-                  zIndex: 1,
+                  filter: "drop-shadow(0 0 0 transparent)",
+                  zIndex: 3,
+                  pointerEvents: "none",
                 }}
               />
             </div>
