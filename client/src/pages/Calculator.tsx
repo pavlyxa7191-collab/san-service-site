@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import {
-  ChevronLeft, ChevronRight, Check, Home, Building2,
-  Warehouse, BedDouble, Building, Wind, Thermometer,
-  Droplets, Zap, Phone, ArrowLeft,
+  ChevronLeft, ChevronRight, Check,
+  Home, Building2, Warehouse, BedDouble, Building,
+  Phone, ArrowLeft,
 } from "lucide-react";
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
@@ -24,23 +24,25 @@ const propertyTypes = [
   { id: "warehouse", label: "Склад / производство", Icon: Warehouse },
 ];
 
+const areaRanges = [
+  { id: "under30",   label: "до 30 м²",      sub: "Комната / студия" },
+  { id: "30_50",     label: "30–50 м²",      sub: "1-комнатная квартира" },
+  { id: "50_80",     label: "50–80 м²",      sub: "2-комнатная квартира" },
+  { id: "80_120",    label: "80–120 м²",     sub: "3-комнатная квартира" },
+  { id: "120_200",   label: "120–200 м²",    sub: "Большая квартира / дом" },
+  { id: "over200",   label: "более 200 м²",  sub: "Коммерческий объект" },
+];
+
 const pestTypes = [
-  { id: "klopov",      label: "Клопы",    emoji: "🪲" },
-  { id: "tarakanov",   label: "Тараканы", emoji: "🪳" },
-  { id: "gryzunov",    label: "Грызуны",  emoji: "🐀" },
-  { id: "kleshchey",   label: "Клещи",    emoji: "🕷️" },
-  { id: "pleseni",     label: "Плесень",  emoji: "🍄" },
-  { id: "zapahov",     label: "Запахи",   emoji: "💨" },
+  { id: "klopov",    label: "Клопы",    emoji: "🪲" },
+  { id: "tarakanov", label: "Тараканы", emoji: "🪳" },
+  { id: "gryzunov",  label: "Грызуны",  emoji: "🐀" },
+  { id: "kleshchey", label: "Клещи",    emoji: "🕷️" },
+  { id: "pleseni",   label: "Плесень",  emoji: "🍄" },
+  { id: "zapahov",   label: "Запахи",   emoji: "💨" },
 ];
 
-const treatmentMethods = [
-  { id: "cold_fog", label: "Холодный туман",  desc: "Мелкодисперсное распыление. Проникает в труднодоступные места.", Icon: Wind },
-  { id: "hot_fog",  label: "Горячий туман",   desc: "Термическое распыление. Максимальная эффективность.", Icon: Thermometer },
-  { id: "spray",    label: "Орошение",        desc: "Обработка поверхностей. Для профилактики и лёгкого заражения.", Icon: Droplets },
-  { id: "ozone",    label: "Озонирование",    desc: "Экологичный метод без химии. Устраняет запахи и патогены.", Icon: Zap },
-];
-
-const STEPS = ["Тип помещения", "Вид проблемы", "Метод обработки", "Контакты"];
+const STEPS = ["Тип объекта", "Площадь", "Вид проблемы", "Контакты"];
 
 // ─── STEP PROGRESS ────────────────────────────────────────────────────────────
 function StepProgress({ current }: { current: number }) {
@@ -52,7 +54,7 @@ function StepProgress({ current }: { current: number }) {
         </span>
         <span style={{ fontSize: "0.78rem", color: GRAY, fontWeight: 500 }}>{STEPS[current]}</span>
       </div>
-      {/* Bar */}
+      {/* Progress bar */}
       <div style={{ height: 5, background: BORDER, borderRadius: 99, overflow: "hidden" }}>
         <div style={{
           height: "100%",
@@ -62,7 +64,7 @@ function StepProgress({ current }: { current: number }) {
           transition: "width 0.4s ease",
         }} />
       </div>
-      {/* Dots */}
+      {/* Step dots */}
       <div style={{ display: "flex", justifyContent: "space-between", marginTop: "0.875rem" }}>
         {STEPS.map((label, i) => (
           <div key={i} style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", gap: "0.35rem" }}>
@@ -144,8 +146,8 @@ function SelectCard({
 export default function CalculatorPage() {
   const [step, setStep] = useState(0);
   const [property, setProperty] = useState("");
+  const [area, setArea] = useState("");
   const [pest, setPest] = useState("");
-  const [method, setMethod] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("+7 (");
   const [submitted, setSubmitted] = useState(false);
@@ -184,15 +186,15 @@ export default function CalculatorPage() {
       phone,
       service: pestTypes.find(p => p.id === pest)?.label,
       propertyType: property,
-      method,
+      area: areaRanges.find(a => a.id === area)?.label,
       source: "calculator",
     });
   }
 
   const canNext =
     (step === 0 && !!property) ||
-    (step === 1 && !!pest) ||
-    (step === 2 && !!method);
+    (step === 1 && !!area) ||
+    (step === 2 && !!pest);
 
   // ── Success screen ──
   if (submitted) {
@@ -273,10 +275,10 @@ export default function CalculatorPage() {
           <div style={{ padding: "clamp(1.5rem, 4vw, 2.5rem)" }}>
             <StepProgress current={step} />
 
-            {/* ── Step 0: Property ── */}
+            {/* ── Step 0: Property type ── */}
             {step === 0 && (
               <div>
-                <h2 style={{ fontSize: "1.2rem", fontWeight: 800, color: NAVY, marginBottom: "0.35rem" }}>Выберите тип помещения</h2>
+                <h2 style={{ fontSize: "1.2rem", fontWeight: 800, color: NAVY, marginBottom: "0.35rem" }}>Выберите тип объекта</h2>
                 <p style={{ fontSize: "0.83rem", color: GRAY, marginBottom: "1.75rem" }}>Это поможет точнее рассчитать стоимость</p>
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "0.875rem" }}>
                   {propertyTypes.map(({ id, label, Icon }) => (
@@ -299,8 +301,26 @@ export default function CalculatorPage() {
               </div>
             )}
 
-            {/* ── Step 1: Pest ── */}
+            {/* ── Step 1: Area ── */}
             {step === 1 && (
+              <div>
+                <h2 style={{ fontSize: "1.2rem", fontWeight: 800, color: NAVY, marginBottom: "0.35rem" }}>Укажите площадь объекта</h2>
+                <p style={{ fontSize: "0.83rem", color: GRAY, marginBottom: "1.75rem" }}>Площадь влияет на количество препарата и стоимость</p>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: "0.875rem" }}>
+                  {areaRanges.map(({ id, label, sub }) => (
+                    <SelectCard key={id} selected={area === id} onClick={() => setArea(id)} compact>
+                      <div style={{ display: "flex", flexDirection: "column" as const, gap: "0.25rem" }}>
+                        <span style={{ fontSize: "1rem", fontWeight: 800, color: area === id ? RED : NAVY }}>{label}</span>
+                        <span style={{ fontSize: "0.72rem", color: GRAY, lineHeight: 1.4 }}>{sub}</span>
+                      </div>
+                    </SelectCard>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* ── Step 2: Pest ── */}
+            {step === 2 && (
               <div>
                 <h2 style={{ fontSize: "1.2rem", fontWeight: 800, color: NAVY, marginBottom: "0.35rem" }}>Выберите вид проблемы</h2>
                 <p style={{ fontSize: "0.83rem", color: GRAY, marginBottom: "1.75rem" }}>Укажите, с чем нужна помощь</p>
@@ -326,42 +346,13 @@ export default function CalculatorPage() {
               </div>
             )}
 
-            {/* ── Step 2: Method ── */}
-            {step === 2 && (
-              <div>
-                <h2 style={{ fontSize: "1.2rem", fontWeight: 800, color: NAVY, marginBottom: "0.35rem" }}>Выберите метод обработки</h2>
-                <p style={{ fontSize: "0.83rem", color: GRAY, marginBottom: "1.75rem" }}>Специалист подберёт оптимальный вариант на месте</p>
-                <div style={{ display: "flex", flexDirection: "column" as const, gap: "0.875rem" }}>
-                  {treatmentMethods.map(({ id, label, desc, Icon }) => (
-                    <SelectCard key={id} selected={method === id} onClick={() => setMethod(id)} compact>
-                      <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-                        <div style={{
-                          width: 48, height: 48, borderRadius: 12, flexShrink: 0,
-                          background: method === id ? "#fff0f0" : LIGHT_BG,
-                          border: `2px solid ${method === id ? RED : BORDER}`,
-                          display: "flex", alignItems: "center", justifyContent: "center",
-                          transition: "all 0.2s",
-                        }}>
-                          <Icon size={22} color={method === id ? RED : NAVY} strokeWidth={1.5} />
-                        </div>
-                        <div>
-                          <div style={{ fontSize: "0.92rem", fontWeight: 700, color: method === id ? RED : NAVY, marginBottom: "0.2rem" }}>{label}</div>
-                          <div style={{ fontSize: "0.75rem", color: GRAY, lineHeight: 1.5 }}>{desc}</div>
-                        </div>
-                      </div>
-                    </SelectCard>
-                  ))}
-                </div>
-              </div>
-            )}
-
             {/* ── Step 3: Contacts ── */}
             {step === 3 && (
               <div>
                 <h2 style={{ fontSize: "1.2rem", fontWeight: 800, color: NAVY, marginBottom: "0.35rem" }}>Оставьте контакты</h2>
                 <p style={{ fontSize: "0.83rem", color: GRAY, marginBottom: "1.75rem" }}>Специалист перезвонит и назовёт точную стоимость</p>
 
-                {/* Summary chips */}
+                {/* Summary */}
                 <div style={{ background: LIGHT_BG, borderRadius: 12, padding: "1rem 1.25rem", marginBottom: "1.75rem", border: `1px solid ${BORDER}` }}>
                   <div style={{ fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: GRAY, marginBottom: "0.75rem" }}>Ваш выбор</div>
                   <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "0.5rem" }}>
@@ -370,14 +361,14 @@ export default function CalculatorPage() {
                         {propertyTypes.find(p => p.id === property)?.label}
                       </span>
                     )}
+                    {area && (
+                      <span style={{ fontSize: "0.78rem", fontWeight: 600, color: NAVY, background: WHITE, border: `1px solid ${BORDER}`, padding: "0.3rem 0.875rem", borderRadius: 20 }}>
+                        {areaRanges.find(a => a.id === area)?.label}
+                      </span>
+                    )}
                     {pest && (
                       <span style={{ fontSize: "0.78rem", fontWeight: 600, color: NAVY, background: WHITE, border: `1px solid ${BORDER}`, padding: "0.3rem 0.875rem", borderRadius: 20 }}>
                         {pestTypes.find(p => p.id === pest)?.label}
-                      </span>
-                    )}
-                    {method && (
-                      <span style={{ fontSize: "0.78rem", fontWeight: 600, color: NAVY, background: WHITE, border: `1px solid ${BORDER}`, padding: "0.3rem 0.875rem", borderRadius: 20 }}>
-                        {treatmentMethods.find(m => m.id === method)?.label}
                       </span>
                     )}
                   </div>
@@ -448,7 +439,7 @@ export default function CalculatorPage() {
             alignItems: "center",
             gap: "1rem",
           }}>
-            {/* Back */}
+            {/* Back button */}
             {step > 0 && (
               <button
                 className="btn-back"
