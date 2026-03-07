@@ -219,32 +219,30 @@ export default function Home() {
             </div>
 
             {/* -- COL 2: Specialist PNG -- */}
-            <div style={{ position: "relative", display: "flex", alignItems: "flex-end", justifyContent: "center", overflow: "visible", paddingBottom: 0 }}>
+            <div style={{ position: "relative", overflow: "hidden" }}>
               {/* Glow under specialist */}
               <div style={{
-                position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)",
-                width: "110%", height: "30%",
-                background: "radial-gradient(ellipse at bottom, rgba(204,0,0,0.4) 0%, transparent 70%)",
+                position: "absolute", bottom: 0, left: 0, right: 0, height: "25%",
+                background: "radial-gradient(ellipse at bottom, rgba(204,0,0,0.45) 0%, transparent 70%)",
                 pointerEvents: "none",
-                zIndex: 0,
+                zIndex: 2,
               }} />
               <img
                 src="https://private-us-east-1.manuscdn.com/user_upload_by_module/session_file/310519663313765274/GYbcCeYKAKjIWOOv.png?Expires=1804426519&Signature=Nzmptx3v99XLD9EK8EBGlk5Mi6IFOmQzv5JhydT4qxkPUUwpu9-YBbIQI6fKX9ZWii9SZA~XVh8FCqpT~911EcnixsPe57~73u8i1OpcKndX5JYROpDsl93CGN73TQFF3-86e2f39dHwFHJzdp~IC6PUBNjGD2oSeci0sU4np50SRV3U991qxJGIvAsEJps0VqmgZ~TfhMBcrohv9xveOZ-~xgxIR~lKg2GG3ofMSnlMnLFK7w8rQKFtyTyZ9Qv2HoptsKRWl397Mf1VYv-zrVbdHkeDbnvrb1HW~eai4vF5CTVfjFJ1sfwy82g7J-Ylp40yClEGWE5TEXkkZIPszQ__&Key-Pair-Id=K2HSFNDJXOU9YS"
                 alt="Специалист по дезинфекции"
                 loading="eager"
                 style={{
-                  display: "block",
-                  width: "120%",
-                  maxWidth: 620,
-                  height: "auto",
+                  position: "absolute",
+                  bottom: 0,
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  width: "auto",
+                  height: "100%",
+                  maxHeight: "none",
                   objectFit: "contain",
                   objectPosition: "center bottom",
                   filter: "drop-shadow(0 20px 60px rgba(0,0,0,0.95))",
-                  position: "relative",
                   zIndex: 1,
-                  alignSelf: "flex-end",
-                  marginLeft: "-10%",
-                  marginBottom: 0,
                 }}
               />
             </div>
