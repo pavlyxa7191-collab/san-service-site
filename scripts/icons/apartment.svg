@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+
+  <circle cx="32" cy="32" r="28" stroke="#1a3a6b" stroke-width="2" fill="none"/>
+  <!-- Building -->
+  <rect x="18" y="24" width="28" height="28" rx="1" stroke="#1a3a6b" stroke-width="2" fill="#2952a3" fill-opacity="0.1"/>
+  <!-- Roof -->
+  <path d="M15 24 L32 12 L49 24" stroke="#1a3a6b" stroke-width="2" fill="#2952a3" fill-opacity="0.15" stroke-linejoin="round"/>
+  <!-- Windows -->
+  <rect x="22" y="28" width="7" height="6" rx="1" stroke="#1a3a6b" stroke-width="1.5" fill="#2952a3" fill-opacity="0.3"/>
+  <rect x="35" y="28" width="7" height="6" rx="1" stroke="#1a3a6b" stroke-width="1.5" fill="#2952a3" fill-opacity="0.3"/>
+  <!-- Door -->
+  <rect x="27" y="38" width="10" height="14" rx="1" stroke="#1a3a6b" stroke-width="1.5" fill="none"/>
+  <circle cx="35" cy="45" r="1" fill="#CC0000"/>
+
+</svg>

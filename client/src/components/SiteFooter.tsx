@@ -9,9 +9,9 @@ const services = [
   { label: "Уничтожение клопов", href: "/services/klopov" },
   { label: "Уничтожение тараканов", href: "/services/tarakanov" },
   { label: "Уничтожение грызунов", href: "/services/gryzunov" },
-  { label: "Уничтожение клещей", href: "/services/kleshchey" },
+  { label: "Уничтожение клещей", href: "/services/kleshhej" },
   { label: "Удаление плесени", href: "/services/pleseni" },
-  { label: "Дезинфекция", href: "/services/dezinfektsiya" },
+  { label: "Дезинфекция", href: "/services/dezinfektsii" },
 ];
 
 const cities = [

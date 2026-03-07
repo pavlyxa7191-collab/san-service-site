@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+
+  <circle cx="32" cy="32" r="28" stroke="#1a3a6b" stroke-width="2" fill="none"/>
+  <!-- Mouse body -->
+  <ellipse cx="30" cy="36" rx="10" ry="8" stroke="#1a3a6b" stroke-width="2" fill="#2952a3" fill-opacity="0.2"/>
+  <!-- Head -->
+  <circle cx="42" cy="32" r="7" stroke="#1a3a6b" stroke-width="2" fill="#2952a3" fill-opacity="0.2"/>
+  <!-- Ear -->
+  <circle cx="46" cy="26" r="3.5" stroke="#1a3a6b" stroke-width="1.5" fill="#2952a3" fill-opacity="0.1"/>
+  <!-- Eye -->
+  <circle cx="44" cy="31" r="1.5" fill="#1a3a6b"/>
+  <!-- Nose -->
+  <circle cx="48" cy="33" r="1" fill="#CC0000"/>
+  <!-- Tail -->
+  <path d="M20 38 Q14 42 12 48" stroke="#1a3a6b" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <!-- Whiskers -->
+  <line x1="48" y1="32" x2="54" y2="30" stroke="#1a3a6b" stroke-width="1" stroke-linecap="round"/>
+  <line x1="48" y1="34" x2="54" y2="34" stroke="#1a3a6b" stroke-width="1" stroke-linecap="round"/>
+
+</svg>

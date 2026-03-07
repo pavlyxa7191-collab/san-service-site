@@ -13,9 +13,9 @@ const navLinks = [
       { label: "Уничтожение клопов", href: "/services/klopov" },
       { label: "Уничтожение тараканов", href: "/services/tarakanov" },
       { label: "Уничтожение грызунов", href: "/services/gryzunov" },
-      { label: "Уничтожение клещей", href: "/services/kleshchey" },
+      { label: "Уничтожение клещей", href: "/services/kleshhej" },
       { label: "Удаление плесени", href: "/services/pleseni" },
-      { label: "Дезинфекция", href: "/services/dezinfektsiya" },
+      { label: "Дезинфекция", href: "/services/dezinfektsii" },
     ],
   },
   { label: "Цены", href: "/prices" },
@@ -147,7 +147,7 @@ export default function SiteHeader() {
                         top: "100%",
                         left: 0,
                         minWidth: "240px",
-                        background: "rgba(15,25,35,0.98)",
+                        background: "rgba(13,43,94,0.98)",
                         backdropFilter: "blur(16px)",
                         border: "1px solid rgba(255,255,255,0.1)",
                         borderRadius: "6px",
@@ -269,7 +269,7 @@ export default function SiteHeader() {
         {mobileOpen && (
           <div
             style={{
-              background: "rgba(10,18,28,0.99)",
+              background: "rgba(13,43,94,0.99)",
               backdropFilter: "blur(16px)",
               borderTop: "1px solid rgba(255,255,255,0.07)",
               padding: "1rem 0 1.5rem",

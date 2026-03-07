@@ -565,3 +565,221 @@
 .animate-fade-in-up {
   animation: fadeInUp 0.5s ease forwards;
 }
+
+/* ── SCROLL REVEAL ANIMATIONS ── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInLeft {
+  from { opacity: 0; transform: translateX(-24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes fadeInRight {
+  from { opacity: 0; transform: translateX(24px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scroll-triggered reveal classes */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-24px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.reveal-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+.reveal-right {
+  opacity: 0;
+  transform: translateX(24px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.reveal-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.94);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.reveal-scale.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Stagger delays for child elements */
+.stagger-1 { transition-delay: 0.05s; }
+.stagger-2 { transition-delay: 0.1s; }
+.stagger-3 { transition-delay: 0.15s; }
+.stagger-4 { transition-delay: 0.2s; }
+.stagger-5 { transition-delay: 0.25s; }
+.stagger-6 { transition-delay: 0.3s; }
+
+/* ── ICON CARD HOVER ── */
+.icon-card {
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+.icon-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(26, 58, 107, 0.14);
+  border-color: rgba(26, 58, 107, 0.25);
+}
+
+/* ── BUTTON PULSE (for primary CTA) ── */
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 4px 16px rgba(204,0,0,0.3); }
+  50% { box-shadow: 0 4px 28px rgba(204,0,0,0.55); }
+}
+.btn-pulse {
+  animation: pulse-red 2.5s ease-in-out infinite;
+}
+
+/* ── DECORATIVE ELEMENTS ── */
+/* Dot grid pattern */
+.dot-grid {
+  background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+/* Corner accent */
+.corner-accent {
+  position: relative;
+}
+.corner-accent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 3px;
+  background: #CC0000;
+}
+/* Diagonal line accent */
+.diag-line {
+  position: relative;
+  overflow: hidden;
+}
+.diag-line::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 1px;
+  height: 200%;
+  background: rgba(255,255,255,0.06);
+  transform: rotate(15deg);
+}
+
+/* ── GEOMETRIC DECORATIVE SHAPES ── */
+.geo-circle {
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.geo-hex {
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+/* ── DIGITAL GRID LINES ── */
+.grid-lines {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ── SECTION NUMBER BADGE ── */
+.step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 2px solid #CC0000;
+  color: #CC0000;
+  font-weight: 800;
+  font-size: 1rem;
+  flex-shrink: 0;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* ── PRICE TAG ── */
+.price-tag {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+.price-tag .price-from {
+  font-size: 0.75rem;
+  color: var(--gray-66);
+  font-weight: 500;
+}
+.price-tag .price-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--dark-bg);
+  letter-spacing: -0.03em;
+}
+
+/* ── NAVY SECTION ── */
+.navy-section {
+  background: var(--dark-bg);
+  position: relative;
+  overflow: hidden;
+}
+.navy-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 20% 50%, rgba(41, 82, 163, 0.3) 0%, transparent 60%),
+                    radial-gradient(circle at 80% 20%, rgba(204, 0, 0, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* ── FAQ ACCORDION ── */
+.faq-item {
+  border-bottom: 1px solid var(--gray-e0);
+  transition: background 0.2s ease;
+}
+.faq-item:hover {
+  background: var(--gray-f5);
+}
+.faq-question {
+  cursor: pointer;
+  padding: 1.25rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-weight: 600;
+  color: var(--dark-bg);
+  font-size: 1rem;
+}
+.faq-answer {
+  overflow: hidden;
+  transition: max-height 0.35s ease, opacity 0.3s ease;
+  max-height: 0;
+  opacity: 0;
+}
+.faq-answer.open {
+  max-height: 400px;
+  opacity: 1;
+}

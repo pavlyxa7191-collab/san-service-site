@@ -1,534 +1,401 @@
+import { useState, useEffect, useRef } from "react";
 import { Link } from "wouter";
-import { Phone, ArrowRight, Shield, Clock, CheckCircle, Star, ChevronDown } from "lucide-react";
-import { useState } from "react";
-
-// ─── CDN PHOTOS (permanent CloudFront S3 URLs) ────────────────────────────────
-// Permanent CloudFront CDN URLs (uploaded via storagePut)
-const CDN_BASE = "https://d2xsxph8kpxj0f.cloudfront.net/310519663313765274/L8SjSLKH4wQcbNtHZ9BCPq";
-const PHOTO_HERO       = `${CDN_BASE}/site-photos/hero.jpg`;
-const PHOTO_SPECIALIST = `${CDN_BASE}/site-photos/specialist.jpg`;
-const PHOTO_KITCHEN    = `${CDN_BASE}/site-photos/kitchen.jpg`;
-const PHOTO_ROOM       = `${CDN_BASE}/site-photos/room.jpg`;
-const PHOTO_PRODUCTS   = `${CDN_BASE}/site-photos/products.jpg`;
-const PHOTO_PROCESS    = `${CDN_BASE}/site-photos/process.jpg`;
-const PHOTO_WORK       = `${CDN_BASE}/site-photos/work.jpg`;
-const PHOTO_TEAM       = `${CDN_BASE}/site-photos/team.jpg`;
-const PHOTO_EQUIPMENT  = `${CDN_BASE}/site-photos/equipment.jpg`;
-const PHOTO_SPRAY      = `${CDN_BASE}/site-photos/spray.jpg`;
+import { trpc } from "@/lib/trpc";
+import {
+  IconBedbugs, IconCockroaches, IconRodents, IconTicks, IconMold,
+  IconColdFog, IconHotFog, IconSpray, IconOzonation, IconDeodorization,
+  IconGuarantee, IconSpecialist, IconCalculator, IconApartment, IconHouse,
+  IconCommercial, IconVentilation, IconOdor,
+} from "@/components/Icons";
 
 // ─── DESIGN TOKENS ────────────────────────────────────────────────────────────
-const NAVY        = "#0f1923";
-const NAVY_MID    = "#1a2d40";
-const RED         = "#CC0000";
-const WHITE       = "#FFFFFF";
-const GRAY_BG     = "#F5F7FA";
-const GRAY_BORDER = "#E2E8F0";
-const TEXT_DARK   = "#1a2332";
-const TEXT_MID    = "#4a5568";
+const NAVY     = "#0d2b5e";
+const NAVY_MID = "#1a3a6b";
+const RED      = "#CC0000";
+const WHITE    = "#FFFFFF";
+const GRAY_BG  = "#F5F7FA";
 
 // ─── SERVICES DATA ────────────────────────────────────────────────────────────
 const services = [
-  { slug: "klopov",    icon: "🪲", title: "Уничтожение клопов",    desc: "Полная ликвидация постельных клопов. Холодный и горячий туман.", price: "от 2 500 ₽", guarantee: "3 года",     photo: PHOTO_SPECIALIST },
-  { slug: "tarakanov", icon: "🪳", title: "Уничтожение тараканов", desc: "Дезинсекция от тараканов без запаха. Безопасно для детей.",      price: "от 1 500 ₽", guarantee: "1 год",      photo: PHOTO_KITCHEN    },
-  { slug: "gryzunov",  icon: "🐀", title: "Уничтожение грызунов",  desc: "Дератизация: мыши, крысы. Установка приманочных станций.",       price: "от 3 000 ₽", guarantee: "6 месяцев",  photo: PHOTO_PROCESS    },
-  { slug: "kleshhej",  icon: "🕷️", title: "Уничтожение клещей",    desc: "Обработка участков и помещений от клещей и комаров.",           price: "от 2 000 ₽", guarantee: "1 сезон",    photo: PHOTO_WORK       },
-  { slug: "pleseni",   icon: "🍄", title: "Удаление плесени",      desc: "Профессиональное удаление плесени и грибка. Обработка стен.",    price: "от 3 500 ₽", guarantee: "2 года",     photo: PHOTO_ROOM       },
-  { slug: "dezinfektsii", icon: "🧪", title: "Дезинфекция",        desc: "Уничтожение патогенных микроорганизмов. Для предприятий.",       price: "от 20 ₽/м²", guarantee: "по договору", photo: PHOTO_PRODUCTS   },
+  { slug: "klopov",       Icon: IconBedbugs,     title: "Уничтожение клопов",    desc: "Полная ликвидация постельных клопов. Холодный и горячий туман.",    price: "от 1 500 ₽", guarantee: "3 года"       },
+  { slug: "tarakanov",    Icon: IconCockroaches,  title: "Уничтожение тараканов", desc: "Дезинсекция от тараканов без запаха. Безопасно для детей.",          price: "от 1 500 ₽", guarantee: "1 год"        },
+  { slug: "gryzunov",     Icon: IconRodents,      title: "Уничтожение грызунов",  desc: "Дератизация: мыши, крысы. Установка приманочных станций.",           price: "от 2 000 ₽", guarantee: "6 месяцев"    },
+  { slug: "kleshhej",     Icon: IconTicks,        title: "Уничтожение клещей",    desc: "Обработка участков и помещений от клещей и комаров.",               price: "от 2 000 ₽", guarantee: "1 сезон"      },
+  { slug: "pleseni",      Icon: IconMold,         title: "Удаление плесени",      desc: "Профессиональное удаление плесени и грибка. Обработка стен.",        price: "от 3 500 ₽", guarantee: "2 года"       },
+  { slug: "dezinfektsii", Icon: IconDeodorization,title: "Дезинфекция",           desc: "Уничтожение патогенных микроорганизмов. Для предприятий.",           price: "от 20 ₽/м²", guarantee: "по договору"  },
+  { slug: "zapahov",      Icon: IconOdor,         title: "Борьба с запахами",     desc: "Устранение неприятных запахов. Озонирование и дезодорация.",         price: "от 2 500 ₽", guarantee: "по договору"  },
+];
+
+const methods = [
+  { Icon: IconColdFog,      title: "Холодный туман",  desc: "Мелкодисперсное распыление инсектицида. Проникает в труднодоступные места." },
+  { Icon: IconHotFog,       title: "Горячий туман",   desc: "Термическая обработка паром. Максимальная эффективность при клопах." },
+  { Icon: IconSpray,        title: "Опрыскивание",    desc: "Направленная обработка поверхностей. Длительный остаточный эффект." },
+  { Icon: IconOzonation,    title: "Озонация",        desc: "Обеззараживание воздуха и поверхностей. Устраняет запахи и вирусы." },
+  { Icon: IconDeodorization,title: "Дезодорация",     desc: "Нейтрализация неприятных запахов. Безопасно для людей и животных." },
+  { Icon: IconVentilation,  title: "Обработка вентиляции", desc: "Дезинфекция вентиляционных систем. Предотвращает распространение инфекций." },
+];
+
+const objectTypes = [
+  { Icon: IconApartment,  title: "Квартиры",              desc: "1–5 комнат, студии, коммунальные квартиры",  price: "от 1 500 ₽" },
+  { Icon: IconHouse,      title: "Частные дома",          desc: "Коттеджи, дачи, таунхаусы любой площади",    price: "от 3 500 ₽" },
+  { Icon: IconCommercial, title: "Коммерческие объекты",  desc: "Офисы, рестораны, склады, производства",      price: "от 5 000 ₽" },
+];
+
+const steps = [
+  { n: "01", title: "Звонок или заявка",     desc: "Оставьте заявку онлайн или позвоните. Консультация бесплатна." },
+  { n: "02", title: "Диагностика",           desc: "Специалист оценивает масштаб проблемы и подбирает метод обработки." },
+  { n: "03", title: "Договор и гарантия",    desc: "Заключаем официальный договор с гарантийными обязательствами." },
+  { n: "04", title: "Обработка",             desc: "Профессиональная обработка сертифицированными препаратами." },
+  { n: "05", title: "Контроль результата",   desc: "Проверяем эффективность. При необходимости — повторная обработка бесплатно." },
 ];
 
 const faqs = [
-  { q: "Насколько опасна дезинсекция для людей и животных?", a: "Все препараты, которые мы используем, сертифицированы и разрешены Роспотребнадзором. После обработки достаточно проветрить помещение 2–3 часа. Дети и животные могут вернуться через 4–6 часов." },
-  { q: "Какими средствами производится обработка?", a: "Мы используем только сертифицированные импортные препараты: Сипаз Про, Дельта Зона, Форс Сайт. Все средства прошли государственную регистрацию и имеют санитарно-эпидемиологические заключения." },
-  { q: "Сколько времени занимает обработка квартиры?", a: "Обработка стандартной квартиры (1–3 комнаты) занимает от 1 до 2 часов. Крупные объекты (дома, офисы, склады) — от 3 до 8 часов в зависимости от площади." },
-  { q: "Можно ли вызвать специалиста в Московскую область?", a: "Да, мы работаем по всей Московской области: Воскресенск, Коломна, Жуковский, Раменское, Люберцы и другие города. Выезд в день обращения." },
-  { q: "Даёте ли вы гарантию на результат?", a: "Да. На все виды работ мы выдаём официальный договор и гарантийный талон. Гарантия на уничтожение клопов — 3 года, тараканов — 1 год, грызунов — 6 месяцев, плесени — 2 года." },
+  { q: "Насколько опасна дезинсекция для людей и животных?", a: "Все препараты сертифицированы и разрешены Роспотребнадзором. После обработки достаточно проветрить помещение 2–3 часа. Дети и животные могут вернуться через 4–6 часов." },
+  { q: "Какими средствами производится обработка?", a: "Используем только сертифицированные импортные препараты: Сипаз Про, Дельта Зона, Форс Сайт. Все средства прошли государственную регистрацию и имеют санитарно-эпидемиологические заключения." },
+  { q: "Сколько времени занимает обработка квартиры?", a: "Обработка стандартной квартиры (1–3 комнаты) занимает от 1 до 2 часов. Крупные объекты — от 3 до 8 часов в зависимости от площади." },
+  { q: "Работаете ли вы в Московской области?", a: "Да, работаем по всей Московской области: Воскресенск, Коломна, Жуковский, Раменское, Люберцы и другие города. Выезд в день обращения." },
+  { q: "Даёте ли вы гарантию на результат?", a: "Да. На все виды работ выдаём официальный договор и гарантийный талон. Гарантия на уничтожение клопов — 3 года, тараканов — 1 год, грызунов — 6 месяцев, плесени — 2 года." },
 ];
 
+// ─── SCROLL REVEAL HOOK ───────────────────────────────────────────────────────
+function useReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { el.classList.add("visible"); obs.disconnect(); } },
+      { threshold: 0.12 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return ref;
+}
+
+// ─── MAIN COMPONENT ──────────────────────────────────────────────────────────
 export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [formData, setFormData] = useState({ name: "", phone: "", service: "" });
   const [submitted, setSubmitted] = useState(false);
+  const createLead = trpc.leads.create.useMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch("/api/trpc/leads.submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ json: { ...formData, source: "hero_form" } }),
-      });
-      if (res.ok) setSubmitted(true);
+      await createLead.mutateAsync({ ...formData, source: "hero_form" });
+      setSubmitted(true);
     } catch {
       setSubmitted(true);
     }
   };
 
+  // Refs for reveal animations
+  const refServices   = useReveal();
+  const refMethods    = useReveal();
+  const refSteps      = useReveal();
+  const refObjects    = useReveal();
+  const refAdvantages = useReveal();
+  const refFaq        = useReveal();
+
   return (
     <div style={{ fontFamily: "'Inter', 'Helvetica Neue', sans-serif", background: WHITE }}>
 
-      {/* ── HERO ──────────────────────────────────────────────────────────────── */}
-      <section
-        style={{
-          minHeight: "88vh",
-          display: "flex",
-          alignItems: "center",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        {/* Background photo */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage: `url(${PHOTO_HERO})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center 30%",
-            opacity: 0.75,
-          }}
-        />
-        {/* Gradient overlay — left dark, right transparent */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: `linear-gradient(100deg, ${NAVY} 25%, rgba(15,25,35,0.75) 55%, rgba(15,25,35,0.25) 100%)`,
-          }}
-        />
-        {/* White shimmer line top */}
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: `linear-gradient(90deg, ${RED} 0%, rgba(255,255,255,0.3) 50%, transparent 100%)` }} />
+      {/* ── HERO ──────────────────────────────────────────────────────────── */}
+      <section className="hero-section grid-lines" style={{ minHeight: "90vh", display: "flex", alignItems: "center", position: "relative" }}>
+        {/* Red top accent line */}
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: `linear-gradient(90deg, ${RED} 0%, rgba(255,255,255,0.3) 60%, transparent 100%)` }} />
+        {/* Decorative circles */}
+        <div style={{ position: "absolute", top: "15%", right: "8%", width: 320, height: 320, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.05)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", top: "20%", right: "12%", width: 200, height: 200, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.07)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: "10%", right: "5%", width: 120, height: 120, borderRadius: "50%", border: "1px solid rgba(204,0,0,0.12)", pointerEvents: "none" }} />
 
-        <div className="container" style={{ position: "relative", zIndex: 1, paddingTop: "100px", paddingBottom: "80px" }}>
-          <div style={{ maxWidth: "620px" }}>
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 mb-6" style={{ background: "rgba(204,0,0,0.15)", border: "1px solid rgba(204,0,0,0.4)", padding: "6px 14px", borderRadius: "2px" }}>
-              <div style={{ width: 7, height: 7, background: RED, borderRadius: "50%" }} />
-              <span className="text-xs font-bold" style={{ color: "#ff6666", letterSpacing: "0.14em", textTransform: "uppercase" }}>Лицензированная санитарная служба</span>
-            </div>
-
-            <h1 className="font-black leading-none mb-6" style={{ fontSize: "clamp(2.4rem, 5vw, 3.8rem)", color: WHITE, letterSpacing: "-0.03em" }}>
-              Профессиональная{" "}
-              <span style={{ color: RED }}>дезинсекция</span>{" "}
-              и<br />дезинфекция
-            </h1>
-
-            <p className="text-lg mb-8 leading-relaxed" style={{ color: "rgba(255,255,255,0.8)", maxWidth: "480px" }}>
-              Уничтожение клопов, тараканов, грызунов и плесени. Москва и Московская область. Гарантия до 3 лет. Выезд в день обращения.
-            </p>
-
-            {/* Stats row */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, auto)", gap: "0", marginBottom: "40px", maxWidth: "420px" }}>
-              {[
-                { val: "15+",   label: "лет опыта" },
-                { val: "780+",  label: "отзывов" },
-                { val: "3 г.",  label: "гарантия" },
-                { val: "24/7",  label: "работаем" },
-              ].map((s, i) => (
-                <div key={s.label} style={{ paddingLeft: i > 0 ? "20px" : "0", paddingRight: "20px", borderLeft: i > 0 ? "1px solid rgba(255,255,255,0.25)" : "none" }}>
-                  <div style={{ fontWeight: 900, fontSize: "1.5rem", color: RED, letterSpacing: "-0.04em", lineHeight: 1.1 }}>{s.val}</div>
-                  <div style={{ fontSize: "0.65rem", marginTop: "4px", color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: "0.1em", whiteSpace: "nowrap" }}>{s.label}</div>
-                </div>
-              ))}
-            </div>
-
-            {/* CTA buttons */}
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/calculator"
-                className="inline-flex items-center gap-2 font-bold no-underline"
-                style={{ background: RED, color: WHITE, padding: "14px 28px", fontSize: "0.85rem", letterSpacing: "0.08em", textTransform: "uppercase" }}
-              >
-                Рассчитать стоимость <ArrowRight size={16} />
-              </Link>
-              <a
-                href="tel:+79300354841"
-                className="inline-flex items-center gap-2 font-bold no-underline"
-                style={{ background: "transparent", color: WHITE, padding: "14px 28px", fontSize: "0.85rem", letterSpacing: "0.08em", textTransform: "uppercase", border: "1px solid rgba(255,255,255,0.3)" }}
-              >
-                <Phone size={16} /> 8(930)035-48-41
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── SERVICES ──────────────────────────────────────────────────────────── */}
-      <section style={{ background: WHITE, padding: "80px 0" }}>
-        <div className="container">
-          <div className="flex items-center gap-3 mb-2">
-            <div style={{ width: 12, height: 12, background: RED }} />
-            <span className="text-xs font-bold" style={{ color: RED, letterSpacing: "0.14em", textTransform: "uppercase" }}>Услуги</span>
-          </div>
-          <div className="flex items-end justify-between mb-10" style={{ borderBottom: `2px solid ${TEXT_DARK}`, paddingBottom: "1rem" }}>
-            <h2 className="font-black text-3xl" style={{ color: TEXT_DARK, letterSpacing: "-0.03em" }}>
-              Все виды санитарной обработки
-            </h2>
-            <Link href="/calculator" className="text-sm font-bold no-underline hidden md:block" style={{ color: RED }}>
-              Рассчитать стоимость →
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((s) => (
-              <div
-                key={s.slug}
-                className="flex flex-col overflow-hidden"
-                style={{
-                  border: `1px solid ${GRAY_BORDER}`,
-                  transition: "box-shadow 0.2s, transform 0.2s",
-                  cursor: "pointer",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLDivElement).style.boxShadow = "0 8px 32px rgba(0,0,0,0.12)";
-                  (e.currentTarget as HTMLDivElement).style.transform = "translateY(-3px)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLDivElement).style.boxShadow = "none";
-                  (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)";
-                }}
-              >
-                {/* Photo */}
-                <div style={{ height: "180px", overflow: "hidden", position: "relative" }}>
-                  <img
-                    src={s.photo}
-                    alt={s.title}
-                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
-                  />
-                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(15,25,35,0.5) 0%, transparent 60%)" }} />
-                  <div style={{ position: "absolute", top: "12px", left: "12px", fontSize: "1.8rem" }}>{s.icon}</div>
-                </div>
-                {/* Content */}
-                <div className="flex flex-col flex-1 p-5">
-                  <h3 className="font-black text-lg mb-2" style={{ color: TEXT_DARK, letterSpacing: "-0.02em" }}>{s.title}</h3>
-                  <p className="text-sm leading-relaxed mb-4 flex-1" style={{ color: TEXT_MID }}>{s.desc}</p>
-                  <div className="flex items-center justify-between mt-auto pt-4" style={{ borderTop: `1px solid ${GRAY_BORDER}` }}>
-                    <div>
-                      <div className="font-black" style={{ color: RED, fontSize: "1.1rem" }}>{s.price}</div>
-                      <div className="text-xs" style={{ color: TEXT_MID }}>Гарантия {s.guarantee}</div>
-                    </div>
-                    <Link
-                      href={`/services/${s.slug}`}
-                      className="inline-flex items-center gap-1 text-xs font-bold no-underline"
-                      style={{ color: WHITE, background: TEXT_DARK, padding: "8px 14px", textTransform: "uppercase", letterSpacing: "0.06em" }}
-                    >
-                      Подробнее <ArrowRight size={12} />
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── PHOTO STRIP ───────────────────────────────────────────────────────── */}
-      <section style={{ padding: "0" }}>
-        <div className="grid grid-cols-2 md:grid-cols-5" style={{ height: "240px" }}>
-          {[PHOTO_SPECIALIST, PHOTO_KITCHEN, PHOTO_PROCESS, PHOTO_WORK, PHOTO_EQUIPMENT].map((photo, i) => (
-            <div
-              key={i}
-              style={{
-                backgroundImage: `url(${photo})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                position: "relative",
-              }}
-            >
-              <div style={{ position: "absolute", inset: 0, background: "rgba(15,25,35,0.2)" }} />
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── HOW IT WORKS ──────────────────────────────────────────────────────── */}
-      <section style={{ background: GRAY_BG, padding: "80px 0" }}>
-        <div className="container">
-          <div className="flex items-center gap-3 mb-2">
-            <div style={{ width: 12, height: 12, background: RED }} />
-            <span className="text-xs font-bold" style={{ color: RED, letterSpacing: "0.14em", textTransform: "uppercase" }}>Схема работы</span>
-          </div>
-          <h2 className="font-black text-3xl mb-10" style={{ color: TEXT_DARK, letterSpacing: "-0.03em", borderBottom: `2px solid ${TEXT_DARK}`, paddingBottom: "1rem" }}>
-            Просто и прозрачно
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0" style={{ border: `1px solid ${GRAY_BORDER}` }}>
-            {[
-              { num: "01", title: "Консультация", desc: "Бесплатно отвечаем на вопросы и называем фиксированную цену" },
-              { num: "02", title: "Выезд специалиста", desc: "Приезжаем в удобное время, проводим диагностику" },
-              { num: "03", title: "Обработка", desc: "Проводим полную обработку сертифицированными препаратами" },
-              { num: "04", title: "Гарантия", desc: "Выдаём договор и гарантийный талон на срок до 3 лет" },
-            ].map((step, i) => (
-              <div
-                key={step.num}
-                className="p-8"
-                style={{
-                  borderRight: i < 3 ? `1px solid ${GRAY_BORDER}` : "none",
-                  background: WHITE,
-                }}
-              >
-                <div className="font-black text-5xl mb-4" style={{ color: GRAY_BORDER, letterSpacing: "-0.06em", lineHeight: 1 }}>{step.num}</div>
-                <div style={{ width: 24, height: 3, background: RED, marginBottom: "16px" }} />
-                <h3 className="font-black text-base mb-3" style={{ color: TEXT_DARK }}>{step.title}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: TEXT_MID }}>{step.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── PROPERTY TYPES ────────────────────────────────────────────────────── */}
-      <section style={{ background: WHITE, padding: "80px 0" }}>
-        <div className="container">
-          <div className="flex items-center gap-3 mb-2">
-            <div style={{ width: 12, height: 12, background: RED }} />
-            <span className="text-xs font-bold" style={{ color: RED, letterSpacing: "0.14em", textTransform: "uppercase" }}>Типы объектов</span>
-          </div>
-          <h2 className="font-black text-3xl mb-10" style={{ color: TEXT_DARK, letterSpacing: "-0.03em", borderBottom: `2px solid ${TEXT_DARK}`, paddingBottom: "1rem" }}>
-            Работаем с любыми помещениями
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {[
-              { icon: "🏠", title: "Квартиры и общежития", desc: "Обрабатываем как всё помещение, так и отдельные комнаты и мебель.", price: "от 1 690 ₽", photo: PHOTO_KITCHEN },
-              { icon: "🏡", title: "Частные дома и коттеджи", desc: "Уничтожаем клопов, тараканов, комаров, клещей, ос и прочую живность.", price: "от 2 490 ₽", photo: PHOTO_ROOM },
-              { icon: "🏢", title: "Организации и предприятия", desc: "Работаем по договору и нормам СанПиН, Роспотребнадзора. Оформляем документы.", price: "от 20 ₽/м²", photo: PHOTO_WORK },
-            ].map((t) => (
-              <div key={t.title} style={{ border: `1px solid ${GRAY_BORDER}`, overflow: "hidden" }}>
-                <div style={{ height: "160px", backgroundImage: `url(${t.photo})`, backgroundSize: "cover", backgroundPosition: "center", position: "relative" }}>
-                  <div style={{ position: "absolute", inset: 0, background: "rgba(15,25,35,0.3)" }} />
-                  <div style={{ position: "absolute", bottom: "12px", left: "12px", fontSize: "2rem" }}>{t.icon}</div>
-                </div>
-                <div className="p-6">
-                  <h3 className="font-black text-base mb-2" style={{ color: TEXT_DARK }}>{t.title}</h3>
-                  <p className="text-sm leading-relaxed mb-4" style={{ color: TEXT_MID }}>{t.desc}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="font-black" style={{ color: RED }}>{t.price}</span>
-                    <Link href="/calculator" className="text-xs font-bold no-underline" style={{ color: TEXT_DARK, textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                      Рассчитать →
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── TRUST / WHY US ────────────────────────────────────────────────────── */}
-      <section style={{ background: GRAY_BG, padding: "80px 0" }}>
-        <div className="container">
-          <div className="flex items-center gap-3 mb-2">
-            <div style={{ width: 12, height: 12, background: RED }} />
-            <span className="text-xs font-bold" style={{ color: RED, letterSpacing: "0.14em", textTransform: "uppercase" }}>Почему выбирают нас</span>
-          </div>
-          <h2 className="font-black text-3xl mb-10" style={{ color: TEXT_DARK, letterSpacing: "-0.03em", borderBottom: `2px solid ${TEXT_DARK}`, paddingBottom: "1rem" }}>
-            Надёжность и гарантия результата
-          </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { icon: <Shield size={20} />, title: "Гарантия 3 года", desc: "Официальный договор с гарантийным обслуживанием" },
-                { icon: <CheckCircle size={20} />, title: "Сертифицированные препараты", desc: "Только проверенные импортные средства" },
-                { icon: <Shield size={20} />, title: "Безопасно для семьи", desc: "Безвредно для детей, животных и аллергиков" },
-                { icon: <Clock size={20} />, title: "Работаем 24/7", desc: "Выезд в день обращения, включая выходные" },
-                { icon: <CheckCircle size={20} />, title: "Лицензированная компания", desc: "ООО «Экоцентр», ИНН 5005040782" },
-                { icon: <Star size={20} />, title: "780+ отзывов", desc: "Реальные отзывы на Яндексе и Авито" },
-              ].map((item) => (
-                <div key={item.title} className="p-5" style={{ background: WHITE, border: `1px solid ${GRAY_BORDER}` }}>
-                  <div className="mb-3" style={{ color: RED }}>{item.icon}</div>
-                  <div className="font-bold text-sm mb-1" style={{ color: TEXT_DARK }}>{item.title}</div>
-                  <div className="text-xs leading-relaxed" style={{ color: TEXT_MID }}>{item.desc}</div>
-                </div>
-              ))}
-            </div>
-            <div style={{ position: "relative" }}>
-              <img
-                src={PHOTO_TEAM}
-                alt="Специалист за работой"
-                style={{ width: "100%", height: "420px", objectFit: "cover", display: "block" }}
-              />
-              <div style={{ position: "absolute", bottom: "-16px", right: "-16px", background: RED, color: WHITE, padding: "20px 24px", fontWeight: 900, fontSize: "1.4rem", letterSpacing: "-0.03em", lineHeight: 1.2 }}>
-                15 лет<br /><span style={{ fontSize: "0.75rem", fontWeight: 400, letterSpacing: "0.05em", textTransform: "uppercase" }}>на рынке</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── CTA CALCULATOR ────────────────────────────────────────────────────── */}
-      <section style={{ background: NAVY_MID, padding: "80px 0", position: "relative", overflow: "hidden" }}>
-        {/* Background photo with overlay */}
-        <div style={{ position: "absolute", inset: 0, backgroundImage: `url(${PHOTO_SPRAY})`, backgroundSize: "cover", backgroundPosition: "center", opacity: 0.15 }} />
-        <div style={{ position: "absolute", inset: 0, background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_MID} 100%)`, opacity: 0.9 }} />
-        {/* White shimmer */}
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", background: `linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)` }} />
-
-        <div className="container" style={{ position: "relative", zIndex: 1 }}>
-          <div className="flex items-center gap-3 mb-2">
-            <div style={{ width: 12, height: 12, background: RED }} />
-            <span className="text-xs font-bold" style={{ color: "rgba(255,255,255,0.5)", letterSpacing: "0.14em", textTransform: "uppercase" }}>Калькулятор стоимости</span>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-16 items-center">
+        <div className="container" style={{ position: "relative", zIndex: 1, paddingTop: "6rem", paddingBottom: "6rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 420px", gap: "4rem", alignItems: "center" }}>
+            {/* Left: text */}
             <div>
-              <h2 className="font-black text-3xl mb-4" style={{ color: WHITE, letterSpacing: "-0.03em" }}>
-                Узнайте точную стоимость за 2 минуты
-              </h2>
-              <p className="mb-8 leading-relaxed" style={{ color: "rgba(255,255,255,0.65)" }}>
-                Выберите тип помещения, площадь и вид вредителей — получите точный расчёт без скрытых доплат. Фиксированная цена в договоре.
+              {/* Label */}
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", marginBottom: "1.5rem" }}>
+                <div style={{ width: 8, height: 8, borderRadius: "50%", background: RED, animation: "pulse-red 2s infinite" }} />
+                <span className="section-label" style={{ color: RED }}>Лицензированная санитарная служба</span>
+              </div>
+              {/* Headline */}
+              <h1 style={{ fontSize: "clamp(2.4rem, 5vw, 4rem)", fontWeight: 900, lineHeight: 1.08, letterSpacing: "-0.03em", color: WHITE, marginBottom: "1.5rem", maxWidth: 640 }}>
+                Профессиональная<br />
+                <span style={{ color: RED }}>дезинсекция</span> и<br />
+                дезинфекция
+              </h1>
+              <p style={{ fontSize: "1.1rem", color: "rgba(255,255,255,0.75)", lineHeight: 1.65, marginBottom: "2.5rem", maxWidth: 520 }}>
+                Уничтожение клопов, тараканов, грызунов и плесени.<br />
+                Москва и Московская область. Гарантия до 3 лет. Выезд в день обращения.
               </p>
-              <div className="grid grid-cols-2 gap-4 mb-8">
+              {/* CTA buttons */}
+              <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginBottom: "3rem" }}>
+                <Link href="/calculator" className="btn-red btn-pulse" style={{ fontSize: "0.9rem" }}>
+                  Рассчитать стоимость →
+                </Link>
+                <a href="tel:+74955550000" className="btn-outline-white" style={{ fontSize: "0.9rem" }}>
+                  ☎ Позвонить
+                </a>
+              </div>
+              {/* Trust stats */}
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1px", background: "rgba(255,255,255,0.08)", maxWidth: 480 }}>
                 {[
-                  { val: "1 500 ₽", label: "Минимальная цена" },
-                  { val: "3 года", label: "Максимальная гарантия" },
-                  { val: "2 часа", label: "Среднее время обработки" },
-                  { val: "100%", label: "Результат или возврат" },
-                ].map((s) => (
-                  <div key={s.label} style={{ borderLeft: `3px solid ${RED}`, paddingLeft: "16px" }}>
-                    <div className="font-black text-xl" style={{ color: WHITE, letterSpacing: "-0.03em" }}>{s.val}</div>
-                    <div className="text-xs" style={{ color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: "0.06em" }}>{s.label}</div>
+                  { n: "15+", label: "лет на рынке" },
+                  { n: "12 000+", label: "обработок" },
+                  { n: "3 года", label: "гарантия" },
+                ].map((s, i) => (
+                  <div key={i} className="stat-block" style={{ background: "rgba(13,43,94,0.6)", padding: "1rem 1.25rem" }}>
+                    <div style={{ fontSize: "1.6rem", fontWeight: 900, color: WHITE, letterSpacing: "-0.04em", lineHeight: 1 }}>{s.n}</div>
+                    <div style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.55)", marginTop: "0.3rem", textTransform: "uppercase", letterSpacing: "0.08em" }}>{s.label}</div>
                   </div>
                 ))}
               </div>
-              <Link
-                href="/calculator"
-                className="inline-flex items-center gap-2 font-bold no-underline"
-                style={{ background: RED, color: WHITE, padding: "16px 32px", fontSize: "0.85rem", letterSpacing: "0.08em", textTransform: "uppercase" }}
-              >
-                Рассчитать стоимость <ArrowRight size={16} />
-              </Link>
             </div>
-            {/* Quick form */}
-            <div style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)", padding: "32px", backdropFilter: "blur(8px)" }}>
+
+            {/* Right: quick form */}
+            <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", backdropFilter: "blur(12px)", padding: "2rem", borderRadius: 4 }}>
+              <div style={{ fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: RED, marginBottom: "0.75rem" }}>Бесплатная консультация</div>
+              <h3 style={{ fontSize: "1.3rem", fontWeight: 800, color: WHITE, marginBottom: "1.5rem", lineHeight: 1.3 }}>Оставьте заявку — перезвоним за 5 минут</h3>
               {submitted ? (
-                <div className="text-center py-8">
-                  <CheckCircle size={48} style={{ color: RED, margin: "0 auto 16px" }} />
-                  <div className="font-black text-xl mb-2" style={{ color: WHITE }}>Заявка принята!</div>
-                  <div style={{ color: "rgba(255,255,255,0.6)" }}>Перезвоним в течение 15 минут</div>
+                <div style={{ textAlign: "center", padding: "2rem 0" }}>
+                  <div style={{ fontSize: "2.5rem", marginBottom: "0.75rem" }}>✓</div>
+                  <p style={{ color: WHITE, fontWeight: 600 }}>Заявка принята!</p>
+                  <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.9rem", marginTop: "0.5rem" }}>Перезвоним в течение 5 минут</p>
                 </div>
               ) : (
-                <>
-                  <h3 className="font-black text-lg mb-6" style={{ color: WHITE }}>Оставить заявку</h3>
-                  <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                    <input
-                      type="text"
-                      placeholder="Ваше имя"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.2)", color: WHITE, padding: "12px 16px", fontSize: "0.9rem", outline: "none" }}
-                    />
-                    <input
-                      type="tel"
-                      placeholder="Телефон *"
-                      required
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.2)", color: WHITE, padding: "12px 16px", fontSize: "0.9rem", outline: "none" }}
-                    />
-                    <select
-                      value={formData.service}
-                      onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                      style={{ background: "rgba(30,45,64,0.9)", border: "1px solid rgba(255,255,255,0.2)", color: formData.service ? WHITE : "rgba(255,255,255,0.4)", padding: "12px 16px", fontSize: "0.9rem", outline: "none" }}
-                    >
-                      <option value="">Выберите услугу</option>
-                      {services.map((s) => <option key={s.slug} value={s.slug} style={{ color: TEXT_DARK }}>{s.title}</option>)}
-                    </select>
-                    <button
-                      type="submit"
-                      className="font-bold"
-                      style={{ background: RED, color: WHITE, padding: "14px", fontSize: "0.85rem", letterSpacing: "0.08em", textTransform: "uppercase", border: "none", cursor: "pointer" }}
-                    >
-                      Оставить заявку
-                    </button>
-                    <p className="text-xs text-center" style={{ color: "rgba(255,255,255,0.35)" }}>
-                      Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности
-                    </p>
-                  </form>
-                </>
+                <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.875rem" }}>
+                  <input className="form-field" placeholder="Ваше имя" value={formData.name} onChange={e => setFormData(p => ({ ...p, name: e.target.value }))} required />
+                  <input className="form-field" type="tel" placeholder="+7 (___) ___-__-__" value={formData.phone} onChange={e => setFormData(p => ({ ...p, phone: e.target.value }))} required />
+                  <select className="form-field" value={formData.service} onChange={e => setFormData(p => ({ ...p, service: e.target.value }))}>
+                    <option value="">Выберите услугу</option>
+                    {services.map(s => <option key={s.slug} value={s.slug}>{s.title}</option>)}
+                  </select>
+                  <button type="submit" className="btn-red" style={{ width: "100%", justifyContent: "center" }} disabled={createLead.isPending}>
+                    {createLead.isPending ? "Отправка..." : "Получить консультацию →"}
+                  </button>
+                  <p style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.4)", textAlign: "center" }}>Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности</p>
+                </form>
               )}
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── FAQ ───────────────────────────────────────────────────────────────── */}
-      <section style={{ background: WHITE, padding: "80px 0" }}>
-        <div className="container">
-          <div className="flex items-center gap-3 mb-2">
-            <div style={{ width: 12, height: 12, background: RED }} />
-            <span className="text-xs font-bold" style={{ color: RED, letterSpacing: "0.14em", textTransform: "uppercase" }}>FAQ</span>
+      {/* ── TRUST BAR ─────────────────────────────────────────────────────── */}
+      <div style={{ background: NAVY_MID, borderTop: `3px solid ${RED}`, borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+        <div className="container" style={{ padding: "1rem 0" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "0", justifyContent: "space-between", alignItems: "center" }}>
+            {[
+              "✓ Лицензия СЭС",
+              "✓ Сертифицированные препараты",
+              "✓ Официальный договор",
+              "✓ Гарантия в письменном виде",
+              "✓ Выезд в день обращения",
+            ].map((t, i) => (
+              <span key={i} style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.8)", fontWeight: 600, padding: "0.25rem 0.75rem", letterSpacing: "0.02em" }}>{t}</span>
+            ))}
           </div>
-          <h2 className="font-black text-3xl mb-10" style={{ color: TEXT_DARK, letterSpacing: "-0.03em", borderBottom: `2px solid ${TEXT_DARK}`, paddingBottom: "1rem" }}>
-            Часто задаваемые вопросы
-          </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-16">
+        </div>
+      </div>
+
+      {/* ── SERVICES ──────────────────────────────────────────────────────── */}
+      <section style={{ padding: "5rem 0", background: WHITE }}>
+        <div className="container">
+          <div ref={refServices} className="reveal" style={{ marginBottom: "3rem" }}>
+            <div className="section-label" style={{ marginBottom: "0.75rem" }}>Наши услуги</div>
+            <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.5rem)", fontWeight: 900, color: NAVY, letterSpacing: "-0.03em", marginBottom: "0.75rem" }}>
+              Полный спектр санитарных обработок
+            </h2>
+            <p style={{ color: "#6B7280", fontSize: "1.05rem", maxWidth: 560 }}>
+              Профессиональная дезинсекция, дератизация и дезинфекция для жилых и коммерческих объектов
+            </p>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1.25rem" }}>
+            {services.map((s, i) => (
+              <Link key={s.slug} href={`/services/${s.slug}`}>
+                <div className="light-card icon-card reveal" ref={i === 0 ? undefined : undefined}
+                  style={{ padding: "1.75rem", borderRadius: 4, cursor: "pointer", display: "flex", flexDirection: "column", gap: "1rem", height: "100%",
+                    animationDelay: `${i * 0.07}s`, opacity: 1 }}>
+                  <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
+                    <s.Icon size={52} />
+                    <span style={{ fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#6B7280", background: "#F5F7FA", padding: "0.25rem 0.6rem", borderRadius: 2 }}>
+                      {s.guarantee}
+                    </span>
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: "1.05rem", fontWeight: 800, color: NAVY, marginBottom: "0.4rem", lineHeight: 1.3 }}>{s.title}</h3>
+                    <p style={{ fontSize: "0.875rem", color: "#6B7280", lineHeight: 1.55 }}>{s.desc}</p>
+                  </div>
+                  <div style={{ marginTop: "auto", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <span style={{ fontSize: "1.2rem", fontWeight: 900, color: NAVY, letterSpacing: "-0.03em" }}>{s.price}</span>
+                    <span style={{ fontSize: "0.8rem", color: RED, fontWeight: 700 }}>Подробнее →</span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── METHODS (виды обработок) ───────────────────────────────────────── */}
+      <section className="navy-section" style={{ padding: "5rem 0" }}>
+        <div className="container" style={{ position: "relative", zIndex: 1 }}>
+          <div ref={refMethods} className="reveal" style={{ marginBottom: "3rem" }}>
+            <div className="section-label" style={{ marginBottom: "0.75rem" }}>Методы обработки</div>
+            <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.5rem)", fontWeight: 900, color: WHITE, letterSpacing: "-0.03em", marginBottom: "0.75rem" }}>
+              Виды санитарных обработок
+            </h2>
+            <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "1.05rem", maxWidth: 520 }}>
+              Выбираем метод в зависимости от типа вредителя, площади и особенностей объекта
+            </p>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1px", background: "rgba(255,255,255,0.06)" }}>
+            {methods.map((m, i) => (
+              <div key={i} className="glass-card diag-line" style={{ padding: "2rem 1.75rem", transition: "background 0.2s ease" }}
+                onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.08)")}
+                onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}>
+                <m.Icon size={48} className="mb-4" />
+                <h3 style={{ fontSize: "1rem", fontWeight: 800, color: WHITE, marginBottom: "0.5rem", marginTop: "1rem" }}>{m.title}</h3>
+                <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.6)", lineHeight: 1.6 }}>{m.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── HOW WE WORK ───────────────────────────────────────────────────── */}
+      <section style={{ padding: "5rem 0", background: GRAY_BG }}>
+        <div className="container">
+          <div ref={refSteps} className="reveal" style={{ marginBottom: "3.5rem" }}>
+            <div className="section-label" style={{ marginBottom: "0.75rem" }}>Схема работы</div>
+            <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.5rem)", fontWeight: 900, color: NAVY, letterSpacing: "-0.03em" }}>
+              Как мы работаем
+            </h2>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "0", position: "relative" }}>
+            {/* Connector line */}
+            <div style={{ position: "absolute", top: "1.25rem", left: "10%", right: "10%", height: "2px", background: `linear-gradient(90deg, ${RED}, rgba(204,0,0,0.2))`, zIndex: 0 }} />
+            {steps.map((s, i) => (
+              <div key={i} style={{ position: "relative", zIndex: 1, padding: "0 1rem", textAlign: "center" }}>
+                <div className="step-number" style={{ margin: "0 auto 1.25rem", background: i === 0 ? RED : WHITE, color: i === 0 ? WHITE : RED, borderColor: RED }}>
+                  {s.n}
+                </div>
+                <h3 style={{ fontSize: "0.9rem", fontWeight: 800, color: NAVY, marginBottom: "0.5rem", lineHeight: 1.3 }}>{s.title}</h3>
+                <p style={{ fontSize: "0.8rem", color: "#6B7280", lineHeight: 1.55 }}>{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── OBJECT TYPES ──────────────────────────────────────────────────── */}
+      <section style={{ padding: "5rem 0", background: WHITE }}>
+        <div className="container">
+          <div ref={refObjects} className="reveal" style={{ marginBottom: "3rem" }}>
+            <div className="section-label" style={{ marginBottom: "0.75rem" }}>Типы объектов</div>
+            <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.5rem)", fontWeight: 900, color: NAVY, letterSpacing: "-0.03em" }}>
+              Работаем с любыми объектами
+            </h2>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1.5rem" }}>
+            {objectTypes.map((o, i) => (
+              <div key={i} className="corner-accent" style={{ padding: "2.5rem 2rem", background: i % 2 === 1 ? NAVY : WHITE, border: `1px solid ${i % 2 === 1 ? "rgba(255,255,255,0.1)" : "#E2E8F0"}`, borderRadius: 4, transition: "transform 0.2s ease, box-shadow 0.2s ease" }}
+                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 16px 40px rgba(13,43,94,0.12)"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}>
+                <o.Icon size={56} className="mb-4" />
+                <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: i % 2 === 1 ? WHITE : NAVY, marginBottom: "0.5rem", marginTop: "1.25rem" }}>{o.title}</h3>
+                <p style={{ fontSize: "0.875rem", color: i % 2 === 1 ? "rgba(255,255,255,0.65)" : "#6B7280", lineHeight: 1.6, marginBottom: "1.25rem" }}>{o.desc}</p>
+                <div style={{ fontSize: "1.4rem", fontWeight: 900, color: i % 2 === 1 ? WHITE : NAVY, letterSpacing: "-0.03em" }}>{o.price}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── ADVANTAGES ────────────────────────────────────────────────────── */}
+      <section className="navy-section" style={{ padding: "5rem 0" }}>
+        <div className="container" style={{ position: "relative", zIndex: 1 }}>
+          <div ref={refAdvantages} className="reveal" style={{ marginBottom: "3rem" }}>
+            <div className="section-label" style={{ marginBottom: "0.75rem" }}>Почему мы</div>
+            <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.5rem)", fontWeight: 900, color: WHITE, letterSpacing: "-0.03em" }}>
+              Наши преимущества
+            </h2>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "1.5rem" }}>
+            {[
+              { Icon: IconGuarantee,   title: "Гарантия до 3 лет",       desc: "Официальный гарантийный талон на каждый вид работ" },
+              { Icon: IconSpecialist,  title: "Выезд в день обращения",   desc: "Специалист приедет в удобное для вас время" },
+              { Icon: IconCalculator,  title: "Фиксированные цены",       desc: "Стоимость указана в договоре и не меняется" },
+              { Icon: IconColdFog,     title: "Безопасные препараты",      desc: "Сертифицированные средства, одобренные Роспотребнадзором" },
+            ].map((a, i) => (
+              <div key={i} className="glass-card" style={{ padding: "2rem 1.75rem", borderRadius: 4 }}>
+                <a.Icon size={48} />
+                <h3 style={{ fontSize: "1rem", fontWeight: 800, color: WHITE, marginBottom: "0.5rem", marginTop: "1.25rem" }}>{a.title}</h3>
+                <p style={{ fontSize: "0.875rem", color: "rgba(255,255,255,0.6)", lineHeight: 1.6 }}>{a.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FAQ ───────────────────────────────────────────────────────────── */}
+      <section style={{ padding: "5rem 0", background: WHITE }}>
+        <div className="container">
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "5rem", alignItems: "start" }}>
+            <div ref={refFaq} className="reveal-left">
+              <div className="section-label" style={{ marginBottom: "0.75rem" }}>FAQ</div>
+              <h2 style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.5rem)", fontWeight: 900, color: NAVY, letterSpacing: "-0.03em", marginBottom: "1.25rem" }}>
+                Часто задаваемые вопросы
+              </h2>
+              <p style={{ color: "#6B7280", lineHeight: 1.65, marginBottom: "2rem" }}>
+                Если не нашли ответ — позвоните нам, консультация бесплатна.
+              </p>
+              <a href="tel:+74955550000" className="btn-red">☎ Позвонить бесплатно</a>
+            </div>
             <div>
-              {faqs.map((faq, i) => (
-                <div key={i} style={{ borderBottom: `1px solid ${GRAY_BORDER}` }}>
-                  <button
-                    className="w-full text-left py-5 flex items-center justify-between gap-4"
-                    style={{ background: "none", border: "none", cursor: "pointer" }}
-                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  >
-                    <span className="font-bold text-sm" style={{ color: TEXT_DARK }}>{faq.q}</span>
-                    <ChevronDown
-                      size={18}
-                      style={{ color: RED, flexShrink: 0, transform: openFaq === i ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}
-                    />
+              {faqs.map((f, i) => (
+                <div key={i} className="faq-item">
+                  <button className="faq-question" onClick={() => setOpenFaq(openFaq === i ? null : i)} style={{ width: "100%", background: "none", border: "none" }}>
+                    <span>{f.q}</span>
+                    <span style={{ color: RED, fontSize: "1.25rem", flexShrink: 0, transition: "transform 0.25s ease", transform: openFaq === i ? "rotate(45deg)" : "none" }}>+</span>
                   </button>
-                  {openFaq === i && (
-                    <div className="pb-5 text-sm leading-relaxed" style={{ color: TEXT_MID }}>{faq.a}</div>
-                  )}
+                  <div className={`faq-answer ${openFaq === i ? "open" : ""}`}>
+                    <p style={{ paddingBottom: "1.25rem", color: "#6B7280", lineHeight: 1.65, fontSize: "0.9rem" }}>{f.a}</p>
+                  </div>
                 </div>
               ))}
-              <div className="mt-8 p-6" style={{ background: GRAY_BG, borderLeft: `4px solid ${RED}` }}>
-                <div className="font-bold mb-2" style={{ color: TEXT_DARK }}>Остались вопросы?</div>
-                <div className="text-sm mb-4" style={{ color: TEXT_MID }}>Звоните — консультация бесплатно</div>
-                <a href="tel:+79300354841" className="font-black no-underline" style={{ color: RED, fontSize: "1.2rem" }}>8(930)035-48-41</a>
-              </div>
-            </div>
-            <div style={{ position: "relative", display: "flex", flexDirection: "column", gap: "16px" }}>
-              <img src={PHOTO_PROCESS} alt="Процесс обработки" style={{ width: "100%", height: "280px", objectFit: "cover" }} />
-              <img src={PHOTO_EQUIPMENT} alt="Оборудование" style={{ width: "100%", height: "200px", objectFit: "cover" }} />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── FINAL CTA ─────────────────────────────────────────────────────────── */}
-      <section style={{ background: RED, padding: "60px 0" }}>
-        <div className="container text-center">
-          <h2 className="font-black text-3xl mb-4" style={{ color: WHITE, letterSpacing: "-0.03em" }}>
+      {/* ── CTA BANNER ────────────────────────────────────────────────────── */}
+      <section style={{ padding: "4rem 0", background: RED }}>
+        <div className="container" style={{ textAlign: "center" }}>
+          <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 900, color: WHITE, letterSpacing: "-0.03em", marginBottom: "0.75rem" }}>
             Готовы избавиться от вредителей?
           </h2>
-          <p className="mb-8" style={{ color: "rgba(255,255,255,0.8)" }}>Выезд в день обращения. Гарантия результата.</p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <a href="tel:+79300354841" className="inline-flex items-center gap-2 font-bold no-underline" style={{ background: WHITE, color: RED, padding: "16px 32px", fontSize: "0.85rem", letterSpacing: "0.08em", textTransform: "uppercase" }}>
-              <Phone size={16} /> 8(930)035-48-41
-            </a>
-            <Link href="/calculator" className="inline-flex items-center gap-2 font-bold no-underline" style={{ background: "transparent", color: WHITE, padding: "16px 32px", fontSize: "0.85rem", letterSpacing: "0.08em", textTransform: "uppercase", border: "2px solid rgba(255,255,255,0.5)" }}>
-              Оставить заявку <ArrowRight size={16} />
+          <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "1.05rem", marginBottom: "2rem" }}>
+            Оставьте заявку — перезвоним за 5 минут и рассчитаем стоимость
+          </p>
+          <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
+            <Link href="/calculator" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: WHITE, color: RED, fontWeight: 800, fontSize: "0.9rem", letterSpacing: "0.06em", textTransform: "uppercase", padding: "1rem 2rem", borderRadius: 2, textDecoration: "none" }}>
+              Рассчитать стоимость →
             </Link>
+            <a href="tel:+74955550000" style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", background: "transparent", color: WHITE, fontWeight: 700, fontSize: "0.9rem", letterSpacing: "0.06em", textTransform: "uppercase", padding: "1rem 2rem", border: "2px solid rgba(255,255,255,0.6)", borderRadius: 2, textDecoration: "none" }}>
+              ☎ +7 (495) 555-00-00
+            </a>
           </div>
         </div>
       </section>
 
-      {/* ── MOBILE STICKY CTA ─────────────────────────────────────────────────── */}
-      <div
-        className="md:hidden"
-        style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 50, display: "flex", boxShadow: "0 -4px 20px rgba(0,0,0,0.15)" }}
-      >
-        <a
-          href="tel:+79300354841"
-          className="flex-1 flex items-center justify-center gap-2 font-bold no-underline"
-          style={{ background: NAVY, color: WHITE, padding: "16px", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.06em" }}
-        >
-          <Phone size={16} /> Позвонить
-        </a>
-        <Link
-          href="/calculator"
-          className="flex-1 flex items-center justify-center gap-2 font-bold no-underline"
-          style={{ background: RED, color: WHITE, padding: "16px", fontSize: "0.85rem", textTransform: "uppercase", letterSpacing: "0.06em" }}
-        >
-          Рассчитать <ArrowRight size={16} />
-        </Link>
+      {/* ── STICKY MOBILE CTA ─────────────────────────────────────────────── */}
+      <div className="sticky-cta">
+        <div style={{ display: "flex", gap: "0.75rem" }}>
+          <a href="tel:+74955550000" className="btn-outline-white" style={{ flex: 1, justifyContent: "center", padding: "0.75rem" }}>☎ Позвонить</a>
+          <Link href="/calculator" className="btn-red" style={{ flex: 1, justifyContent: "center", padding: "0.75rem" }}>Рассчитать →</Link>
+        </div>
       </div>
     </div>
   );
