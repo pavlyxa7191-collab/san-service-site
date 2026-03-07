@@ -195,6 +195,7 @@
     @apply bg-background text-foreground;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
@@ -231,6 +232,13 @@
   }
 
   @media (min-width: 1024px) {
+    .container {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      max-width: 1200px;
+    }
+  }
+  @media (min-width: 1440px) {
     .container {
       padding-left: 2rem;
       padding-right: 2rem;
@@ -808,4 +816,57 @@
 .faq-answer.open {
   max-height: 400px;
   opacity: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   HOME PAGE — RESPONSIVE GRID BREAKPOINTS (New Design)
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Override form-field for dark hero bg */
+.hero-grid .form-field {
+  background: rgba(255,255,255,0.06) !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+  color: #ffffff !important;
+  border-radius: 2px !important;
+}
+.hero-grid .form-field::placeholder { color: rgba(255,255,255,0.35) !important; }
+.hero-grid .form-field:focus { border-color: rgba(204,0,0,0.6) !important; box-shadow: none !important; }
+
+/* 1300px */
+@media (max-width: 1300px) {
+  .hero-grid { grid-template-columns: 1fr 320px 320px !important; }
+}
+
+/* 1024px: tablet landscape */
+@media (max-width: 1024px) {
+  .hero-grid { grid-template-columns: 1fr 360px !important; }
+  .hero-grid > div:nth-child(2) { display: none !important; }
+  .services-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .methods-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .objects-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .steps-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 1.5rem !important; }
+  .advantages-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .reviews-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .guarantee-grid { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
+  .faq-grid { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
+}
+
+/* 768px: tablet portrait */
+@media (max-width: 768px) {
+  .hero-grid { grid-template-columns: 1fr !important; padding-top: 5rem !important; }
+  .hero-grid > div:nth-child(1) { padding-right: 0 !important; }
+  .hero-grid > div:nth-child(3) { padding-left: 0 !important; }
+  .services-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .methods-grid { grid-template-columns: 1fr !important; }
+  .objects-grid { grid-template-columns: 1fr !important; }
+  .steps-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 1.5rem !important; }
+  .advantages-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .reviews-grid { grid-template-columns: 1fr !important; }
+}
+
+/* 480px: mobile */
+@media (max-width: 480px) {
+  .services-grid { grid-template-columns: 1fr !important; }
+  .steps-grid { grid-template-columns: 1fr !important; }
+  .advantages-grid { grid-template-columns: 1fr !important; }
 }

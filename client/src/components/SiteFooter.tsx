@@ -274,9 +274,9 @@ export default function SiteFooter() {
                 ["КПП", "500501001"],
                 ["ОГРН", "1025004456174"],
               ].map(([label, value]) => (
-                <div key={label} style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.375rem" }}>
-                  <span style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.28)" }}>{label}</span>
-                  <span style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.6)", fontWeight: 600 }}>{value}</span>
+                <div key={label} style={{ display: "flex", flexDirection: "column", marginBottom: "0.5rem" }}>
+                  <span style={{ fontSize: "0.62rem", color: "rgba(255,255,255,0.28)", textTransform: "uppercase", letterSpacing: "0.05em" }}>{label}</span>
+                  <span style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.65)", fontWeight: 600 }}>{value}</span>
                 </div>
               ))}
             </div>

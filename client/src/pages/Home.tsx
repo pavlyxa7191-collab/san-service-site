@@ -1,49 +1,47 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import {
   IconBedbugs, IconCockroaches, IconRodents, IconTicks, IconMold,
-  IconColdFog, IconHotFog, IconSpray, IconOzonation, IconDeodorization,
-  IconGuarantee, IconSpecialist, IconCalculator, IconApartment, IconHouse,
-  IconCommercial, IconVentilation, IconOdor,
+  IconDeodorization, IconColdFog, IconHotFog, IconSpray, IconOzonation,
+  IconVentilation, IconGuarantee, IconSpecialist, IconCalculator,
+  IconApartment, IconHouse, IconCommercial, IconOdor,
 } from "@/components/Icons";
 
-// ─── DESIGN TOKENS ────────────────────────────────────────────────────────────
-const NAVY      = "#000919";   // Primary: almost-black navy (header, footer, hero, dark blocks)
-const NAVY_MID  = "#001230";   // Mid navy: card surfaces, overlays
-const NAVY_LIGHT = "#001F4D";  // Light navy: borders, dividers in dark sections
-const RED       = "#CC0000";   // Accent: CTA buttons, highlights
-const RED_DARK  = "#990000";   // Hover state
-const WHITE     = "#FFFFFF";
-const GRAY_BG   = "#F4F6FA";   // Subtle section background
-const GRAY_TEXT = "#6B7280";   // Muted body text
-const NAVY_TEXT = "#0A1628";   // Dark text on white
+// ─── DESIGN TOKENS ───────────────────────────────────────────────────────────
+const NAVY      = "#0d1f3c";
+const NAVY_MID  = "#0a1628";
+const NAVY_TEXT = "#0a1628";
+const RED       = "#CC0000";
+const RED_DARK  = "#a80000";
+const WHITE     = "#ffffff";
+const GRAY_TEXT = "#6b7280";
 
-// ─── SERVICES DATA ────────────────────────────────────────────────────────────
+// ─── DATA ─────────────────────────────────────────────────────────────────────
 const services = [
-  { slug: "klopov",       Icon: IconBedbugs,      title: "Уничтожение клопов",    desc: "Холодный и горячий туман. Полная ликвидация постельных клопов.",    price: "от 1 500 ₽", guarantee: "3 года",      color: RED },
-  { slug: "tarakanov",    Icon: IconCockroaches,   title: "Уничтожение тараканов", desc: "Дезинсекция без запаха. Безопасно для детей и домашних животных.",  price: "от 1 500 ₽", guarantee: "1 год",       color: RED },
-  { slug: "gryzunov",     Icon: IconRodents,       title: "Уничтожение грызунов",  desc: "Дератизация: мыши, крысы. Приманочные станции по периметру.",       price: "от 2 000 ₽", guarantee: "6 месяцев",   color: RED },
-  { slug: "kleshhej",     Icon: IconTicks,         title: "Уничтожение клещей",    desc: "Обработка участков и помещений от клещей и комаров.",               price: "от 2 000 ₽", guarantee: "1 сезон",     color: RED },
-  { slug: "pleseni",      Icon: IconMold,          title: "Удаление плесени",      desc: "Профессиональное удаление плесени и грибка. Обработка стен.",        price: "от 3 500 ₽", guarantee: "2 года",      color: RED },
-  { slug: "dezinfektsii", Icon: IconDeodorization, title: "Дезинфекция",           desc: "Уничтожение патогенных микроорганизмов. Для предприятий и жилья.",   price: "от 20 ₽/м²", guarantee: "по договору", color: RED },
-  { slug: "zapahov",      Icon: IconOdor,          title: "Борьба с запахами",     desc: "Устранение неприятных запахов. Озонирование и дезодорация.",         price: "от 2 500 ₽", guarantee: "по договору", color: RED },
-  { slug: "uborka",       Icon: IconGuarantee,     title: "Уборка после смерти",   desc: "Профессиональная биологическая уборка. Дезинфекция и дезодорация.",  price: "от 5 000 ₽", guarantee: "по договору", color: RED },
+  { slug: "klopov",       Icon: IconBedbugs,      title: "Уничтожение клопов",    desc: "Горячий и холодный туман. Гарантия 3 года.",                   price: "от 1 500 ₽", guarantee: "3 года" },
+  { slug: "tarakanov",    Icon: IconCockroaches,   title: "Уничтожение тараканов", desc: "Гелевые приманки + опрыскивание. Гарантия 1 год.",             price: "от 1 500 ₽", guarantee: "1 год" },
+  { slug: "gryzunov",     Icon: IconRodents,       title: "Уничтожение грызунов",  desc: "Дератизация: мыши, крысы. Приманочные станции.",               price: "от 2 000 ₽", guarantee: "6 месяцев" },
+  { slug: "kleshhej",     Icon: IconTicks,         title: "Уничтожение клещей",    desc: "Обработка участков и помещений от клещей и комаров.",          price: "от 2 000 ₽", guarantee: "1 сезон" },
+  { slug: "pleseni",      Icon: IconMold,          title: "Удаление плесени",      desc: "Профессиональное удаление плесени и грибка.",                  price: "от 3 500 ₽", guarantee: "2 года" },
+  { slug: "dezinfektsii", Icon: IconDeodorization, title: "Дезинфекция",           desc: "Уничтожение патогенных микроорганизмов.",                      price: "от 20 ₽/м²", guarantee: "по договору" },
+  { slug: "zapahov",      Icon: IconOdor,          title: "Борьба с запахами",     desc: "Устранение неприятных запахов. Озонирование.",                 price: "от 2 500 ₽", guarantee: "по договору" },
+  { slug: "uborka",       Icon: IconGuarantee,     title: "Уборка после смерти",   desc: "Профессиональная биологическая уборка и дезинфекция.",         price: "от 5 000 ₽", guarantee: "по договору" },
 ];
 
 const methods = [
-  { Icon: IconColdFog,       title: "Холодный туман",       desc: "Мелкодисперсное распыление инсектицида. Проникает в труднодоступные места.", tag: "ПОПУЛЯРНО" },
-  { Icon: IconHotFog,        title: "Горячий туман",        desc: "Термическая обработка. Максимальная эффективность при клопах и клещах.",     tag: "" },
-  { Icon: IconSpray,         title: "Опрыскивание",         desc: "Направленная обработка поверхностей. Длительный остаточный эффект.",          tag: "" },
-  { Icon: IconOzonation,     title: "Озонация",             desc: "Обеззараживание воздуха и поверхностей. Устраняет запахи и вирусы.",          tag: "" },
-  { Icon: IconDeodorization, title: "Дезодорация",          desc: "Нейтрализация неприятных запахов. Безопасно для людей и животных.",           tag: "" },
-  { Icon: IconVentilation,   title: "Обработка вентиляции", desc: "Дезинфекция вентиляционных систем. Предотвращает распространение инфекций.",  tag: "" },
+  { Icon: IconColdFog,       title: "Холодный туман",       desc: "Мелкодисперсное распыление. Проникает в труднодоступные места.", tag: "ПОПУЛЯРНО" },
+  { Icon: IconHotFog,        title: "Горячий туман",        desc: "Термическая обработка. Максимальная эффективность при клопах.",   tag: "" },
+  { Icon: IconSpray,         title: "Опрыскивание",         desc: "Направленная обработка. Длительный остаточный эффект.",           tag: "" },
+  { Icon: IconOzonation,     title: "Озонация",             desc: "Обеззараживание воздуха. Устраняет запахи и вирусы.",             tag: "" },
+  { Icon: IconDeodorization, title: "Дезодорация",          desc: "Нейтрализация запахов. Безопасно для людей и животных.",          tag: "" },
+  { Icon: IconVentilation,   title: "Обработка вентиляции", desc: "Дезинфекция вентиляционных систем. Предотвращает инфекции.",      tag: "" },
 ];
 
 const objectTypes = [
-  { Icon: IconApartment,  title: "Квартиры",             desc: "1–5 комнат, студии, коммунальные квартиры",  price: "от 1 500 ₽", items: ["Однокомнатная квартира", "Двухкомнатная квартира", "Трёхкомнатная квартира", "Студия / комната", "Коммунальная квартира"] },
-  { Icon: IconHouse,      title: "Частные дома",         desc: "Коттеджи, дачи, таунхаусы любой площади",    price: "от 3 500 ₽", items: ["Коттедж до 150 м²", "Дача / загородный дом", "Таунхаус", "Дом с подвалом", "Дом с участком"] },
-  { Icon: IconCommercial, title: "Коммерческие объекты", desc: "Офисы, рестораны, склады, производства",      price: "от 5 000 ₽", items: ["Офис / бизнес-центр", "Ресторан / кафе", "Склад / производство", "Гостиница / хостел", "Медицинское учреждение"] },
+  { Icon: IconApartment,  title: "Квартиры",             items: ["Однокомнатная квартира", "Двухкомнатная квартира", "Трёхкомнатная квартира", "Студия / комната", "Коммунальная квартира"],  price: "от 1 500 ₽" },
+  { Icon: IconHouse,      title: "Частные дома",         items: ["Коттедж до 150 м²", "Дача / загородный дом", "Таунхаус", "Дом с подвалом", "Дом с участком"],                              price: "от 3 500 ₽" },
+  { Icon: IconCommercial, title: "Коммерческие объекты", items: ["Офис / бизнес-центр", "Ресторан / кафе", "Склад / производство", "Гостиница / хостел", "Медицинское учреждение"],          price: "от 5 000 ₽" },
 ];
 
 const steps = [
@@ -52,6 +50,12 @@ const steps = [
   { n: "03", title: "Договор и гарантия",  desc: "Заключаем официальный договор с гарантийными обязательствами." },
   { n: "04", title: "Обработка",           desc: "Профессиональная обработка сертифицированными препаратами." },
   { n: "05", title: "Контроль результата", desc: "Проверяем эффективность. Повторная обработка — бесплатно." },
+];
+
+const reviews = [
+  { name: "Анна К.",      date: "Февраль 2025",  text: "Обратились с проблемой клопов. Приехали в тот же день, сделали горячий туман. Через неделю ни одного клопа. Гарантия 3 года — это реально работает.", stars: 5, service: "Уничтожение клопов" },
+  { name: "Михаил Р.",    date: "Январь 2025",   text: "Тараканы в ресторане — кошмар. Ребята приехали ночью, обработали всё быстро и без запаха. Уже 4 месяца чисто. Рекомендую!", stars: 5, service: "Уничтожение тараканов" },
+  { name: "Светлана Д.",  date: "Декабрь 2024",  text: "Плесень в ванной и на кухне. Убрали полностью, дали гарантию 2 года. Специалист объяснил причины и как предотвратить повторное появление.", stars: 5, service: "Удаление плесени" },
 ];
 
 const faqs = [
@@ -69,12 +73,22 @@ function useReveal() {
     if (!el) return;
     const obs = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) { el.classList.add("visible"); obs.disconnect(); } },
-      { threshold: 0.1 }
+      { threshold: 0.08 }
     );
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
   return ref;
+}
+
+// ─── SECTION LABEL ────────────────────────────────────────────────────────────
+function SectionLabel({ text }: { text: string }) {
+  return (
+    <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem" }}>
+      <div style={{ width: 28, height: 3, background: RED, borderRadius: 2 }} />
+      <span style={{ fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase" as const, color: RED }}>{text}</span>
+    </div>
+  );
 }
 
 // ─── MAIN COMPONENT ──────────────────────────────────────────────────────────
@@ -99,53 +113,71 @@ export default function Home() {
   const refSteps      = useReveal();
   const refObjects    = useReveal();
   const refAdvantages = useReveal();
+  const refReviews    = useReveal();
   const refFaq        = useReveal();
 
   return (
-    <div style={{ fontFamily: "'Inter', 'Helvetica Neue', sans-serif", background: WHITE }}>
+    <div style={{ fontFamily: "'Inter', 'Helvetica Neue', sans-serif", background: WHITE, overflowX: "hidden" }}>
 
-      {/* ── HERO ──────────────────────────────────────────────────────────── */}
+      {/* ═══════════════════════════════════════════════════════════════════
+          HERO — 3 columns: text | specialist | form
+      ═══════════════════════════════════════════════════════════════════ */}
       <section style={{
-        minHeight: "92vh", display: "flex", alignItems: "center", position: "relative",
-        background: NAVY, overflow: "hidden", isolation: "isolate",
+        background: NAVY, position: "relative", overflow: "visible",
+        paddingBottom: "0",
       }}>
-        {/* Grid lines background */}
+        {/* Grid background */}
         <div style={{
           position: "absolute", inset: 0, pointerEvents: "none",
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)`,
-          backgroundSize: "60px 60px",
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)`,
+          backgroundSize: "64px 64px",
         }} />
-        {/* Red top accent line */}
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: `linear-gradient(90deg, ${RED} 0%, rgba(204,0,0,0.4) 60%, transparent 100%)`, zIndex: 2 }} />
-        {/* Decorative geometry */}
-        <div style={{ position: "absolute", top: "5%", left: "-8%", width: 400, height: 400, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.03)", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", top: "15%", left: "2%", width: 200, height: 200, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.04)", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", bottom: "10%", left: "5%", width: 120, height: 120, borderRadius: "50%", border: `1px solid rgba(204,0,0,0.1)`, pointerEvents: "none" }} />
-        {/* Diagonal accent at bottom */}
-        <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "80px", background: `linear-gradient(to bottom right, transparent 49.9%, ${WHITE} 50%)`, pointerEvents: "none" }} />
+        {/* Red top accent */}
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${RED} 0%, rgba(204,0,0,0.3) 70%, transparent 100%)`, zIndex: 2 }} />
 
-        <div className="container" style={{ position: "relative", zIndex: 1, paddingTop: "7rem", paddingBottom: "7rem" }}>
-          {/* 2-column grid: text left, specialist+form right */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 420px", gap: "2.5rem", alignItems: "center" }}>
+        {/* Decorative circles — left side only */}
+        <div style={{ position: "absolute", top: "8%", left: "-6%", width: 360, height: 360, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.03)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", top: "20%", left: "4%", width: 180, height: 180, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.04)", pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: "15%", left: "8%", width: 100, height: 100, borderRadius: "50%", border: `1px solid rgba(204,0,0,0.12)`, pointerEvents: "none" }} />
 
-            {/* ── LEFT: text ── */}
-            <div>
-              <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", marginBottom: "1.75rem", padding: "0.4rem 1rem", border: `1px solid rgba(204,0,0,0.4)`, borderRadius: 2 }}>
-                <div style={{ width: 6, height: 6, borderRadius: "50%", background: RED, animation: "pulse-red 2s infinite" }} />
-                <span style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: RED }}>Лицензированная санитарная служба</span>
+        <div className="container" style={{ position: "relative", zIndex: 1 }}>
+          {/* 3-column grid */}
+          <div className="hero-grid" style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 350px 320px",
+            gap: "0",
+            alignItems: "stretch",
+            width: "100%",
+            paddingTop: "2rem",
+            paddingBottom: "0",
+          }}>
+
+            {/* -- COL 1: Text -- */}
+            <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", paddingRight: "2.5rem" }}>
+              {/* Badge */}
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", marginBottom: "1.75rem", padding: "0.4rem 1rem", border: `1px solid rgba(204,0,0,0.4)`, borderRadius: 2, width: "fit-content" }}>
+                <div style={{ width: 6, height: 6, borderRadius: "50%", background: RED, flexShrink: 0 }} />
+                <span style={{ fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase" as const, color: RED }}>Лицензированная санитарная служба</span>
               </div>
-              <h1 style={{ fontSize: "clamp(2.6rem, 5.5vw, 4.2rem)", fontWeight: 900, lineHeight: 1.06, letterSpacing: "-0.03em", color: WHITE, marginBottom: "1.5rem", maxWidth: 660 }}>
-                Профессиональная<br /><span style={{ color: RED }}>дезинсекция</span> и<br />дезинфекция
+
+              {/* H1 */}
+              <h1 style={{ fontSize: "clamp(2.4rem, 4.5vw, 3.8rem)", fontWeight: 900, lineHeight: 1.06, letterSpacing: "-0.03em", color: WHITE, marginBottom: "1.25rem" }}>
+                Профессиональная<br /><span style={{ color: RED }}>дезинсекция</span><br />и дезинфекция
               </h1>
-              <p style={{ fontSize: "clamp(1rem, 1.5vw, 1.15rem)", color: "rgba(255,255,255,0.7)", lineHeight: 1.7, marginBottom: "2.5rem", maxWidth: 520 }}>
+
+              {/* Subtitle */}
+              <p style={{ fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)", color: "rgba(255,255,255,0.65)", lineHeight: 1.75, marginBottom: "2rem", maxWidth: 460 }}>
                 Уничтожение клопов, тараканов, грызунов и плесени.<br />
-                Обработка без запаха. Холодный туман от 1 500 ₽. Гарантия до 3 лет.
+                Обработка без запаха. Холодный туман от 1 500 ₽.<br />
+                Гарантия до 3 лет. Выезд в день обращения.
               </p>
-              <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginBottom: "3.5rem" }}>
+
+              {/* CTA Buttons */}
+              <div style={{ display: "flex", gap: "0.875rem", flexWrap: "wrap" as const, marginBottom: "2.5rem" }}>
                 <Link href="/calculator" style={{
                   display: "inline-flex", alignItems: "center", gap: "0.5rem",
-                  background: RED, color: WHITE, fontWeight: 800, fontSize: "0.88rem",
-                  letterSpacing: "0.06em", textTransform: "uppercase", padding: "0.9rem 1.75rem",
+                  background: RED, color: WHITE, fontWeight: 800, fontSize: "0.85rem",
+                  letterSpacing: "0.07em", textTransform: "uppercase" as const, padding: "0.875rem 1.75rem",
                   borderRadius: 2, textDecoration: "none", transition: "background 0.2s",
                 }}
                   onMouseEnter={e => (e.currentTarget.style.background = RED_DARK)}
@@ -154,441 +186,498 @@ export default function Home() {
                 </Link>
                 <a href="tel:+74955550000" style={{
                   display: "inline-flex", alignItems: "center", gap: "0.5rem",
-                  background: "transparent", color: WHITE, fontWeight: 700, fontSize: "0.88rem",
-                  letterSpacing: "0.06em", textTransform: "uppercase", padding: "0.9rem 1.75rem",
-                  border: "1px solid rgba(255,255,255,0.3)", borderRadius: 2, textDecoration: "none",
+                  background: "transparent", color: WHITE, fontWeight: 700, fontSize: "0.85rem",
+                  letterSpacing: "0.07em", textTransform: "uppercase" as const, padding: "0.875rem 1.75rem",
+                  border: "1px solid rgba(255,255,255,0.28)", borderRadius: 2, textDecoration: "none",
                   transition: "border-color 0.2s",
                 }}
-                  onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.7)")}
-                  onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.3)")}>
+                  onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.65)")}
+                  onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.28)")}>
                   ☎ Позвонить
                 </a>
               </div>
-              {/* Trust stats */}
-              <div style={{ display: "flex", gap: "0", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "2rem" }}>
+
+              {/* Stats */}
+              <div style={{ display: "flex", gap: "0", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "1.75rem" }}>
                 {[
-                  { n: "15+", label: "лет на рынке" },
+                  { n: "15+",     label: "лет на рынке" },
                   { n: "12 000+", label: "обработок" },
-                  { n: "3 года", label: "макс. гарантия" },
-                  { n: "24/7", label: "выезд" },
+                  { n: "3 года",  label: "макс. гарантия" },
+                  { n: "24/7",    label: "выезд" },
                 ].map((s, i) => (
-                  <div key={i} style={{ flex: 1, paddingRight: "1.5rem", borderRight: i < 3 ? "1px solid rgba(255,255,255,0.08)" : "none", marginRight: i < 3 ? "1.5rem" : 0 }}>
-                    <div style={{ fontSize: "1.75rem", fontWeight: 900, color: WHITE, letterSpacing: "-0.04em", lineHeight: 1 }}>{s.n}</div>
-                    <div style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.45)", marginTop: "0.3rem", textTransform: "uppercase", letterSpacing: "0.08em" }}>{s.label}</div>
+                  <div key={i} style={{
+                    flex: 1,
+                    paddingRight: i < 3 ? "1.25rem" : 0,
+                    borderRight: i < 3 ? "1px solid rgba(255,255,255,0.08)" : "none",
+                    marginRight: i < 3 ? "1.25rem" : 0,
+                  }}>
+                    <div style={{ fontSize: "1.6rem", fontWeight: 900, color: WHITE, letterSpacing: "-0.04em", lineHeight: 1 }}>{s.n}</div>
+                    <div style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.4)", marginTop: "0.25rem", textTransform: "uppercase" as const, letterSpacing: "0.08em" }}>{s.label}</div>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* ── RIGHT: specialist image + form ── */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
-              {/* Specialist PNG */}
-              <div style={{ position: "relative", textAlign: "center", marginBottom: "-2px" }}>
-                <div style={{ position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "80%", height: "50%", background: "radial-gradient(ellipse at bottom, rgba(204,0,0,0.1) 0%, transparent 70%)", pointerEvents: "none" }} />
-                <img
-                  src="/specialist-hero.png"
-                  alt="Специалист по дезинфекции"
-                  style={{
-                    display: "block",
-                    margin: "0 auto",
-                    height: "380px",
-                    width: "auto",
-                    maxWidth: "100%",
-                    objectFit: "contain",
-                    objectPosition: "bottom center",
-                    filter: "drop-shadow(0 -4px 20px rgba(0,0,0,0.5))",
-                    position: "relative",
-                    zIndex: 1,
-                  }}
-                />
-              </div>
-              {/* Form */}
+            {/* -- COL 2: Specialist PNG -- */}
+            <div style={{ position: "relative", display: "flex", alignItems: "flex-end", justifyContent: "center", overflow: "visible", paddingBottom: 0 }}>
+              {/* Glow under specialist */}
               <div style={{
-                background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)",
-                backdropFilter: "blur(16px)", padding: "2.25rem", borderRadius: 4,
+                position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)",
+                width: "80%", height: "35%",
+                background: "radial-gradient(ellipse at bottom, rgba(204,0,0,0.3) 0%, transparent 70%)",
+                pointerEvents: "none",
+              }} />
+              <img
+                src="https://private-us-east-1.manuscdn.com/user_upload_by_module/session_file/310519663313765274/UFINdHHtxHGysndP.png?Expires=1804422062&Signature=u0MTJy3YHsjmCqoQkeIPrzBX~YHIPNIjmP5UeLC4Nrh3K1b2s3QvWPbyZal~1lpU7OVRoV8t3GFB9nogGvLMYShPmwCQiH-wDQedFmZGckNuD~V1OddaCyT5ggeJbu-aGVk2qS8-i~YXtJ8xFatH1X8F4HPo3Ty2b0yWJV9xyUUI8x6~wZ78gQRgGQ5VIVa7YpBZgjbI9twPNWdMatxwQkkXXWmveylLCcUh3rT0c7gKrDUxZO3pOH4QTtM-GXhexkCyNGt90JWCmz25SjOYrMc5h1MxI3dENFFIf5zyOFMOXCEjjXkrqDYD87Qj~dSLl7Q0RSDvYdOT5VKiOyrMYQ__&Key-Pair-Id=K2HSFNDJXOU9YS"
+                alt="Специалист по дезинфекции"
+                loading="eager"
+                style={{
+                  display: "block",
+                  width: "100%",
+                  maxWidth: 350,
+                  height: "auto",
+                  objectFit: "contain",
+                  objectPosition: "center bottom",
+                  filter: "drop-shadow(0 12px 40px rgba(0,0,0,0.8))",
+                  position: "relative",
+                  zIndex: 1,
+                }}
+              />
+            </div>
+
+            {/* -- COL 3: Lead Form -- */}
+            <div style={{ display: "flex", alignItems: "center", paddingLeft: "2rem" }}>
+              <div style={{
+                width: "100%",
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                backdropFilter: "blur(20px)",
+                padding: "2rem",
+                borderRadius: 4,
                 boxShadow: "0 24px 64px rgba(0,0,0,0.4)",
               }}>
-                <div style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: RED, marginBottom: "0.75rem" }}>Бесплатная консультация</div>
-                <h3 style={{ fontSize: "1.25rem", fontWeight: 800, color: WHITE, marginBottom: "1.75rem", lineHeight: 1.3 }}>Оставьте заявку —<br />перезвоним за 5 минут</h3>
+                <div style={{ fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: RED, marginBottom: "0.6rem" }}>Бесплатная консультация</div>
+                <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: WHITE, marginBottom: "1.5rem", lineHeight: 1.35 }}>
+                  Оставьте заявку —<br />перезвоним за 5 минут
+                </h3>
+
                 {submitted ? (
-                  <div style={{ textAlign: "center", padding: "2.5rem 0" }}>
-                    <div style={{ width: 56, height: 56, borderRadius: "50%", background: RED, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1rem", fontSize: "1.5rem", color: WHITE }}>✓</div>
-                    <p style={{ color: WHITE, fontWeight: 700, fontSize: "1.1rem" }}>Заявка принята!</p>
-                    <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.875rem", marginTop: "0.5rem" }}>Перезвоним в течение 5 минут</p>
+                  <div style={{ textAlign: "center" as const, padding: "2rem 0" }}>
+                    <div style={{ width: 52, height: 52, borderRadius: "50%", background: RED, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1rem", fontSize: "1.4rem", color: WHITE }}>✓</div>
+                    <p style={{ color: WHITE, fontWeight: 700, fontSize: "1rem" }}>Заявка принята!</p>
+                    <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.82rem", marginTop: "0.4rem" }}>Перезвоним в течение 5 минут</p>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.875rem" }}>
-                    <input className="form-field" placeholder="Ваше имя" value={formData.name} onChange={e => setFormData(p => ({ ...p, name: e.target.value }))} required />
-                    <input className="form-field" type="tel" placeholder="+7 (___) ___-__-__" value={formData.phone} onChange={e => setFormData(p => ({ ...p, phone: e.target.value }))} required />
-                    <select className="form-field" value={formData.service} onChange={e => setFormData(p => ({ ...p, service: e.target.value }))}>
+                  <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                    <input
+                      className="form-field"
+                      placeholder="Ваше имя"
+                      value={formData.name}
+                      onChange={e => setFormData(p => ({ ...p, name: e.target.value }))}
+                      required
+                    />
+                    <input
+                      className="form-field"
+                      type="tel"
+                      placeholder="+7 (___) ___-__-__"
+                      value={formData.phone}
+                      onChange={e => setFormData(p => ({ ...p, phone: e.target.value }))}
+                      required
+                    />
+                    <select
+                      className="form-field"
+                      value={formData.service}
+                      onChange={e => setFormData(p => ({ ...p, service: e.target.value }))}
+                    >
                       <option value="">Выберите услугу</option>
                       {services.map(s => <option key={s.slug} value={s.slug}>{s.title}</option>)}
                     </select>
-                    <button type="submit" style={{
-                      width: "100%", background: RED, color: WHITE, fontWeight: 800, fontSize: "0.88rem",
-                      letterSpacing: "0.06em", textTransform: "uppercase", padding: "0.95rem 1.5rem",
-                      border: "none", borderRadius: 2, cursor: "pointer", transition: "background 0.2s",
-                    }}
+                    <button
+                      type="submit"
                       disabled={createLead.isPending}
+                      style={{
+                        width: "100%", background: RED, color: WHITE, fontWeight: 800, fontSize: "0.85rem",
+                        letterSpacing: "0.06em", textTransform: "uppercase" as const, padding: "0.9rem 1.5rem",
+                        border: "none", borderRadius: 2, cursor: "pointer", transition: "background 0.2s",
+                        marginTop: "0.25rem",
+                      }}
                       onMouseEnter={e => (e.currentTarget.style.background = RED_DARK)}
-                      onMouseLeave={e => (e.currentTarget.style.background = RED)}>
+                      onMouseLeave={e => (e.currentTarget.style.background = RED)}
+                    >
                       {createLead.isPending ? "Отправка..." : "Получить консультацию →"}
                     </button>
-                    <p style={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.35)", textAlign: "center" }}>Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности</p>
+                    <p style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.3)", textAlign: "center" as const }}>
+                      Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности
+                    </p>
                   </form>
                 )}
+
+                {/* Trust icons */}
+                <div style={{ marginTop: "1.5rem", paddingTop: "1.25rem", borderTop: "1px solid rgba(255,255,255,0.08)", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                  {["Лицензия СЭС", "Официальный договор", "Гарантия в письменном виде"].map((t, i) => (
+                    <div key={i} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                      <span style={{ color: RED, fontWeight: 700, fontSize: "0.75rem", flexShrink: 0 }}>✓</span>
+                      <span style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.55)" }}>{t}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
           </div>
         </div>
       </section>
-            {/* ── TRUST BAR ─────────────────────────────────────────────────────── */}
+
+      {/* ═══════════════════════════════════════════════════════════════════
+          TRUST BAR
+      ═══════════════════════════════════════════════════════════════════ */}
       <div style={{ background: NAVY_MID, borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
         <div className="container" style={{ padding: "0.875rem 0" }}>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "0", justifyContent: "space-between", alignItems: "center" }}>
+          <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "0.25rem", justifyContent: "space-between", alignItems: "center" }}>
             {[
-              { icon: "✓", text: "Лицензия СЭС" },
-              { icon: "✓", text: "Сертифицированные препараты" },
-              { icon: "✓", text: "Официальный договор" },
-              { icon: "✓", text: "Гарантия в письменном виде" },
-              { icon: "✓", text: "Выезд в день обращения" },
+              "✓ Лицензия СЭС",
+              "✓ Сертифицированные препараты",
+              "✓ Официальный договор",
+              "✓ Гарантия в письменном виде",
+              "✓ Выезд в день обращения",
             ].map((t, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: "0.4rem", padding: "0.25rem 0.75rem" }}>
-                <span style={{ color: RED, fontWeight: 700, fontSize: "0.8rem" }}>{t.icon}</span>
-                <span style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.75)", fontWeight: 500, letterSpacing: "0.02em" }}>{t.text}</span>
-              </div>
+              <span key={i} style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.7)", fontWeight: 500, padding: "0.25rem 0.75rem", letterSpacing: "0.02em" }}>{t}</span>
             ))}
           </div>
         </div>
       </div>
 
-      {/* ── SERVICES ──────────────────────────────────────────────────────── */}
-      <section style={{ padding: "6rem 0", background: WHITE }}>
+      {/* ═══════════════════════════════════════════════════════════════════
+          SERVICES — 4-column grid
+      ═══════════════════════════════════════════════════════════════════ */}
+      <section style={{ padding: "5rem 0", background: WHITE }}>
         <div className="container">
-          {/* Section header */}
-          <div ref={refServices} className="reveal" style={{ marginBottom: "3.5rem" }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.875rem" }}>
-              <div style={{ width: 32, height: 3, background: RED, borderRadius: 2 }} />
-              <span style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: RED }}>Наши услуги</span>
-            </div>
-            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
-              <h2 style={{ fontSize: "clamp(2rem, 3.5vw, 2.8rem)", fontWeight: 900, color: NAVY_TEXT, letterSpacing: "-0.03em", lineHeight: 1.1 }}>
-                Полный спектр<br />санитарных обработок
-              </h2>
-              <p style={{ color: GRAY_TEXT, fontSize: "1rem", maxWidth: 400, lineHeight: 1.65 }}>
-                Профессиональная дезинсекция, дератизация и дезинфекция для жилых и коммерческих объектов
-              </p>
-            </div>
-          </div>
-
-          {/* Services grid: 4 columns, bold card design */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1.5rem" }}>
-            {services.map((s, i) => (
-              <Link key={s.slug} href={`/services/${s.slug}`} style={{ textDecoration: "none" }}>
-                <div style={{
-                  background: i === 0 ? NAVY : WHITE,
-                  border: `2px solid ${i === 0 ? "transparent" : "#E2E8F0"}`,
-                  borderRadius: 6,
-                  padding: "2rem 1.75rem 1.75rem",
-                  display: "flex", flexDirection: "column", gap: "0",
-                  height: "100%", cursor: "pointer",
-                  transition: "transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease",
-                  position: "relative", overflow: "hidden",
-                  boxShadow: i === 0 ? `0 12px 40px rgba(0,9,25,0.25)` : "0 2px 8px rgba(0,9,25,0.06)",
-                }}
-                  onMouseEnter={e => {
-                    e.currentTarget.style.transform = "translateY(-6px)";
-                    e.currentTarget.style.boxShadow = `0 20px 48px rgba(0,9,25,0.18)`;
-                    e.currentTarget.style.borderColor = RED;
-                    const num = e.currentTarget.querySelector(".svc-num") as HTMLElement;
-                    if (num) num.style.color = RED;
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.transform = "";
-                    e.currentTarget.style.boxShadow = i === 0 ? `0 12px 40px rgba(0,9,25,0.25)` : "0 2px 8px rgba(0,9,25,0.06)";
-                    e.currentTarget.style.borderColor = i === 0 ? "transparent" : "#E2E8F0";
-                    const num = e.currentTarget.querySelector(".svc-num") as HTMLElement;
-                    if (num) num.style.color = i === 0 ? "rgba(255,255,255,0.25)" : "rgba(0,9,25,0.15)";
-                  }}>
-                  {/* Red top stripe on first card */}
-                  {i === 0 && (
-                    <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: RED }} />
-                  )}
-                  {/* Number */}
-                  <div className="svc-num" style={{
-                    fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.14em",
-                    color: i === 0 ? "rgba(255,255,255,0.25)" : "rgba(0,9,25,0.15)",
-                    marginBottom: "1.5rem", transition: "color 0.25s",
-                  }}>
-                    {String(i + 1).padStart(2, "0")}
-                  </div>
-                  {/* Icon */}
-                  <div style={{ marginBottom: "1.25rem" }}>
-                    <s.Icon size={40} />
-                  </div>
-                  {/* Title */}
-                  <h3 style={{
-                    fontSize: "1.05rem", fontWeight: 800, lineHeight: 1.3,
-                    color: i === 0 ? WHITE : NAVY_TEXT,
-                    marginBottom: "0.625rem",
-                  }}>{s.title}</h3>
-                  {/* Desc */}
-                  <p style={{
-                    fontSize: "0.84rem", lineHeight: 1.65, flex: 1,
-                    color: i === 0 ? "rgba(255,255,255,0.6)" : GRAY_TEXT,
-                    marginBottom: "1.5rem",
-                  }}>{s.desc}</p>
-                  {/* Footer */}
-                  <div style={{
-                    display: "flex", alignItems: "center", justifyContent: "space-between",
-                    paddingTop: "1.25rem",
-                    borderTop: `1px solid ${i === 0 ? "rgba(255,255,255,0.12)" : "#E2E8F0"}`,
-                  }}>
-                    <span style={{
-                      fontSize: "1.15rem", fontWeight: 900, letterSpacing: "-0.03em",
-                      color: i === 0 ? WHITE : NAVY_TEXT,
-                    }}>{s.price}</span>
-                    <span style={{ fontSize: "0.78rem", color: RED, fontWeight: 700 }}>Подробнее →</span>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-            {/* ── METHODS (виды обработок) ───────────────────────────────────────── */}
-      <section style={{ padding: "6rem 0", background: NAVY, position: "relative", overflow: "hidden" }}>
-        {/* Subtle grid background */}
-        <div style={{
-          position: "absolute", inset: 0, pointerEvents: "none",
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)`,
-          backgroundSize: "80px 80px",
-        }} />
-        {/* Red corner accent */}
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: `linear-gradient(90deg, ${RED} 0%, rgba(204,0,0,0.3) 60%, transparent 100%)` }} />
-
-        <div className="container" style={{ position: "relative", zIndex: 1 }}>
-          {/* Section header */}
-          <div ref={refMethods} className="reveal" style={{ marginBottom: "3.5rem" }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.875rem" }}>
-              <div style={{ width: 32, height: 3, background: RED, borderRadius: 2 }} />
-              <span style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: RED }}>Методы обработки</span>
-            </div>
-            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
-              <h2 style={{ fontSize: "clamp(2rem, 3.5vw, 2.8rem)", fontWeight: 900, color: WHITE, letterSpacing: "-0.03em", lineHeight: 1.1 }}>
-                Виды санитарных<br />обработок
-              </h2>
-              <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "1rem", maxWidth: 400, lineHeight: 1.65 }}>
-                Выбираем метод в зависимости от типа вредителя, площади и особенностей объекта
-              </p>
-            </div>
-          </div>
-
-          {/* Methods grid: 3×2, bold card design */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1.5rem" }}>
-            {methods.map((m, i) => (
-              <div key={i} style={{
-                background: i === 0 ? "rgba(204,0,0,0.08)" : "rgba(255,255,255,0.04)",
-                border: `1px solid ${i === 0 ? "rgba(204,0,0,0.35)" : "rgba(255,255,255,0.1)"}`,
-                borderRadius: 6,
-                padding: "2.25rem 2rem",
-                position: "relative", overflow: "hidden",
-                transition: "transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease",
-                cursor: "default",
-              }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.transform = "translateY(-4px)";
-                  e.currentTarget.style.background = i === 0 ? "rgba(204,0,0,0.14)" : "rgba(255,255,255,0.09)";
-                  e.currentTarget.style.borderColor = i === 0 ? "rgba(204,0,0,0.6)" : "rgba(255,255,255,0.25)";
-                  e.currentTarget.style.boxShadow = `0 16px 40px rgba(0,0,0,0.3)`;
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.transform = "";
-                  e.currentTarget.style.background = i === 0 ? "rgba(204,0,0,0.08)" : "rgba(255,255,255,0.04)";
-                  e.currentTarget.style.borderColor = i === 0 ? "rgba(204,0,0,0.35)" : "rgba(255,255,255,0.1)";
-                  e.currentTarget.style.boxShadow = "none";
-                }}>
-                {/* Tag badge */}
-                {m.tag && (
-                  <div style={{
-                    position: "absolute", top: "1.25rem", right: "1.25rem",
-                    fontSize: "0.6rem", fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase",
-                    color: WHITE, background: RED,
-                    padding: "0.25rem 0.6rem", borderRadius: 2,
-                  }}>
-                    {m.tag}
-                  </div>
-                )}
-                {/* Number */}
-                <div style={{
-                  fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.14em",
-                  color: i === 0 ? "rgba(255,255,255,0.35)" : "rgba(255,255,255,0.2)",
-                  marginBottom: "1.5rem",
-                }}>
-                  {String(i + 1).padStart(2, "0")}
-                </div>
-                {/* Icon */}
-                <div style={{ marginBottom: "1.25rem" }}>
-                  <m.Icon size={40} />
-                </div>
-                {/* Title */}
-                <h3 style={{
-                  fontSize: "1.05rem", fontWeight: 800, color: WHITE,
-                  marginBottom: "0.625rem", lineHeight: 1.3,
-                }}>{m.title}</h3>
-                {/* Desc */}
-                <p style={{
-                  fontSize: "0.84rem",
-                  color: i === 0 ? "rgba(255,255,255,0.75)" : "rgba(255,255,255,0.55)",
-                  lineHeight: 1.65,
-                }}>{m.desc}</p>
-                {/* Bottom accent line */}
-                <div style={{
-                  position: "absolute", bottom: 0, left: 0, right: 0, height: "3px",
-                  background: i === 0 ? RED : "transparent",
-                  transition: "background 0.25s",
-                }} />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-            {/* ── HOW WE WORK ───────────────────────────────────────────────────── */}
-      <section style={{ padding: "6rem 0", background: GRAY_BG }}>
-        <div className="container">
-          <div ref={refSteps} className="reveal" style={{ marginBottom: "4rem" }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem" }}>
-              <div style={{ width: 24, height: 2, background: RED }} />
-              <span style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: RED }}>Схема работы</span>
-            </div>
-            <h2 style={{ fontSize: "clamp(1.9rem, 3.5vw, 2.6rem)", fontWeight: 900, color: NAVY_TEXT, letterSpacing: "-0.03em" }}>
-              Как мы работаем
+          <div ref={refServices} className="reveal" style={{ marginBottom: "3rem" }}>
+            <SectionLabel text="Услуги" />
+            <h2 style={{ fontSize: "clamp(1.75rem, 3vw, 2.4rem)", fontWeight: 900, color: NAVY_TEXT, letterSpacing: "-0.03em", marginBottom: "0.5rem" }}>
+              Полный спектр санитарных обработок
             </h2>
+            <p style={{ color: GRAY_TEXT, fontSize: "1rem", maxWidth: 540 }}>
+              Профессиональная дезинсекция, дезинфекция и дератизация для жилых и коммерческих объектов
+            </p>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "0", position: "relative" }}>
-            <div style={{ position: "absolute", top: "1.5rem", left: "5%", right: "5%", height: "1px", background: `linear-gradient(90deg, ${RED} 0%, rgba(204,0,0,0.15) 100%)`, zIndex: 0 }} />
-            {steps.map((s, i) => (
-              <div key={i} style={{ position: "relative", zIndex: 1, padding: "0 1rem", textAlign: "center" }}>
-                <div style={{
-                  width: 48, height: 48, borderRadius: "50%", margin: "0 auto 1.5rem",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: "0.8rem", fontWeight: 900, letterSpacing: "0.05em",
-                  background: i === 0 ? RED : WHITE,
-                  color: i === 0 ? WHITE : RED,
-                  border: `2px solid ${i === 0 ? RED : "rgba(204,0,0,0.3)"}`,
-                  boxShadow: i === 0 ? `0 0 0 4px rgba(204,0,0,0.15)` : "none",
-                }}>
-                  {s.n}
-                </div>
-                <h3 style={{ fontSize: "0.875rem", fontWeight: 800, color: NAVY_TEXT, marginBottom: "0.5rem", lineHeight: 1.3 }}>{s.title}</h3>
-                <p style={{ fontSize: "0.78rem", color: GRAY_TEXT, lineHeight: 1.6 }}>{s.desc}</p>
-              </div>
-            ))}
+
+          <div className="services-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1px", background: "#e8ecf2" }}>
+            {services.map((s, i) => {
+              const isFirst = i === 0;
+              return (
+                <Link key={s.slug} href={`/services/${s.slug}`} style={{ textDecoration: "none" }}>
+                  <div
+                    className={`service-card${isFirst ? " service-card--active" : ""}`}
+                    style={{
+                      background: isFirst ? NAVY : WHITE,
+                      padding: "1.75rem 1.5rem",
+                      transition: "all 0.22s ease",
+                      cursor: "pointer",
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "0.75rem",
+                      position: "relative",
+                    }}
+                  >
+                    {isFirst && <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: RED }} />}
+                    <s.Icon size={32} />
+                    <h3 style={{ fontSize: "0.95rem", fontWeight: 800, color: isFirst ? WHITE : NAVY_TEXT, lineHeight: 1.3, margin: 0 }}>{s.title}</h3>
+                    <p style={{ fontSize: "0.8rem", color: isFirst ? "rgba(255,255,255,0.6)" : GRAY_TEXT, lineHeight: 1.6, margin: 0, flex: 1 }}>{s.desc}</p>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "0.25rem" }}>
+                      <span style={{ fontSize: "1rem", fontWeight: 800, color: RED }}>{s.price}</span>
+                      <span style={{ fontSize: "0.7rem", color: isFirst ? "rgba(255,255,255,0.45)" : "#9ca3af" }}>Гарантия {s.guarantee}</span>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* ── OBJECT TYPES ──────────────────────────────────────────────────── */}
-      <section style={{ padding: "6rem 0", background: WHITE }}>
-        <div className="container">
-          <div ref={refObjects} className="reveal" style={{ marginBottom: "3.5rem" }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem" }}>
-              <div style={{ width: 24, height: 2, background: RED }} />
-              <span style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: RED }}>Типы объектов</span>
-            </div>
-            <h2 style={{ fontSize: "clamp(1.9rem, 3.5vw, 2.6rem)", fontWeight: 900, color: NAVY_TEXT, letterSpacing: "-0.03em" }}>
-              Работаем с любыми объектами
-            </h2>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1.5rem" }}>
-            {objectTypes.map((o, i) => (
-              <div key={i} style={{
-                background: i === 1 ? NAVY : WHITE,
-                border: `1px solid ${i === 1 ? "transparent" : "#E8ECF2"}`,
-                borderRadius: 4, padding: "2.5rem 2rem",
-                position: "relative", overflow: "hidden",
-                transition: "transform 0.2s ease, box-shadow 0.2s ease",
-              }}
-                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = i === 1 ? `0 20px 48px rgba(0,9,25,0.5)` : `0 12px 32px rgba(0,9,25,0.1)`; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}>
-                {/* Top accent */}
-                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: RED }} />
-                {/* Icon */}
-                <o.Icon size={48} />
-                <h3 style={{ fontSize: "1.3rem", fontWeight: 800, color: i === 1 ? WHITE : NAVY_TEXT, marginBottom: "0.5rem", marginTop: "1.5rem" }}>{o.title}</h3>
-                <p style={{ fontSize: "0.875rem", color: i === 1 ? "rgba(255,255,255,0.6)" : GRAY_TEXT, lineHeight: 1.65, marginBottom: "1.5rem" }}>{o.desc}</p>
-                {/* List */}
-                <ul style={{ listStyle: "none", padding: 0, margin: "0 0 1.75rem", display: "flex", flexDirection: "column", gap: "0.4rem" }}>
-                  {o.items.map((item, j) => (
-                    <li key={j} style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.82rem", color: i === 1 ? "rgba(255,255,255,0.7)" : GRAY_TEXT }}>
-                      <span style={{ color: RED, fontWeight: 700, fontSize: "0.7rem" }}>—</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "1.25rem", borderTop: `1px solid ${i === 1 ? "rgba(255,255,255,0.1)" : "#E8ECF2"}` }}>
-                  <span style={{ fontSize: "1.5rem", fontWeight: 900, color: i === 1 ? WHITE : NAVY_TEXT, letterSpacing: "-0.03em" }}>{o.price}</span>
-                  <Link href="/calculator" style={{ fontSize: "0.78rem", color: RED, fontWeight: 700, letterSpacing: "0.04em", textDecoration: "none" }}>РАССЧИТАТЬ →</Link>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── ADVANTAGES ────────────────────────────────────────────────────── */}
-      <section style={{ padding: "6rem 0", background: NAVY, position: "relative", overflow: "hidden" }}>
+      {/* ═══════════════════════════════════════════════════════════════════
+          METHODS — 3×2 grid on dark bg
+      ═══════════════════════════════════════════════════════════════════ */}
+      <section style={{ padding: "5rem 0", background: NAVY, position: "relative", overflow: "hidden" }}>
         <div style={{
           position: "absolute", inset: 0, pointerEvents: "none",
           backgroundImage: `linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)`,
-          backgroundSize: "60px 60px",
+          backgroundSize: "64px 64px",
         }} />
         <div className="container" style={{ position: "relative", zIndex: 1 }}>
-          <div ref={refAdvantages} className="reveal" style={{ marginBottom: "3.5rem" }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem" }}>
-              <div style={{ width: 24, height: 2, background: RED }} />
-              <span style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: RED }}>Почему мы</span>
-            </div>
-            <h2 style={{ fontSize: "clamp(1.9rem, 3.5vw, 2.6rem)", fontWeight: 900, color: WHITE, letterSpacing: "-0.03em" }}>
-              Наши преимущества
+          <div ref={refMethods} className="reveal" style={{ marginBottom: "3rem" }}>
+            <SectionLabel text="Методы" />
+            <h2 style={{ fontSize: "clamp(1.75rem, 3vw, 2.4rem)", fontWeight: 900, color: WHITE, letterSpacing: "-0.03em", marginBottom: "0.5rem" }}>
+              Виды санитарных обработок
             </h2>
+            <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "1rem", maxWidth: 540 }}>
+              Подбираем метод под конкретную задачу и тип объекта
+            </p>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1px", background: "rgba(255,255,255,0.06)" }}>
-            {[
-              { Icon: IconGuarantee,  title: "Гарантия до 3 лет",      desc: "Официальный гарантийный талон на каждый вид работ",        num: "3 года" },
-              { Icon: IconSpecialist, title: "Выезд в день обращения",  desc: "Специалист приедет в удобное для вас время. Без предоплаты", num: "24/7" },
-              { Icon: IconCalculator, title: "Фиксированные цены",      desc: "Стоимость указана в договоре и не меняется после выезда",   num: "0%" },
-              { Icon: IconColdFog,    title: "Безопасные препараты",    desc: "Сертифицированные средства, одобренные Роспотребнадзором",  num: "100%" },
-            ].map((a, i) => (
+
+          <div className="methods-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1px", background: "rgba(255,255,255,0.06)" }}>
+            {methods.map((m, i) => (
               <div key={i} style={{
-                padding: "2.5rem 2rem", background: "rgba(255,255,255,0.025)",
-                transition: "background 0.2s ease", position: "relative",
+                padding: "2rem 1.75rem",
+                background: i === 0 ? "rgba(204,0,0,0.12)" : "rgba(255,255,255,0.02)",
+                transition: "background 0.2s",
+                position: "relative",
               }}
-                onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.07)")}
-                onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.025)")}>
-                <div style={{ fontSize: "2.8rem", fontWeight: 900, color: RED, letterSpacing: "-0.04em", lineHeight: 1, marginBottom: "1.25rem", fontVariantNumeric: "tabular-nums" }}>{a.num}</div>
-                <a.Icon size={36} />
-                <h3 style={{ fontSize: "1rem", fontWeight: 800, color: WHITE, marginBottom: "0.5rem", marginTop: "1rem" }}>{a.title}</h3>
-                <p style={{ fontSize: "0.84rem", color: "rgba(255,255,255,0.5)", lineHeight: 1.65 }}>{a.desc}</p>
-                {/* Bottom line accent */}
-                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "2px", background: i === 0 ? RED : "transparent" }} />
+                onMouseEnter={e => (e.currentTarget.style.background = i === 0 ? "rgba(204,0,0,0.2)" : "rgba(255,255,255,0.06)")}
+                onMouseLeave={e => (e.currentTarget.style.background = i === 0 ? "rgba(204,0,0,0.12)" : "rgba(255,255,255,0.02)")}
+              >
+                <div style={{ position: "absolute", left: 0, top: "1.5rem", bottom: "1.5rem", width: 3, background: i === 0 ? RED : "rgba(204,0,0,0.3)", borderRadius: "0 2px 2px 0" }} />
+                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: "1rem" }}>
+                  <m.Icon size={28} />
+                  {m.tag && (
+                    <span style={{ fontSize: "0.6rem", fontWeight: 800, letterSpacing: "0.12em", background: RED, color: WHITE, padding: "0.2rem 0.55rem", borderRadius: 2 }}>{m.tag}</span>
+                  )}
+                </div>
+                <h3 style={{ fontSize: "0.95rem", fontWeight: 800, color: WHITE, marginBottom: "0.5rem", lineHeight: 1.3 }}>{m.title}</h3>
+                <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.5)", lineHeight: 1.65, margin: 0 }}>{m.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── FAQ ───────────────────────────────────────────────────────────── */}
-      <section style={{ padding: "6rem 0", background: WHITE }}>
+      {/* ═══════════════════════════════════════════════════════════════════
+          OBJECT TYPES
+      ═══════════════════════════════════════════════════════════════════ */}
+      <section style={{ padding: "5rem 0", background: "#f8f9fc" }}>
         <div className="container">
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6rem", alignItems: "start" }}>
-            <div ref={refFaq} className="reveal-left">
-              <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem" }}>
-                <div style={{ width: 24, height: 2, background: RED }} />
-                <span style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: RED }}>FAQ</span>
+          <div ref={refObjects} className="reveal" style={{ marginBottom: "3rem" }}>
+            <SectionLabel text="Объекты" />
+            <h2 style={{ fontSize: "clamp(1.75rem, 3vw, 2.4rem)", fontWeight: 900, color: NAVY_TEXT, letterSpacing: "-0.03em" }}>
+              Типы обрабатываемых объектов
+            </h2>
+          </div>
+          <div className="objects-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1.5rem" }}>
+            {objectTypes.map((o, i) => (
+              <div key={i} style={{
+                background: WHITE, border: "1px solid #e8ecf2",
+                borderRadius: 4, overflow: "hidden",
+                transition: "box-shadow 0.2s, transform 0.2s",
+              }}
+                onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,9,25,0.1)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+                onMouseLeave={e => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "translateY(0)"; }}
+              >
+                <div style={{ background: i === 1 ? NAVY : "#f0f4ff", padding: "1.5rem 1.75rem", borderBottom: "1px solid #e8ecf2", display: "flex", alignItems: "center", gap: "1rem" }}>
+                  <o.Icon size={32} />
+                  <div>
+                    <h3 style={{ fontSize: "1.05rem", fontWeight: 800, color: i === 1 ? WHITE : NAVY_TEXT, margin: 0 }}>{o.title}</h3>
+                    <span style={{ fontSize: "0.8rem", fontWeight: 700, color: RED }}>{o.price}</span>
+                  </div>
+                </div>
+                <div style={{ padding: "1.25rem 1.75rem" }}>
+                  {o.items.map((item, j) => (
+                    <div key={j} style={{ display: "flex", alignItems: "center", gap: "0.6rem", padding: "0.45rem 0", borderBottom: j < o.items.length - 1 ? "1px solid #f0f4ff" : "none" }}>
+                      <div style={{ width: 5, height: 5, borderRadius: "50%", background: RED, flexShrink: 0 }} />
+                      <span style={{ fontSize: "0.85rem", color: GRAY_TEXT }}>{item}</span>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ padding: "0 1.75rem 1.5rem" }}>
+                  <Link href="/calculator" style={{
+                    display: "block", textAlign: "center" as const, background: i === 1 ? RED : "transparent",
+                    color: i === 1 ? WHITE : RED, border: `1px solid ${RED}`,
+                    fontWeight: 700, fontSize: "0.8rem", letterSpacing: "0.06em", textTransform: "uppercase" as const,
+                    padding: "0.7rem", borderRadius: 2, textDecoration: "none", transition: "all 0.2s",
+                  }}>
+                    Рассчитать стоимость →
+                  </Link>
+                </div>
               </div>
-              <h2 style={{ fontSize: "clamp(1.9rem, 3.5vw, 2.6rem)", fontWeight: 900, color: NAVY_TEXT, letterSpacing: "-0.03em", marginBottom: "1.25rem" }}>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════════════════
+          PROCESS — 5 steps
+      ═══════════════════════════════════════════════════════════════════ */}
+      <section style={{ padding: "5rem 0", background: WHITE }}>
+        <div className="container">
+          <div ref={refSteps} className="reveal" style={{ marginBottom: "3rem" }}>
+            <SectionLabel text="Процесс" />
+            <h2 style={{ fontSize: "clamp(1.75rem, 3vw, 2.4rem)", fontWeight: 900, color: NAVY_TEXT, letterSpacing: "-0.03em" }}>
+              Как мы работаем
+            </h2>
+          </div>
+          <div className="steps-grid" style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "0", position: "relative" }}>
+            <div style={{ position: "absolute", top: "1.35rem", left: "10%", right: "10%", height: 1, background: "linear-gradient(90deg, transparent, #e8ecf2 10%, #e8ecf2 90%, transparent)", zIndex: 0 }} />
+            {steps.map((s, i) => (
+              <div key={i} style={{ padding: "0 1rem", textAlign: "center" as const, position: "relative", zIndex: 1 }}>
+                <div style={{
+                  width: 44, height: 44, borderRadius: "50%",
+                  background: i === 0 ? RED : WHITE,
+                  border: `2px solid ${i === 0 ? RED : "#e8ecf2"}`,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  margin: "0 auto 1.25rem",
+                  fontSize: "0.75rem", fontWeight: 800, color: i === 0 ? WHITE : NAVY_TEXT,
+                  letterSpacing: "0.04em",
+                }}>
+                  {s.n}
+                </div>
+                <h3 style={{ fontSize: "0.85rem", fontWeight: 800, color: NAVY_TEXT, marginBottom: "0.5rem", lineHeight: 1.3 }}>{s.title}</h3>
+                <p style={{ fontSize: "0.75rem", color: GRAY_TEXT, lineHeight: 1.65, margin: 0 }}>{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════════════════
+          ADVANTAGES — 4 columns on dark bg
+      ═══════════════════════════════════════════════════════════════════ */}
+      <section style={{ padding: "5rem 0", background: NAVY, position: "relative", overflow: "hidden" }}>
+        <div style={{
+          position: "absolute", inset: 0, pointerEvents: "none",
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)`,
+          backgroundSize: "64px 64px",
+        }} />
+        <div className="container" style={{ position: "relative", zIndex: 1 }}>
+          <div ref={refAdvantages} className="reveal" style={{ marginBottom: "3rem" }}>
+            <SectionLabel text="Почему мы" />
+            <h2 style={{ fontSize: "clamp(1.75rem, 3vw, 2.4rem)", fontWeight: 900, color: WHITE, letterSpacing: "-0.03em" }}>
+              Наши преимущества
+            </h2>
+          </div>
+          <div className="advantages-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1px", background: "rgba(255,255,255,0.06)" }}>
+            {[
+              { Icon: IconGuarantee,  title: "Гарантия до 3 лет",      desc: "Официальный гарантийный талон на каждый вид работ",         num: "3 года" },
+              { Icon: IconSpecialist, title: "Выезд в день обращения",  desc: "Специалист приедет в удобное для вас время. Без предоплаты", num: "24/7" },
+              { Icon: IconCalculator, title: "Фиксированные цены",      desc: "Стоимость указана в договоре и не меняется после выезда",    num: "0%" },
+              { Icon: IconColdFog,    title: "Безопасные препараты",    desc: "Сертифицированные средства, одобренные Роспотребнадзором",   num: "100%" },
+            ].map((a, i) => (
+              <div key={i} style={{
+                padding: "2.25rem 1.75rem",
+                background: i === 0 ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.025)",
+                transition: "background 0.2s",
+                position: "relative",
+              }}
+                onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.07)")}
+                onMouseLeave={e => (e.currentTarget.style.background = i === 0 ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.025)")}
+              >
+                <div style={{ fontSize: "2.5rem", fontWeight: 900, color: RED, letterSpacing: "-0.04em", lineHeight: 1, marginBottom: "1rem" }}>{a.num}</div>
+                <a.Icon size={28} />
+                <h3 style={{ fontSize: "0.95rem", fontWeight: 800, color: WHITE, marginBottom: "0.4rem", marginTop: "0.875rem" }}>{a.title}</h3>
+                <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.45)", lineHeight: 1.65, margin: 0 }}>{a.desc}</p>
+                {i === 0 && <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 2, background: RED }} />}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════════════════
+          REVIEWS
+      ═══════════════════════════════════════════════════════════════════ */}
+      <section style={{ padding: "5rem 0", background: "#f8f9fc" }}>
+        <div className="container">
+          <div ref={refReviews} className="reveal" style={{ marginBottom: "3rem" }}>
+            <SectionLabel text="Отзывы" />
+            <h2 style={{ fontSize: "clamp(1.75rem, 3vw, 2.4rem)", fontWeight: 900, color: NAVY_TEXT, letterSpacing: "-0.03em" }}>
+              Что говорят наши клиенты
+            </h2>
+          </div>
+          <div className="reviews-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1.5rem" }}>
+            {reviews.map((r, i) => (
+              <div key={i} style={{
+                background: WHITE, border: "1px solid #e8ecf2", borderRadius: 4,
+                padding: "1.75rem", display: "flex", flexDirection: "column", gap: "1rem",
+                transition: "box-shadow 0.2s",
+              }}
+                onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,9,25,0.08)")}
+                onMouseLeave={e => (e.currentTarget.style.boxShadow = "none")}
+              >
+                <div style={{ display: "flex", gap: "0.2rem" }}>
+                  {Array.from({ length: r.stars }).map((_, j) => (
+                    <span key={j} style={{ color: RED, fontSize: "0.9rem" }}>★</span>
+                  ))}
+                </div>
+                <span style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: RED, background: "rgba(204,0,0,0.06)", padding: "0.2rem 0.6rem", borderRadius: 2, width: "fit-content" }}>{r.service}</span>
+                <p style={{ fontSize: "0.88rem", color: GRAY_TEXT, lineHeight: 1.7, margin: 0, flex: 1 }}>"{r.text}"</p>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", paddingTop: "0.75rem", borderTop: "1px solid #f0f4ff" }}>
+                  <div style={{ width: 36, height: 36, borderRadius: "50%", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem", fontWeight: 800, color: WHITE, flexShrink: 0 }}>
+                    {r.name[0]}
+                  </div>
+                  <div>
+                    <div style={{ fontSize: "0.85rem", fontWeight: 700, color: NAVY_TEXT }}>{r.name}</div>
+                    <div style={{ fontSize: "0.72rem", color: "#9ca3af" }}>{r.date}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════════════════
+          GUARANTEES + CTA
+      ═══════════════════════════════════════════════════════════════════ */}
+      <section style={{ padding: "5rem 0", background: WHITE }}>
+        <div className="container">
+          <div className="guarantee-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "5rem", alignItems: "center" }}>
+            <div>
+              <SectionLabel text="Гарантии" />
+              <h2 style={{ fontSize: "clamp(1.75rem, 3vw, 2.4rem)", fontWeight: 900, color: NAVY_TEXT, letterSpacing: "-0.03em", marginBottom: "1.25rem" }}>
+                Работаем с официальной гарантией
+              </h2>
+              <p style={{ color: GRAY_TEXT, lineHeight: 1.75, marginBottom: "2rem" }}>
+                На каждый вид работ выдаём официальный договор и гарантийный талон. Если результат не достигнут — повторная обработка бесплатно.
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                {[
+                  { service: "Уничтожение клопов",    period: "3 года" },
+                  { service: "Уничтожение тараканов", period: "1 год" },
+                  { service: "Уничтожение грызунов",  period: "6 месяцев" },
+                  { service: "Удаление плесени",      period: "2 года" },
+                ].map((g, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0.875rem 1.25rem", background: "#f8f9fc", borderRadius: 2, border: "1px solid #e8ecf2" }}>
+                    <span style={{ fontSize: "0.88rem", fontWeight: 600, color: NAVY_TEXT }}>{g.service}</span>
+                    <span style={{ fontSize: "0.88rem", fontWeight: 800, color: RED }}>{g.period}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* Right: CTA card */}
+            <div style={{ background: NAVY, borderRadius: 4, padding: "3rem", position: "relative", overflow: "hidden" }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: RED }} />
+              <div style={{ position: "absolute", bottom: "-20%", right: "-10%", width: 200, height: 200, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.04)", pointerEvents: "none" }} />
+              <div style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase" as const, color: RED, marginBottom: "1rem" }}>Получить консультацию</div>
+              <h3 style={{ fontSize: "1.5rem", fontWeight: 900, color: WHITE, marginBottom: "1rem", lineHeight: 1.3 }}>
+                Бесплатный выезд специалиста
+              </h3>
+              <p style={{ color: "rgba(255,255,255,0.55)", lineHeight: 1.7, marginBottom: "2rem", fontSize: "0.9rem" }}>
+                Специалист приедет, оценит объём работ и назовёт точную стоимость. Без предоплаты.
+              </p>
+              <a href="tel:+74955550000" style={{
+                display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem",
+                background: RED, color: WHITE, fontWeight: 800, fontSize: "0.85rem",
+                letterSpacing: "0.07em", textTransform: "uppercase" as const, padding: "1rem 1.75rem",
+                borderRadius: 2, textDecoration: "none", transition: "background 0.2s",
+              }}
+                onMouseEnter={e => (e.currentTarget.style.background = RED_DARK)}
+                onMouseLeave={e => (e.currentTarget.style.background = RED)}>
+                ☎ Позвонить бесплатно
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════════════════
+          FAQ
+      ═══════════════════════════════════════════════════════════════════ */}
+      <section style={{ padding: "5rem 0", background: "#f8f9fc" }}>
+        <div className="container">
+          <div className="faq-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "5rem", alignItems: "start" }}>
+            <div ref={refFaq} className="reveal">
+              <SectionLabel text="FAQ" />
+              <h2 style={{ fontSize: "clamp(1.75rem, 3vw, 2.4rem)", fontWeight: 900, color: NAVY_TEXT, letterSpacing: "-0.03em", marginBottom: "1rem" }}>
                 Часто задаваемые вопросы
               </h2>
               <p style={{ color: GRAY_TEXT, lineHeight: 1.7, marginBottom: "2rem" }}>
@@ -596,8 +685,8 @@ export default function Home() {
               </p>
               <a href="tel:+74955550000" style={{
                 display: "inline-flex", alignItems: "center", gap: "0.5rem",
-                background: RED, color: WHITE, fontWeight: 800, fontSize: "0.88rem",
-                letterSpacing: "0.06em", textTransform: "uppercase", padding: "0.9rem 1.75rem",
+                background: RED, color: WHITE, fontWeight: 800, fontSize: "0.85rem",
+                letterSpacing: "0.07em", textTransform: "uppercase" as const, padding: "0.875rem 1.75rem",
                 borderRadius: 2, textDecoration: "none", transition: "background 0.2s",
               }}
                 onMouseEnter={e => (e.currentTarget.style.background = RED_DARK)}
@@ -607,17 +696,22 @@ export default function Home() {
             </div>
             <div>
               {faqs.map((f, i) => (
-                <div key={i} style={{ borderBottom: "1px solid #E8ECF2" }}>
+                <div key={i} style={{ borderBottom: "1px solid #e8ecf2" }}>
                   <button style={{
                     width: "100%", background: "none", border: "none", cursor: "pointer",
                     display: "flex", alignItems: "center", justifyContent: "space-between",
-                    padding: "1.25rem 0", gap: "1rem", textAlign: "left",
+                    padding: "1.25rem 0", gap: "1rem", textAlign: "left" as const,
                   }} onClick={() => setOpenFaq(openFaq === i ? null : i)}>
-                    <span style={{ fontSize: "0.95rem", fontWeight: 700, color: NAVY_TEXT, lineHeight: 1.4 }}>{f.q}</span>
-                    <span style={{ color: RED, fontSize: "1.4rem", flexShrink: 0, transition: "transform 0.25s ease", transform: openFaq === i ? "rotate(45deg)" : "none", lineHeight: 1 }}>+</span>
+                    <span style={{ fontSize: "0.92rem", fontWeight: 700, color: NAVY_TEXT, lineHeight: 1.4 }}>{f.q}</span>
+                    <span style={{
+                      color: RED, fontSize: "1.3rem", flexShrink: 0,
+                      transition: "transform 0.25s ease",
+                      transform: openFaq === i ? "rotate(45deg)" : "none",
+                      lineHeight: 1, display: "block",
+                    }}>+</span>
                   </button>
-                  <div style={{ maxHeight: openFaq === i ? "200px" : "0", overflow: "hidden", transition: "max-height 0.3s ease" }}>
-                    <p style={{ paddingBottom: "1.25rem", color: GRAY_TEXT, lineHeight: 1.7, fontSize: "0.9rem" }}>{f.a}</p>
+                  <div style={{ maxHeight: openFaq === i ? "300px" : "0", overflow: "hidden", transition: "max-height 0.3s ease" }}>
+                    <p style={{ paddingBottom: "1.25rem", color: GRAY_TEXT, lineHeight: 1.7, fontSize: "0.88rem", margin: 0 }}>{f.a}</p>
                   </div>
                 </div>
               ))}
@@ -626,29 +720,31 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── CTA BANNER ────────────────────────────────────────────────────── */}
+      {/* ═══════════════════════════════════════════════════════════════════
+          CTA BANNER
+      ═══════════════════════════════════════════════════════════════════ */}
       <section style={{ padding: "5rem 0", background: RED, position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", inset: 0, backgroundImage: `linear-gradient(rgba(0,0,0,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px)`, backgroundSize: "40px 40px", pointerEvents: "none" }} />
-        <div className="container" style={{ textAlign: "center", position: "relative", zIndex: 1 }}>
-          <h2 style={{ fontSize: "clamp(1.7rem, 3vw, 2.4rem)", fontWeight: 900, color: WHITE, letterSpacing: "-0.03em", marginBottom: "0.75rem" }}>
+        <div className="container" style={{ textAlign: "center" as const, position: "relative", zIndex: 1 }}>
+          <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.4rem)", fontWeight: 900, color: WHITE, letterSpacing: "-0.03em", marginBottom: "0.75rem" }}>
             Готовы избавиться от вредителей?
           </h2>
-          <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "1.05rem", marginBottom: "2.5rem" }}>
+          <p style={{ color: "rgba(255,255,255,0.85)", fontSize: "1rem", marginBottom: "2.5rem" }}>
             Оставьте заявку — перезвоним за 5 минут и рассчитаем стоимость
           </p>
-          <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" as const }}>
             <Link href="/calculator" style={{
               display: "inline-flex", alignItems: "center", gap: "0.5rem",
-              background: WHITE, color: RED, fontWeight: 800, fontSize: "0.88rem",
-              letterSpacing: "0.06em", textTransform: "uppercase", padding: "1rem 2.25rem",
+              background: WHITE, color: RED, fontWeight: 800, fontSize: "0.85rem",
+              letterSpacing: "0.07em", textTransform: "uppercase" as const, padding: "1rem 2.25rem",
               borderRadius: 2, textDecoration: "none",
             }}>
               Рассчитать стоимость →
             </Link>
             <a href="tel:+74955550000" style={{
               display: "inline-flex", alignItems: "center", gap: "0.5rem",
-              background: "transparent", color: WHITE, fontWeight: 700, fontSize: "0.88rem",
-              letterSpacing: "0.06em", textTransform: "uppercase", padding: "1rem 2.25rem",
+              background: "transparent", color: WHITE, fontWeight: 700, fontSize: "0.85rem",
+              letterSpacing: "0.07em", textTransform: "uppercase" as const, padding: "1rem 2.25rem",
               border: "2px solid rgba(255,255,255,0.6)", borderRadius: 2, textDecoration: "none",
             }}>
               ☎ +7 (495) 555-00-00
@@ -657,7 +753,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── STICKY MOBILE CTA ─────────────────────────────────────────────── */}
+      {/* ═══════════════════════════════════════════════════════════════════
+          STICKY MOBILE CTA
+      ═══════════════════════════════════════════════════════════════════ */}
       <div className="sticky-cta">
         <div style={{ display: "flex", gap: "0.75rem" }}>
           <a href="tel:+74955550000" style={{
@@ -673,6 +771,7 @@ export default function Home() {
           }}>Рассчитать →</Link>
         </div>
       </div>
+
     </div>
   );
 }
