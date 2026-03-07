@@ -117,27 +117,27 @@ export default function Home() {
         }} />
         {/* Red top accent line */}
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: `linear-gradient(90deg, ${RED} 0%, rgba(204,0,0,0.4) 60%, transparent 100%)`, zIndex: 2 }} />
-        {/* Decorative geometry - top left corner */}
+        {/* Decorative geometry */}
         <div style={{ position: "absolute", top: "5%", left: "-8%", width: 400, height: 400, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.03)", pointerEvents: "none" }} />
         <div style={{ position: "absolute", top: "15%", left: "2%", width: 200, height: 200, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.04)", pointerEvents: "none" }} />
         <div style={{ position: "absolute", bottom: "10%", left: "5%", width: 120, height: 120, borderRadius: "50%", border: `1px solid rgba(204,0,0,0.1)`, pointerEvents: "none" }} />
-        {/* Diagonal accent */}
+        {/* Diagonal accent at bottom */}
         <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "80px", background: `linear-gradient(to bottom right, transparent 49.9%, ${WHITE} 50%)`, pointerEvents: "none" }} />
 
         <div className="container" style={{ position: "relative", zIndex: 1, paddingTop: "7rem", paddingBottom: "7rem" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 380px 360px", gap: "3rem", alignItems: "stretch" }}>
-            {/* Left: text */}
+          {/* 2-column grid: text left, specialist+form right */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 420px", gap: "2.5rem", alignItems: "center" }}>
+
+            {/* ── LEFT: text ── */}
             <div>
               <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", marginBottom: "1.75rem", padding: "0.4rem 1rem", border: `1px solid rgba(204,0,0,0.4)`, borderRadius: 2 }}>
                 <div style={{ width: 6, height: 6, borderRadius: "50%", background: RED, animation: "pulse-red 2s infinite" }} />
                 <span style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: RED }}>Лицензированная санитарная служба</span>
               </div>
               <h1 style={{ fontSize: "clamp(2.6rem, 5.5vw, 4.2rem)", fontWeight: 900, lineHeight: 1.06, letterSpacing: "-0.03em", color: WHITE, marginBottom: "1.5rem", maxWidth: 660 }}>
-                Профессиональная<br />
-                <span style={{ color: RED }}>дезинсекция</span> и<br />
-                дезинфекция
+                Профессиональная<br /><span style={{ color: RED }}>дезинсекция</span> и<br />дезинфекция
               </h1>
-              <p style={{ fontSize: "1.1rem", color: "rgba(255,255,255,0.7)", lineHeight: 1.7, marginBottom: "2.5rem", maxWidth: 520 }}>
+              <p style={{ fontSize: "clamp(1rem, 1.5vw, 1.15rem)", color: "rgba(255,255,255,0.7)", lineHeight: 1.7, marginBottom: "2.5rem", maxWidth: 520 }}>
                 Уничтожение клопов, тараканов, грызунов и плесени.<br />
                 Обработка без запаха. Холодный туман от 1 500 ₽. Гарантия до 3 лет.
               </p>
@@ -180,87 +180,70 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Center: specialist image - fills full hero height */}
-            <div style={{
-              position: "relative",
-              display: "flex",
-              alignItems: "flex-end",
-              justifyContent: "center",
-              alignSelf: "stretch",
-              overflow: "visible",
-            }}>
-              {/* Subtle radial glow behind figure */}
+            {/* ── RIGHT: specialist image + form ── */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
+              {/* Specialist PNG */}
+              <div style={{ position: "relative", textAlign: "center", marginBottom: "-2px" }}>
+                <div style={{ position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)", width: "80%", height: "50%", background: "radial-gradient(ellipse at bottom, rgba(204,0,0,0.1) 0%, transparent 70%)", pointerEvents: "none" }} />
+                <img
+                  src="/specialist-hero.png"
+                  alt="Специалист по дезинфекции"
+                  style={{
+                    display: "block",
+                    margin: "0 auto",
+                    height: "380px",
+                    width: "auto",
+                    maxWidth: "100%",
+                    objectFit: "contain",
+                    objectPosition: "bottom center",
+                    filter: "drop-shadow(0 -4px 20px rgba(0,0,0,0.5))",
+                    position: "relative",
+                    zIndex: 1,
+                  }}
+                />
+              </div>
+              {/* Form */}
               <div style={{
-                position: "absolute",
-                bottom: 0,
-                left: "50%",
-                transform: "translateX(-50%)",
-                width: "120%",
-                height: "60%",
-                background: "radial-gradient(ellipse at bottom, rgba(204,0,0,0.08) 0%, transparent 70%)",
-                pointerEvents: "none",
-                zIndex: 1,
-              }} />
-              <img
-                src="/specialist-hero.png"
-                alt="Специалист по дезинфекции"
-                style={{
-                  position: "absolute",
-                  bottom: "-7rem",
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  height: "calc(100% + 7rem)",
-                  width: "auto",
-                  maxWidth: "none",
-                  objectFit: "contain",
-                  objectPosition: "bottom center",
-                  filter: "drop-shadow(-8px 0 24px rgba(0,0,0,0.4)) drop-shadow(8px 0 24px rgba(0,0,0,0.3))",
-                  zIndex: 2,
-                }}
-              />
+                background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)",
+                backdropFilter: "blur(16px)", padding: "2.25rem", borderRadius: 4,
+                boxShadow: "0 24px 64px rgba(0,0,0,0.4)",
+              }}>
+                <div style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: RED, marginBottom: "0.75rem" }}>Бесплатная консультация</div>
+                <h3 style={{ fontSize: "1.25rem", fontWeight: 800, color: WHITE, marginBottom: "1.75rem", lineHeight: 1.3 }}>Оставьте заявку —<br />перезвоним за 5 минут</h3>
+                {submitted ? (
+                  <div style={{ textAlign: "center", padding: "2.5rem 0" }}>
+                    <div style={{ width: 56, height: 56, borderRadius: "50%", background: RED, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1rem", fontSize: "1.5rem", color: WHITE }}>✓</div>
+                    <p style={{ color: WHITE, fontWeight: 700, fontSize: "1.1rem" }}>Заявка принята!</p>
+                    <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.875rem", marginTop: "0.5rem" }}>Перезвоним в течение 5 минут</p>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.875rem" }}>
+                    <input className="form-field" placeholder="Ваше имя" value={formData.name} onChange={e => setFormData(p => ({ ...p, name: e.target.value }))} required />
+                    <input className="form-field" type="tel" placeholder="+7 (___) ___-__-__" value={formData.phone} onChange={e => setFormData(p => ({ ...p, phone: e.target.value }))} required />
+                    <select className="form-field" value={formData.service} onChange={e => setFormData(p => ({ ...p, service: e.target.value }))}>
+                      <option value="">Выберите услугу</option>
+                      {services.map(s => <option key={s.slug} value={s.slug}>{s.title}</option>)}
+                    </select>
+                    <button type="submit" style={{
+                      width: "100%", background: RED, color: WHITE, fontWeight: 800, fontSize: "0.88rem",
+                      letterSpacing: "0.06em", textTransform: "uppercase", padding: "0.95rem 1.5rem",
+                      border: "none", borderRadius: 2, cursor: "pointer", transition: "background 0.2s",
+                    }}
+                      disabled={createLead.isPending}
+                      onMouseEnter={e => (e.currentTarget.style.background = RED_DARK)}
+                      onMouseLeave={e => (e.currentTarget.style.background = RED)}>
+                      {createLead.isPending ? "Отправка..." : "Получить консультацию →"}
+                    </button>
+                    <p style={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.35)", textAlign: "center" }}>Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности</p>
+                  </form>
+                )}
+              </div>
             </div>
 
-            {/* Right: quick form */}
-            <div style={{
-              background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)",
-              backdropFilter: "blur(16px)", padding: "2.25rem", borderRadius: 4,
-              boxShadow: "0 24px 64px rgba(0,0,0,0.4)",
-            }}>
-              <div style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: RED, marginBottom: "0.75rem" }}>Бесплатная консультация</div>
-              <h3 style={{ fontSize: "1.25rem", fontWeight: 800, color: WHITE, marginBottom: "1.75rem", lineHeight: 1.3 }}>Оставьте заявку —<br />перезвоним за 5 минут</h3>
-              {submitted ? (
-                <div style={{ textAlign: "center", padding: "2.5rem 0" }}>
-                  <div style={{ width: 56, height: 56, borderRadius: "50%", background: RED, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1rem", fontSize: "1.5rem", color: WHITE }}>✓</div>
-                  <p style={{ color: WHITE, fontWeight: 700, fontSize: "1.1rem" }}>Заявка принята!</p>
-                  <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.875rem", marginTop: "0.5rem" }}>Перезвоним в течение 5 минут</p>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.875rem" }}>
-                  <input className="form-field" placeholder="Ваше имя" value={formData.name} onChange={e => setFormData(p => ({ ...p, name: e.target.value }))} required />
-                  <input className="form-field" type="tel" placeholder="+7 (___) ___-__-__" value={formData.phone} onChange={e => setFormData(p => ({ ...p, phone: e.target.value }))} required />
-                  <select className="form-field" value={formData.service} onChange={e => setFormData(p => ({ ...p, service: e.target.value }))}>
-                    <option value="">Выберите услугу</option>
-                    {services.map(s => <option key={s.slug} value={s.slug}>{s.title}</option>)}
-                  </select>
-                  <button type="submit" style={{
-                    width: "100%", background: RED, color: WHITE, fontWeight: 800, fontSize: "0.88rem",
-                    letterSpacing: "0.06em", textTransform: "uppercase", padding: "0.95rem 1.5rem",
-                    border: "none", borderRadius: 2, cursor: "pointer", transition: "background 0.2s",
-                  }}
-                    disabled={createLead.isPending}
-                    onMouseEnter={e => (e.currentTarget.style.background = RED_DARK)}
-                    onMouseLeave={e => (e.currentTarget.style.background = RED)}>
-                    {createLead.isPending ? "Отправка..." : "Получить консультацию →"}
-                  </button>
-                  <p style={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.35)", textAlign: "center" }}>Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности</p>
-                </form>
-              )}
-            </div>
           </div>
         </div>
       </section>
-
-      {/* ── TRUST BAR ─────────────────────────────────────────────────────── */}
+            {/* ── TRUST BAR ─────────────────────────────────────────────────────── */}
       <div style={{ background: NAVY_MID, borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
         <div className="container" style={{ padding: "0.875rem 0" }}>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "0", justifyContent: "space-between", alignItems: "center" }}>
@@ -283,49 +266,90 @@ export default function Home() {
       {/* ── SERVICES ──────────────────────────────────────────────────────── */}
       <section style={{ padding: "6rem 0", background: WHITE }}>
         <div className="container">
-          <div ref={refServices} className="reveal" style={{ marginBottom: "3.5rem", display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
-            <div>
-              <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem" }}>
-                <div style={{ width: 24, height: 2, background: RED }} />
-                <span style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: RED }}>Наши услуги</span>
-              </div>
-              <h2 style={{ fontSize: "clamp(1.9rem, 3.5vw, 2.6rem)", fontWeight: 900, color: NAVY_TEXT, letterSpacing: "-0.03em", lineHeight: 1.15 }}>
+          {/* Section header */}
+          <div ref={refServices} className="reveal" style={{ marginBottom: "3.5rem" }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.875rem" }}>
+              <div style={{ width: 32, height: 3, background: RED, borderRadius: 2 }} />
+              <span style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: RED }}>Наши услуги</span>
+            </div>
+            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
+              <h2 style={{ fontSize: "clamp(2rem, 3.5vw, 2.8rem)", fontWeight: 900, color: NAVY_TEXT, letterSpacing: "-0.03em", lineHeight: 1.1 }}>
                 Полный спектр<br />санитарных обработок
               </h2>
+              <p style={{ color: GRAY_TEXT, fontSize: "1rem", maxWidth: 400, lineHeight: 1.65 }}>
+                Профессиональная дезинсекция, дератизация и дезинфекция для жилых и коммерческих объектов
+              </p>
             </div>
-            <p style={{ color: GRAY_TEXT, fontSize: "1rem", maxWidth: 420, lineHeight: 1.65 }}>
-              Профессиональная дезинсекция, дератизация и дезинфекция для жилых и коммерческих объектов
-            </p>
           </div>
 
-          {/* Services grid: 4 columns */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1px", background: "#E8ECF2" }}>
+          {/* Services grid: 4 columns, bold card design */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1.5rem" }}>
             {services.map((s, i) => (
               <Link key={s.slug} href={`/services/${s.slug}`} style={{ textDecoration: "none" }}>
                 <div style={{
-                  background: WHITE, padding: "2rem 1.75rem", display: "flex", flexDirection: "column", gap: "1rem",
-                  height: "100%", cursor: "pointer", transition: "background 0.2s ease, transform 0.2s ease",
+                  background: i === 0 ? NAVY : WHITE,
+                  border: `2px solid ${i === 0 ? "transparent" : "#E2E8F0"}`,
+                  borderRadius: 6,
+                  padding: "2rem 1.75rem 1.75rem",
+                  display: "flex", flexDirection: "column", gap: "0",
+                  height: "100%", cursor: "pointer",
+                  transition: "transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease",
                   position: "relative", overflow: "hidden",
+                  boxShadow: i === 0 ? `0 12px 40px rgba(0,9,25,0.25)` : "0 2px 8px rgba(0,9,25,0.06)",
                 }}
-                  onMouseEnter={e => { e.currentTarget.style.background = NAVY; e.currentTarget.style.transform = "translateY(-2px)"; const title = e.currentTarget.querySelector(".card-title") as HTMLElement; const desc = e.currentTarget.querySelector(".card-desc") as HTMLElement; const price = e.currentTarget.querySelector(".card-price") as HTMLElement; const link = e.currentTarget.querySelector(".card-link") as HTMLElement; if (title) title.style.color = WHITE; if (desc) desc.style.color = "rgba(255,255,255,0.6)"; if (price) price.style.color = WHITE; if (link) link.style.color = RED; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = WHITE; e.currentTarget.style.transform = ""; const title = e.currentTarget.querySelector(".card-title") as HTMLElement; const desc = e.currentTarget.querySelector(".card-desc") as HTMLElement; const price = e.currentTarget.querySelector(".card-price") as HTMLElement; const link = e.currentTarget.querySelector(".card-link") as HTMLElement; if (title) title.style.color = NAVY_TEXT; if (desc) desc.style.color = GRAY_TEXT; if (price) price.style.color = NAVY_TEXT; if (link) link.style.color = RED; }}>
-                  {/* Top accent line */}
-                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "2px", background: i === 0 ? RED : "transparent", transition: "background 0.2s" }} className="card-accent" />
+                  onMouseEnter={e => {
+                    e.currentTarget.style.transform = "translateY(-6px)";
+                    e.currentTarget.style.boxShadow = `0 20px 48px rgba(0,9,25,0.18)`;
+                    e.currentTarget.style.borderColor = RED;
+                    const num = e.currentTarget.querySelector(".svc-num") as HTMLElement;
+                    if (num) num.style.color = RED;
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.transform = "";
+                    e.currentTarget.style.boxShadow = i === 0 ? `0 12px 40px rgba(0,9,25,0.25)` : "0 2px 8px rgba(0,9,25,0.06)";
+                    e.currentTarget.style.borderColor = i === 0 ? "transparent" : "#E2E8F0";
+                    const num = e.currentTarget.querySelector(".svc-num") as HTMLElement;
+                    if (num) num.style.color = i === 0 ? "rgba(255,255,255,0.25)" : "rgba(0,9,25,0.15)";
+                  }}>
+                  {/* Red top stripe on first card */}
+                  {i === 0 && (
+                    <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: RED }} />
+                  )}
                   {/* Number */}
-                  <div style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.12em", color: "rgba(0,9,25,0.2)", fontVariantNumeric: "tabular-nums" }}>
+                  <div className="svc-num" style={{
+                    fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.14em",
+                    color: i === 0 ? "rgba(255,255,255,0.25)" : "rgba(0,9,25,0.15)",
+                    marginBottom: "1.5rem", transition: "color 0.25s",
+                  }}>
                     {String(i + 1).padStart(2, "0")}
                   </div>
                   {/* Icon */}
-                  <s.Icon size={44} />
-                  {/* Content */}
-                  <div style={{ flex: 1 }}>
-                    <h3 className="card-title" style={{ fontSize: "1rem", fontWeight: 800, color: NAVY_TEXT, marginBottom: "0.5rem", lineHeight: 1.3, transition: "color 0.2s" }}>{s.title}</h3>
-                    <p className="card-desc" style={{ fontSize: "0.84rem", color: GRAY_TEXT, lineHeight: 1.6, transition: "color 0.2s" }}>{s.desc}</p>
+                  <div style={{ marginBottom: "1.25rem" }}>
+                    <s.Icon size={40} />
                   </div>
+                  {/* Title */}
+                  <h3 style={{
+                    fontSize: "1.05rem", fontWeight: 800, lineHeight: 1.3,
+                    color: i === 0 ? WHITE : NAVY_TEXT,
+                    marginBottom: "0.625rem",
+                  }}>{s.title}</h3>
+                  {/* Desc */}
+                  <p style={{
+                    fontSize: "0.84rem", lineHeight: 1.65, flex: 1,
+                    color: i === 0 ? "rgba(255,255,255,0.6)" : GRAY_TEXT,
+                    marginBottom: "1.5rem",
+                  }}>{s.desc}</p>
                   {/* Footer */}
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "1rem", borderTop: "1px solid rgba(0,0,0,0.06)" }}>
-                    <span className="card-price" style={{ fontSize: "1.1rem", fontWeight: 900, color: NAVY_TEXT, letterSpacing: "-0.03em", transition: "color 0.2s" }}>{s.price}</span>
-                    <span className="card-link" style={{ fontSize: "0.78rem", color: RED, fontWeight: 700, letterSpacing: "0.04em", transition: "color 0.2s" }}>Подробнее →</span>
+                  <div style={{
+                    display: "flex", alignItems: "center", justifyContent: "space-between",
+                    paddingTop: "1.25rem",
+                    borderTop: `1px solid ${i === 0 ? "rgba(255,255,255,0.12)" : "#E2E8F0"}`,
+                  }}>
+                    <span style={{
+                      fontSize: "1.15rem", fontWeight: 900, letterSpacing: "-0.03em",
+                      color: i === 0 ? WHITE : NAVY_TEXT,
+                    }}>{s.price}</span>
+                    <span style={{ fontSize: "0.78rem", color: RED, fontWeight: 700 }}>Подробнее →</span>
                   </div>
                 </div>
               </Link>
@@ -333,62 +357,104 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* ── METHODS (виды обработок) ───────────────────────────────────────── */}
+            {/* ── METHODS (виды обработок) ───────────────────────────────────────── */}
       <section style={{ padding: "6rem 0", background: NAVY, position: "relative", overflow: "hidden" }}>
-        {/* Grid lines */}
+        {/* Subtle grid background */}
         <div style={{
           position: "absolute", inset: 0, pointerEvents: "none",
           backgroundImage: `linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)`,
           backgroundSize: "80px 80px",
         }} />
+        {/* Red corner accent */}
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: `linear-gradient(90deg, ${RED} 0%, rgba(204,0,0,0.3) 60%, transparent 100%)` }} />
+
         <div className="container" style={{ position: "relative", zIndex: 1 }}>
-          <div ref={refMethods} className="reveal" style={{ marginBottom: "3.5rem", display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
-            <div>
-              <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem" }}>
-                <div style={{ width: 24, height: 2, background: RED }} />
-                <span style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: RED }}>Методы обработки</span>
-              </div>
-              <h2 style={{ fontSize: "clamp(1.9rem, 3.5vw, 2.6rem)", fontWeight: 900, color: WHITE, letterSpacing: "-0.03em", lineHeight: 1.15 }}>
+          {/* Section header */}
+          <div ref={refMethods} className="reveal" style={{ marginBottom: "3.5rem" }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.875rem" }}>
+              <div style={{ width: 32, height: 3, background: RED, borderRadius: 2 }} />
+              <span style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: RED }}>Методы обработки</span>
+            </div>
+            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: "1rem" }}>
+              <h2 style={{ fontSize: "clamp(2rem, 3.5vw, 2.8rem)", fontWeight: 900, color: WHITE, letterSpacing: "-0.03em", lineHeight: 1.1 }}>
                 Виды санитарных<br />обработок
               </h2>
+              <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "1rem", maxWidth: 400, lineHeight: 1.65 }}>
+                Выбираем метод в зависимости от типа вредителя, площади и особенностей объекта
+              </p>
             </div>
-            <p style={{ color: "rgba(255,255,255,0.55)", fontSize: "1rem", maxWidth: 400, lineHeight: 1.65 }}>
-              Выбираем метод в зависимости от типа вредителя, площади и особенностей объекта
-            </p>
           </div>
 
-          {/* Methods grid: 3×2 */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1px", background: "rgba(255,255,255,0.06)" }}>
+          {/* Methods grid: 3×2, bold card design */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1.5rem" }}>
             {methods.map((m, i) => (
               <div key={i} style={{
-                background: "rgba(255,255,255,0.02)", padding: "2.25rem 2rem",
-                transition: "background 0.2s ease", position: "relative", cursor: "default",
+                background: i === 0 ? "rgba(204,0,0,0.08)" : "rgba(255,255,255,0.04)",
+                border: `1px solid ${i === 0 ? "rgba(204,0,0,0.35)" : "rgba(255,255,255,0.1)"}`,
+                borderRadius: 6,
+                padding: "2.25rem 2rem",
+                position: "relative", overflow: "hidden",
+                transition: "transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease, border-color 0.25s ease",
+                cursor: "default",
               }}
-                onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.07)")}
-                onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.02)")}>
-                {/* Tag */}
+                onMouseEnter={e => {
+                  e.currentTarget.style.transform = "translateY(-4px)";
+                  e.currentTarget.style.background = i === 0 ? "rgba(204,0,0,0.14)" : "rgba(255,255,255,0.09)";
+                  e.currentTarget.style.borderColor = i === 0 ? "rgba(204,0,0,0.6)" : "rgba(255,255,255,0.25)";
+                  e.currentTarget.style.boxShadow = `0 16px 40px rgba(0,0,0,0.3)`;
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.transform = "";
+                  e.currentTarget.style.background = i === 0 ? "rgba(204,0,0,0.08)" : "rgba(255,255,255,0.04)";
+                  e.currentTarget.style.borderColor = i === 0 ? "rgba(204,0,0,0.35)" : "rgba(255,255,255,0.1)";
+                  e.currentTarget.style.boxShadow = "none";
+                }}>
+                {/* Tag badge */}
                 {m.tag && (
-                  <div style={{ position: "absolute", top: "1.25rem", right: "1.25rem", fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.12em", color: RED, background: "rgba(204,0,0,0.12)", padding: "0.2rem 0.5rem", borderRadius: 2 }}>
+                  <div style={{
+                    position: "absolute", top: "1.25rem", right: "1.25rem",
+                    fontSize: "0.6rem", fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase",
+                    color: WHITE, background: RED,
+                    padding: "0.25rem 0.6rem", borderRadius: 2,
+                  }}>
                     {m.tag}
                   </div>
                 )}
                 {/* Number */}
-                <div style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.12em", color: "rgba(255,255,255,0.2)", marginBottom: "1.25rem" }}>
+                <div style={{
+                  fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.14em",
+                  color: i === 0 ? "rgba(255,255,255,0.35)" : "rgba(255,255,255,0.2)",
+                  marginBottom: "1.5rem",
+                }}>
                   {String(i + 1).padStart(2, "0")}
                 </div>
-                <m.Icon size={44} />
-                <h3 style={{ fontSize: "1rem", fontWeight: 800, color: WHITE, marginBottom: "0.5rem", marginTop: "1.25rem", lineHeight: 1.3 }}>{m.title}</h3>
-                <p style={{ fontSize: "0.84rem", color: "rgba(255,255,255,0.55)", lineHeight: 1.65 }}>{m.desc}</p>
-                {/* Bottom accent */}
-                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "2px", background: i === 0 ? RED : "transparent", transition: "background 0.2s" }} />
+                {/* Icon */}
+                <div style={{ marginBottom: "1.25rem" }}>
+                  <m.Icon size={40} />
+                </div>
+                {/* Title */}
+                <h3 style={{
+                  fontSize: "1.05rem", fontWeight: 800, color: WHITE,
+                  marginBottom: "0.625rem", lineHeight: 1.3,
+                }}>{m.title}</h3>
+                {/* Desc */}
+                <p style={{
+                  fontSize: "0.84rem",
+                  color: i === 0 ? "rgba(255,255,255,0.75)" : "rgba(255,255,255,0.55)",
+                  lineHeight: 1.65,
+                }}>{m.desc}</p>
+                {/* Bottom accent line */}
+                <div style={{
+                  position: "absolute", bottom: 0, left: 0, right: 0, height: "3px",
+                  background: i === 0 ? RED : "transparent",
+                  transition: "background 0.25s",
+                }} />
               </div>
             ))}
           </div>
         </div>
       </section>
-
-      {/* ── HOW WE WORK ───────────────────────────────────────────────────── */}
+            {/* ── HOW WE WORK ───────────────────────────────────────────────────── */}
       <section style={{ padding: "6rem 0", background: GRAY_BG }}>
         <div className="container">
           <div ref={refSteps} className="reveal" style={{ marginBottom: "4rem" }}>
