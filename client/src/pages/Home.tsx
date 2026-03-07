@@ -107,7 +107,7 @@ export default function Home() {
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <section style={{
         minHeight: "92vh", display: "flex", alignItems: "center", position: "relative",
-        background: NAVY, overflow: "hidden",
+        background: NAVY, overflow: "hidden", isolation: "isolate",
       }}>
         {/* Grid lines background */}
         <div style={{
@@ -125,7 +125,7 @@ export default function Home() {
         <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "80px", background: `linear-gradient(to bottom right, transparent 49.9%, ${WHITE} 50%)`, pointerEvents: "none" }} />
 
         <div className="container" style={{ position: "relative", zIndex: 1, paddingTop: "7rem", paddingBottom: "7rem" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 380px 360px", gap: "3rem", alignItems: "center" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 380px 360px", gap: "3rem", alignItems: "stretch" }}>
             {/* Left: text */}
             <div>
               <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", marginBottom: "1.75rem", padding: "0.4rem 1rem", border: `1px solid rgba(204,0,0,0.4)`, borderRadius: 2 }}>
@@ -180,22 +180,42 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Center: specialist image */}
-            <div style={{ position: "relative", display: "flex", alignItems: "flex-end", justifyContent: "center", height: "100%", minHeight: 480 }}>
-              {/* Glow effect behind specialist */}
-              <div style={{ position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)", width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, rgba(204,0,0,0.12) 0%, transparent 70%)", pointerEvents: "none" }} />
-              {/* Red circle accent */}
-              <div style={{ position: "absolute", bottom: 20, left: "50%", transform: "translateX(-50%)", width: 340, height: 340, borderRadius: "50%", border: "1px solid rgba(204,0,0,0.15)", pointerEvents: "none" }} />
-              <div style={{ position: "absolute", bottom: 40, left: "50%", transform: "translateX(-50%)", width: 260, height: 260, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.05)", pointerEvents: "none" }} />
+            {/* Center: specialist image - fills full hero height */}
+            <div style={{
+              position: "relative",
+              display: "flex",
+              alignItems: "flex-end",
+              justifyContent: "center",
+              alignSelf: "stretch",
+              overflow: "visible",
+            }}>
+              {/* Subtle radial glow behind figure */}
+              <div style={{
+                position: "absolute",
+                bottom: 0,
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: "120%",
+                height: "60%",
+                background: "radial-gradient(ellipse at bottom, rgba(204,0,0,0.08) 0%, transparent 70%)",
+                pointerEvents: "none",
+                zIndex: 1,
+              }} />
               <img
                 src="/specialist-hero.png"
                 alt="Специалист по дезинфекции"
                 style={{
-                  position: "relative", zIndex: 2,
-                  height: 500, width: "auto", maxWidth: "100%",
-                  objectFit: "contain", objectPosition: "bottom",
-                  filter: "drop-shadow(0 20px 40px rgba(0,0,0,0.5))",
-                  marginBottom: "-2rem",
+                  position: "absolute",
+                  bottom: "-7rem",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  height: "calc(100% + 7rem)",
+                  width: "auto",
+                  maxWidth: "none",
+                  objectFit: "contain",
+                  objectPosition: "bottom center",
+                  filter: "drop-shadow(-8px 0 24px rgba(0,0,0,0.4)) drop-shadow(8px 0 24px rgba(0,0,0,0.3))",
+                  zIndex: 2,
                 }}
               />
             </div>
