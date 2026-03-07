@@ -228,7 +228,7 @@ export default function Home() {
                 pointerEvents: "none",
               }} />
               <img
-                src="https://private-us-east-1.manuscdn.com/user_upload_by_module/session_file/310519663313765274/UFINdHHtxHGysndP.png?Expires=1804422062&Signature=u0MTJy3YHsjmCqoQkeIPrzBX~YHIPNIjmP5UeLC4Nrh3K1b2s3QvWPbyZal~1lpU7OVRoV8t3GFB9nogGvLMYShPmwCQiH-wDQedFmZGckNuD~V1OddaCyT5ggeJbu-aGVk2qS8-i~YXtJ8xFatH1X8F4HPo3Ty2b0yWJV9xyUUI8x6~wZ78gQRgGQ5VIVa7YpBZgjbI9twPNWdMatxwQkkXXWmveylLCcUh3rT0c7gKrDUxZO3pOH4QTtM-GXhexkCyNGt90JWCmz25SjOYrMc5h1MxI3dENFFIf5zyOFMOXCEjjXkrqDYD87Qj~dSLl7Q0RSDvYdOT5VKiOyrMYQ__&Key-Pair-Id=K2HSFNDJXOU9YS"
+                src="https://private-us-east-1.manuscdn.com/user_upload_by_module/session_file/310519663313765274/GYbcCeYKAKjIWOOv.png?Expires=1804426519&Signature=Nzmptx3v99XLD9EK8EBGlk5Mi6IFOmQzv5JhydT4qxkPUUwpu9-YBbIQI6fKX9ZWii9SZA~XVh8FCqpT~911EcnixsPe57~73u8i1OpcKndX5JYROpDsl93CGN73TQFF3-86e2f39dHwFHJzdp~IC6PUBNjGD2oSeci0sU4np50SRV3U991qxJGIvAsEJps0VqmgZ~TfhMBcrohv9xveOZ-~xgxIR~lKg2GG3ofMSnlMnLFK7w8rQKFtyTyZ9Qv2HoptsKRWl397Mf1VYv-zrVbdHkeDbnvrb1HW~eai4vF5CTVfjFJ1sfwy82g7J-Ylp40yClEGWE5TEXkkZIPszQ__&Key-Pair-Id=K2HSFNDJXOU9YS"
                 alt="Специалист по дезинфекции"
                 loading="eager"
                 style={{
