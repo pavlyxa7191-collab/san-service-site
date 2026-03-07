@@ -19,7 +19,7 @@ const GRAY_TEXT = "#6b7280";
 
 // ─── DATA ─────────────────────────────────────────────────────────────────────
 const services = [
-  { slug: "klopov",       Icon: IconBedbugs,      title: "Уничтожение клопов",    desc: "Полное уничтожение клопов горячим и холодным туманом. Обработка без запаха.",   price: "от 1 500 ₽", guarantee: "3 года",      iconBg: "#fff0f0", iconColor: "#cc0000",  methods: ["Горячий туман", "Холодный туман", "Орошение"] },
+  { slug: "klopov",       Icon: IconBedbugs,      title: "Уничтожение клопов",    desc: "Полное уничтожение клопов горячим и холодным туманом. Обработка без запаха.",   price: "от 1 500 ₽", guarantee: "3 года",      iconBg: "#ebdbdb", iconColor: "#cc0000",  methods: ["Горячий туман", "Холодный туман", "Орошение"] },
   { slug: "tarakanov",    Icon: IconCockroaches,   title: "Уничтожение тараканов", desc: "Гелевые приманки и опрыскивание. Результат с первой обработки.",               price: "от 1 500 ₽", guarantee: "3 года",       iconBg: "#fff7e6", iconColor: "#d97706",  methods: ["Гелевая обработка", "Орошение", "Холодный туман"] },
   { slug: "gryzunov",     Icon: IconRodents,       title: "Уничтожение грызунов",  desc: "Дератизация мышей и крыс. Приманочные станции. Без запаха.",                   price: "от 2 000 ₽", guarantee: "6 месяцев",  iconBg: "#f0fff4", iconColor: "#059669",  methods: ["Приманочные станции", "Механический отлов", "Газация"] },
   { slug: "kleshhej",     Icon: IconTicks,         title: "Уничтожение клещей",    desc: "Обработка участков и помещений от клещей и комаров. Сезонная защита.",         price: "от 2 000 ₽", guarantee: "1 сезон",    iconBg: "#f0f9ff", iconColor: "#0284c7",  methods: ["Орошение", "Холодный туман", "Барьерная обработка"] },
@@ -322,7 +322,7 @@ export default function Home() {
 
                 {/* Trust icons */}
                 <div style={{ marginTop: "1.5rem", paddingTop: "1.25rem", borderTop: "1px solid rgba(255,255,255,0.08)", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                  {["Лицензия СЭС", "Официальный договор", "Гарантия в письменном виде"].map((t, i) => (
+                  {["Фиксированная цена", "Чек и сертификаты", "Безопасно для детей и животных"].map((t, i) => (
                     <div key={i} style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                       <span style={{ color: RED, fontWeight: 700, fontSize: "0.75rem", flexShrink: 0 }}>✓</span>
                       <span style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.55)" }}>{t}</span>
@@ -739,7 +739,7 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════════════════════════
           CTA BANNER
       ═══════════════════════════════════════════════════════════════════ */}
-      <section style={{ padding: "5rem 0", background: RED, position: "relative", overflow: "hidden" }}>
+      <section style={{ paddingTop: "7px", paddingBottom: "42px", background: RED, position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", inset: 0, backgroundImage: `linear-gradient(rgba(0,0,0,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.06) 1px, transparent 1px)`, backgroundSize: "40px 40px", pointerEvents: "none" }} />
         <div className="container" style={{ textAlign: "center" as const, position: "relative", zIndex: 1 }}>
           <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.4rem)", fontWeight: 900, color: WHITE, letterSpacing: "-0.03em", marginBottom: "0.75rem" }}>
