@@ -2,7 +2,7 @@ import { Link, useLocation } from "wouter";
 import { Phone, Menu, X, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
 
-const DARK = "#0f1923";
+const DARK = "#0d2b5e";   // Navy-blue (NOT black)
 const RED = "#CC0000";
 
 const navLinks = [
@@ -50,14 +50,14 @@ export default function SiteHeader() {
           right: 0,
           zIndex: 100,
           background: scrolled
-            ? "rgba(15,25,35,0.97)"
-            : "rgba(15,25,35,0.85)",
+            ? "rgba(13, 43, 94, 0.97)"
+            : "rgba(13, 43, 94, 0.88)",
           backdropFilter: "blur(16px)",
           borderBottom: scrolled
-            ? "1px solid rgba(255,255,255,0.08)"
-            : "1px solid rgba(255,255,255,0.05)",
+            ? "1px solid rgba(255,255,255,0.15)"
+            : "1px solid rgba(255,255,255,0.08)",
           transition: "all 0.3s ease",
-          boxShadow: scrolled ? "0 4px 24px rgba(0,0,0,0.3)" : "none",
+          boxShadow: scrolled ? "0 4px 24px rgba(13, 43, 94, 0.4)" : "none",
         }}
       >
         {/* Top bar */}

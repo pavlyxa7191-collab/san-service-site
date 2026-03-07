@@ -1,8 +1,8 @@
 import { Link } from "wouter";
 import { Phone, Mail, MapPin, Clock, Shield, FileText } from "lucide-react";
 
-const DARK = "#0f1923";
-const DARK2 = "#0c1520";
+const DARK = "#0d2b5e";   // Navy-blue (NOT black)
+const DARK2 = "#091e42";  // Deep navy
 const RED = "#CC0000";
 
 const services = [

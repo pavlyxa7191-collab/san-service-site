@@ -104,13 +104,13 @@
 
   /* ── Custom Design Tokens ── */
   /* Dark sections: deep navy-graphite instead of pure black */
-  --dark-bg: #0f1923;           /* Deep navy-graphite */
-  --dark-bg-2: #162030;         /* Slightly lighter navy */
-  --dark-surface: #1a2535;      /* Card surface in dark sections */
-  --dark-border: rgba(255,255,255,0.08);
-  --dark-text: rgba(255,255,255,0.92);
-  --dark-text-muted: rgba(255,255,255,0.55);
-  --dark-text-subtle: rgba(255,255,255,0.35);
+  --dark-bg: #0d2b5e;           /* Deep navy-blue (NOT black) */
+  --dark-bg-2: #1a3a6b;         /* Medium navy */
+  --dark-surface: #1e4080;      /* Card surface in dark sections */
+  --dark-border: rgba(255,255,255,0.12);
+  --dark-text: rgba(255,255,255,0.95);
+  --dark-text-muted: rgba(255,255,255,0.65);
+  --dark-text-subtle: rgba(255,255,255,0.45);
 
   /* Red */
   --red: #CC0000;
@@ -124,11 +124,11 @@
   --gray-66: #6B7280;
 
   /* Gradients */
-  --gradient-dark: linear-gradient(135deg, #0f1923 0%, #162030 50%, #1a2535 100%);
-  --gradient-dark-radial: radial-gradient(ellipse at 30% 50%, #1e2d42 0%, #0f1923 70%);
-  --gradient-hero: linear-gradient(135deg, #0d1720 0%, #162030 40%, #1a2d40 100%);
+  --gradient-dark: linear-gradient(135deg, #0d2b5e 0%, #1a3a6b 50%, #2952a3 100%);
+  --gradient-dark-radial: radial-gradient(ellipse at 30% 50%, #1e4080 0%, #0d2b5e 70%);
+  --gradient-hero: linear-gradient(135deg, #0a2347 0%, #1a3a6b 40%, #2952a3 100%);
   --gradient-red-accent: linear-gradient(135deg, #CC0000 0%, #990000 100%);
-  --gradient-card-light: linear-gradient(145deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+  --gradient-card-light: linear-gradient(145deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.03) 100%);
 }
 
 .dark {
@@ -510,11 +510,11 @@
   right: 0;
   z-index: 50;
   padding: 0.75rem 1rem;
-  background: rgba(15,25,35,0.95);
+  background: rgba(13, 43, 94, 0.95);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-top: 1px solid rgba(255,255,255,0.1);
-  box-shadow: 0 -4px 24px rgba(0,0,0,0.3);
+  border-top: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 -4px 24px rgba(13, 43, 94, 0.4);
 }
 
 @media (min-width: 768px) {
@@ -533,7 +533,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(15,25,35,0.7) 0%, rgba(15,25,35,0.3) 100%);
+  background: linear-gradient(135deg, rgba(13, 43, 94, 0.75) 0%, rgba(26, 58, 107, 0.4) 100%);
 }
 
 /* ── SCROLLBAR ── */
