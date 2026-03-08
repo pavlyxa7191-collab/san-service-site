@@ -85,9 +85,9 @@ const SERVICES: Record<string, ServiceInfo> = {
   },
   tarakanov: {
     title: "Уничтожение тараканов",
-    subtitle: "Дезинсекция от тараканов без запаха. Безопасно для детей и животных. Гарантия 1 год.",
+    subtitle: "Дезинсекция от тараканов без запаха. Безопасно для детей и животных. Гарантия 3 года. Холодный туман 1500р.",
     description: "Тараканы — переносчики опасных инфекций: сальмонеллёза, дизентерии, гепатита. Они загрязняют продукты питания и вызывают аллергию. Бытовые средства дают временный эффект — тараканы быстро вырабатывают устойчивость. Профессиональная обработка уничтожает всю популяцию за 1 визит.",
-    priceFrom: 1500, guarantee: "1 год", Icon: IconCockroaches,
+    priceFrom: 1500, guarantee: "3 года", Icon: IconCockroaches,
     methods: [
       { name: "Гелевые приманки", desc: "Без запаха. Не нужно уходить из квартиры. Тараканы погибают в течение 3–7 дней.", price: "от 1 500 ₽" },
       { name: "Холодный туман", desc: "Мгновенный результат. Нужно отсутствовать 2–3 часа. Эффективен при сильном заражении.", price: "от 2 000 ₽" },
@@ -98,7 +98,7 @@ const SERVICES: Record<string, ServiceInfo> = {
       { num: "02", title: "Выбор метода", desc: "Подбираем оптимальный метод в зависимости от степени заражения" },
       { num: "03", title: "Обработка", desc: "Наносим препараты в местах обитания тараканов" },
       { num: "04", title: "Результат", desc: "Тараканы погибают в течение 1–7 дней в зависимости от метода" },
-      { num: "05", title: "Гарантия", desc: "Гарантийный талон на 1 год. Повторная обработка бесплатно при необходимости" },
+      { num: "05", title: "Гарантия", desc: "Гарантийный талон на 3 года. Повторная обработка бесплатно при необходимости" },
     ],
     faq: [
       { q: "Сколько стоит обработка от тараканов?", a: "Стоимость от 1 500 ₽ для однокомнатной квартиры. Зависит от площади, степени заражения и метода." },
@@ -116,7 +116,7 @@ const SERVICES: Record<string, ServiceInfo> = {
       "Полное уничтожение за 1 визит",
       "Обработка всех мест обитания",
       "Без запаха (гелевый метод)",
-      "Гарантийный талон на 1 год",
+      "Гарантийный талон на 3 года",
     ],
     preparation: [
       "Освободите кухонные шкафы от посуды",
@@ -491,7 +491,7 @@ export default function ServicePage() {
                   ЗАКАЗАТЬ ОБРАБОТКУ
                 </a>
                 <a
-                  href="tel:+74955550000"
+                  href="tel:+74951485806"
                   style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.875rem 1.75rem", background: "transparent", color: WHITE, textDecoration: "none", fontWeight: 700, fontSize: "0.85rem", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 3 }}
                 >
                   ☎ Позвонить
@@ -644,7 +644,7 @@ export default function ServicePage() {
           {/* Phone */}
           <div style={{ background: GRAY_BG, borderRadius: 4, padding: "1.125rem", textAlign: "center", marginBottom: "0.875rem", border: `1px solid ${GRAY_BD}` }}>
             <div style={{ fontSize: "0.65rem", color: "#9CA3AF", marginBottom: "0.375rem", letterSpacing: "0.1em", textTransform: "uppercase" }}>Звонок бесплатный</div>
-            <a href="tel:+74955550000" style={{ display: "block", fontSize: "1.15rem", fontWeight: 800, color: NAVY, textDecoration: "none", marginBottom: "0.2rem" }}>+7 (495) 555-00-00</a>
+            <a href="tel:+74951485806" style={{ display: "block", fontSize: "1.15rem", fontWeight: 800, color: NAVY, textDecoration: "none", marginBottom: "0.2rem" }}>+7(495)148-58-06</a>
             <div style={{ fontSize: "0.72rem", color: "#9CA3AF" }}>Ежедневно 8:00–22:00</div>
           </div>
 
@@ -690,7 +690,7 @@ export default function ServicePage() {
       {/* ── STICKY MOBILE CTA ── */}
       <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: NAVY, padding: "0.75rem 1rem", display: "none", zIndex: 100, borderTop: `2px solid ${RED}` }} className="mobile-sticky-cta">
         <div style={{ display: "flex", gap: "0.625rem", maxWidth: 600, margin: "0 auto" }}>
-          <a href="tel:+74955550000" style={{ flex: 1, padding: "0.75rem", textAlign: "center", border: `1px solid rgba(255,255,255,0.25)`, color: WHITE, textDecoration: "none", fontWeight: 700, fontSize: "0.8rem", borderRadius: 3 }}>☎ Позвонить</a>
+          <a href="tel:+74951485806" style={{ flex: 1, padding: "0.75rem", textAlign: "center", border: `1px solid rgba(255,255,255,0.25)`, color: WHITE, textDecoration: "none", fontWeight: 700, fontSize: "0.8rem", borderRadius: 3 }}>☎ Позвонить</a>
           <a href="#order" style={{ flex: 1, padding: "0.75rem", textAlign: "center", background: RED, color: WHITE, textDecoration: "none", fontWeight: 800, fontSize: "0.8rem", borderRadius: 3 }}>Заказать →</a>
         </div>
       </div>

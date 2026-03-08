@@ -60,7 +60,7 @@ export default function SiteFooter() {
           </div>
           <div className="flex gap-3 flex-wrap">
             <a
-              href="tel:+79300354841"
+              href="tel:+74951485806"
               style={{
                 display: "inline-flex", alignItems: "center", gap: "8px",
                 background: "linear-gradient(135deg, #CC0000, #880000)",
@@ -72,7 +72,7 @@ export default function SiteFooter() {
               }}
             >
               <Phone size={15} />
-              8(930)035-48-41
+              8(495)148-58-06
             </a>
             <Link
               href="/calculator"
@@ -120,7 +120,6 @@ export default function SiteFooter() {
             </p>
             <div className="flex flex-col gap-3">
               {[
-                { icon: Phone, text: "8(930)035-48-41", href: "tel:+79300354841" },
                 { icon: Phone, text: "8(495)148-58-06", href: "tel:+74951485806" },
                 { icon: Mail, text: "dezservis88@yandex.ru", href: "mailto:dezservis88@yandex.ru" },
               ].map((c) => {

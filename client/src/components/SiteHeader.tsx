@@ -243,7 +243,7 @@ export default function SiteHeader() {
           {/* Right side */}
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexShrink: 0, marginLeft: "auto" }}>
             <a
-              href="tel:+79300354841"
+              href="tel:+74951485806"
               className="site-phone-link"
               style={{
                 fontSize: "0.82rem",
@@ -254,7 +254,7 @@ export default function SiteHeader() {
               }}
             >
               <Phone size={14} style={{ color: RED }} />
-              8(930)035-48-41
+              8(495)148-58-06
             </a>
             <Link
               href="/calculator"
@@ -361,7 +361,7 @@ export default function SiteHeader() {
               ))}
               <div style={{ marginTop: "1rem", paddingTop: "1rem", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
                 <a
-                  href="tel:+79300354841"
+                  href="tel:+74951485806"
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -374,7 +374,7 @@ export default function SiteHeader() {
                   }}
                 >
                   <Phone size={16} style={{ color: RED }} />
-                  8(930)035-48-41
+                  8(495)148-58-06
                 </a>
                 <Link
                   href="/calculator"
