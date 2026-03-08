@@ -170,7 +170,7 @@ const SERVICES: Record<string, ServiceInfo> = {
   },
   kleshhej: {
     title: "Уничтожение клещей",
-    subtitle: "Обработка участков и помещений от клещей. Гарантия 1 сезон.",
+    subtitle: "Обработка участков и помещений от клещей. Гарантия 1 сезон. Безопасно для детей и домашних животных.",
     description: "Клещи — переносчики энцефалита и болезни Лайма. Особенно опасны для детей и пожилых людей. Обработка участка акарицидными препаратами создаёт защитный барьер на весь сезон. Мы обрабатываем как частные участки, так и помещения.",
     priceFrom: 2000, guarantee: "1 сезон", Icon: IconTicks,
     methods: [
@@ -179,7 +179,7 @@ const SERVICES: Record<string, ServiceInfo> = {
       { name: "Комплексная обработка", desc: "Участок + помещения. Максимальная защита для всей семьи.", price: "от 4 000 ₽" },
     ],
     stages: [
-      { num: "01", title: "Осмотр", desc: "Оцениваем площадь и степень заражения участка или помещения" },
+      { num: "01", title: "Диагностика", desc: "Оцениваем площадь и степень заражения участка или помещения" },
       { num: "02", title: "Подготовка", desc: "Скашиваем высокую траву, убираем листовой опад" },
       { num: "03", title: "Обработка", desc: "Наносим акарицидный препарат на все зоны активности клещей" },
       { num: "04", title: "Просыхание", desc: "Не заходить на участок 2–3 часа до высыхания препарата" },
@@ -480,7 +480,7 @@ export default function ServicePage() {
               <h1 style={{ fontSize: "clamp(1.75rem, 4vw, 2.75rem)", fontWeight: 900, color: WHITE, letterSpacing: "-0.03em", lineHeight: 1.1, marginBottom: "0.875rem" }}>
                 {pageTitle}
               </h1>
-              <p style={{ fontSize: "1.0625rem", fontWeight: 600, color: "rgba(255,255,255,0.65)", lineHeight: 1.65, marginBottom: "2rem", maxWidth: 520 }}>
+              <p style={{ fontSize: "1.3125rem", fontWeight: 600, color: "rgba(255,255,255,0.65)", lineHeight: 1.65, marginBottom: "2rem", maxWidth: 520 }}>
                 {service.subtitle}
               </p>
               <div style={{ display: "flex", gap: "0.875rem", flexWrap: "wrap" }}>
@@ -488,7 +488,7 @@ export default function ServicePage() {
                   href="#order"
                   style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.875rem 1.75rem", background: RED, color: WHITE, textDecoration: "none", fontWeight: 800, fontSize: "0.85rem", letterSpacing: "0.08em", borderRadius: 3 }}
                 >
-                  ЗАКАЗАТЬ ОБРАБОТКУ
+                  Рассчитать цену
                 </a>
                 <a
                   href="tel:+74951485806"
