@@ -458,6 +458,31 @@ export default function ServicePage() {
         <div style={{ position: "absolute", top: "5%", right: "8%", width: 240, height: 240, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.06)", pointerEvents: "none" }} />
         {/* Red top accent */}
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${RED} 0%, rgba(204,0,0,0.3) 60%, transparent 100%)` }} />
+        {/* Pleseni: specialist photo background */}
+        {serviceSlug === "pleseni" && (
+          <>
+            <div style={{
+              position: "absolute", inset: 0, zIndex: 0,
+              backgroundImage: `url(https://private-us-east-1.manuscdn.com/user_upload_by_module/session_file/310519663313765274/XFZGyUoJBBgrLOXd.png?Expires=1804494079&Signature=FrnxrMzdo9CkjswsJrqLa2A8KoEfGDkRdXgPhfUdcvWzhx2KCaxTWHfIlG1tyf~CJeyZEr-N9I5tVbE8UltQg3Lozfh3IjwIRwCE5gBAcxD-VJhk3MGU0B4gW5XYznqndeMyt3HM02NFETHFE06F68mkud4rw5rd1JtDt9NRE2KXz9xRnqRpd7lkLX6chS2BH2iJvEOJHS-SwQq1-d8gV5PoWj6JdlHGCGUSPYggZOeY6neisk-ddLAuAJTt0Ed2GVyjMDHC0v~xOO9r5SL-0mnX1D6Zq3nVMTc8IQF9BXUsffn0lqZ~kOG8xv9J6QG~EntrmU4WK6wQqwrVSh9XlQ__&Key-Pair-Id=K2HSFNDJXOU9YS)`,
+              backgroundSize: "cover",
+              backgroundPosition: "center right",
+              opacity: 0.22,
+              pointerEvents: "none",
+            }} />
+            {/* Left-to-right fade: navy solid on left, transparent on right */}
+            <div style={{
+              position: "absolute", inset: 0, zIndex: 0,
+              background: `linear-gradient(to right, ${NAVY} 0%, ${NAVY} 35%, rgba(10,15,30,0.82) 55%, rgba(10,15,30,0.45) 72%, transparent 100%)`,
+              pointerEvents: "none",
+            }} />
+            {/* Bottom fade */}
+            <div style={{
+              position: "absolute", bottom: 0, left: 0, right: 0, height: "40%", zIndex: 0,
+              background: `linear-gradient(to top, ${NAVY} 0%, transparent 100%)`,
+              pointerEvents: "none",
+            }} />
+          </>
+        )}
 
         <div className="container" style={{ position: "relative", zIndex: 1, paddingTop: "5rem", paddingBottom: "4rem" }}>
           {/* Breadcrumbs */}
@@ -498,10 +523,12 @@ export default function ServicePage() {
                 </a>
               </div>
             </div>
-            {/* Big icon — no background */}
-            <div style={{ opacity: 0.9, flexShrink: 0 }}>
-              <service.Icon size={160} />
-            </div>
+            {/* Big icon — hidden for pleseni to let photo show through */}
+            {serviceSlug !== "pleseni" && (
+              <div style={{ opacity: 0.9, flexShrink: 0 }}>
+                <service.Icon size={160} />
+              </div>
+            )}
           </div>
         </div>
       </section>
