@@ -117,6 +117,21 @@ function IconShield({ size = 32 }: { size?: number }) {
   );
 }
 
+function IconSmell({ size = 32 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 48 48" fill="none">
+      <circle cx="24" cy="26" r="12" fill={RED} opacity="0.12" />
+      <ellipse cx="24" cy="32" rx="8" ry="5" stroke={RED} strokeWidth="2" fill="none" />
+      <path d="M20 32 Q20 26 24 24 Q28 22 28 18 Q28 14 24 13" stroke={RED} strokeWidth="2" fill="none" strokeLinecap="round" />
+      <path d="M16 30 Q14 24 18 20 Q22 16 20 11" stroke={RED} strokeWidth="1.6" fill="none" strokeLinecap="round" opacity="0.7" />
+      <path d="M32 30 Q34 24 30 20 Q26 16 28 11" stroke={RED} strokeWidth="1.6" fill="none" strokeLinecap="round" opacity="0.7" />
+      <circle cx="24" cy="13" r="2" fill={RED} opacity="0.5" />
+      <circle cx="20" cy="11" r="1.5" fill={RED} opacity="0.4" />
+      <circle cx="28" cy="11" r="1.5" fill={RED} opacity="0.4" />
+    </svg>
+  );
+}
+
 // ── Data ───────────────────────────────────────────────────────────────────────
 const services = [
   {
@@ -125,10 +140,10 @@ const services = [
     Icon: IconBug,
     badge: null,
     prices: [
-      { label: "1-комнатная квартира", value: "2 500 ₽" },
-      { label: "2-комнатная квартира", value: "3 500 ₽" },
-      { label: "3-комнатная квартира", value: "4 500 ₽" },
-      { label: "Частный дом", value: "от 5 000 ₽" },
+      { label: "1-комнатная квартира", value: "1 500 ₽" },
+      { label: "2-комнатная квартира", value: "2 500 ₽" },
+      { label: "3-комнатная квартира", value: "3 000 ₽" },
+      { label: "Частный дом", value: "от 4 000 ₽" },
       { label: "Офис / организация", value: "от 20 ₽/м²" },
     ],
     guarantee: "3 года",
@@ -140,10 +155,10 @@ const services = [
     Icon: IconCockroach,
     badge: "Популярно",
     prices: [
-      { label: "1-комнатная квартира", value: "1 800 ₽" },
-      { label: "2-комнатная квартира", value: "2 500 ₽" },
-      { label: "3-комнатная квартира", value: "3 200 ₽" },
-      { label: "Частный дом", value: "от 4 000 ₽" },
+      { label: "1-комнатная квартира", value: "1 500 ₽" },
+      { label: "2-комнатная квартира", value: "500 ₽/м²" },
+      { label: "3-комнатная квартира", value: "450 ₽/м²" },
+      { label: "Частный дом", value: "400 ₽/м²" },
       { label: "Офис / организация", value: "от 15 ₽/м²" },
     ],
     guarantee: "3 года",
@@ -194,6 +209,21 @@ const services = [
     guarantee: "1 год",
     href: "/services/dezinfektsiya",
   },
+  {
+    slug: "zapahi",
+    title: "Удаление запахов",
+    Icon: IconSmell,
+    badge: null,
+    prices: [
+      { label: "1-комнатная квартира", value: "2 000 ₽" },
+      { label: "2-комнатная квартира", value: "3 000 ₽" },
+      { label: "3-комнатная квартира", value: "4 000 ₽" },
+      { label: "Частный дом", value: "от 5 000 ₽" },
+      { label: "Офис / организация", value: "от 15 ₽/м²" },
+    ],
+    guarantee: "1 год",
+    href: "/services/zapahi",
+  },
 ];
 
 const methods = [
@@ -209,7 +239,7 @@ const methods = [
     Icon: IconFog,
     name: "Горячий туман",
     desc: "Максимальная эффективность. Глубокое проникновение в щели и мебель.",
-    price: "+2 000 ₽ к базовой",
+    price: "+1 000 ₽ к базовой",
     badge: "Рекомендуем",
     badgeColor: RED,
   },
@@ -228,7 +258,7 @@ const included = [
   "Диагностика помещения",
   "Все расходные материалы и препараты",
   "Оформление договора",
-  "Гарантийный талон",
+  "Гарантийный талон (действует на усиленную обработку)",
   "Консультация по профилактике",
   "Повторная обработка по гарантии",
   "Документы для Роспотребнадзора (для организаций)",
