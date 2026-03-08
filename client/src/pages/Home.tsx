@@ -10,11 +10,11 @@ import {
 } from "@/components/Icons";
 
 // ─── DESIGN TOKENS ───────────────────────────────────────────────────────────
-const NAVY      = "#0D1F33";
-const NAVY_MID  = "#0D1F33";
-const NAVY_TEXT = "#0D1F33";
-const RED       = "#CC0000";
-const RED_DARK  = "#a80000";
+const NAVY      = "#0A0F1E";
+const NAVY_MID  = "#0A0F1E";
+const NAVY_TEXT = "#111827";
+const RED       = "#D0021B";
+const RED_DARK  = "#a80015";
 const WHITE     = "#ffffff";
 const GRAY_TEXT = "#6b7280";
 
@@ -181,17 +181,17 @@ export default function Home() {
                   display: "inline-flex", alignItems: "center", gap: "0.5rem",
                   background: RED, color: WHITE, fontWeight: 800, fontSize: "0.85rem",
                   letterSpacing: "0.07em", textTransform: "uppercase" as const, padding: "0.875rem 1.75rem",
-                  borderRadius: 2, textDecoration: "none", transition: "background 0.2s",
+                  borderRadius: 8, textDecoration: "none", transition: "background 0.2s",
                 }}
                   onMouseEnter={e => (e.currentTarget.style.background = RED_DARK)}
                   onMouseLeave={e => (e.currentTarget.style.background = RED)}>
                   Рассчитать стоимость →
                 </Link>
-                <a href="tel:+74955550000" style={{
+                <a href="tel:+74951485806" style={{
                   display: "inline-flex", alignItems: "center", gap: "0.5rem",
                   background: "transparent", color: WHITE, fontWeight: 700, fontSize: "0.85rem",
                   letterSpacing: "0.07em", textTransform: "uppercase" as const, padding: "0.875rem 1.75rem",
-                  border: "1px solid rgba(255,255,255,0.28)", borderRadius: 2, textDecoration: "none",
+                  border: "1px solid rgba(255,255,255,0.28)", borderRadius: 8, textDecoration: "none",
                   transition: "border-color 0.2s",
                 }}
                   onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.65)")}
@@ -263,7 +263,7 @@ export default function Home() {
                 marginTop: "12px",
                 marginRight: "19px",
                 marginLeft: "-21px",
-                borderRadius: 4,
+                borderRadius: 12,
                 boxShadow: "0 24px 64px rgba(0,0,0,0.4)",
               }}>
                 <div style={{ fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: RED, marginBottom: "0.6rem" }}>Бесплатная консультация</div>
@@ -308,7 +308,7 @@ export default function Home() {
                       style={{
                         width: "100%", background: RED, color: WHITE, fontWeight: 800, fontSize: "0.85rem",
                         letterSpacing: "0.06em", textTransform: "uppercase" as const, padding: "0.9rem 1.5rem",
-                        border: "none", borderRadius: 2, cursor: "pointer", transition: "background 0.2s",
+                        border: "none", borderRadius: 8, cursor: "pointer", transition: "background 0.2s",
                         marginTop: "0.25rem",
                       }}
                       onMouseEnter={e => (e.currentTarget.style.background = RED_DARK)}
@@ -379,7 +379,7 @@ export default function Home() {
                   style={{
                     background: WHITE,
                     border: "1px solid #e8ecf2",
-                    borderRadius: 8,
+                    borderRadius: 12,
                     padding: "1.75rem 1.5rem",
                     transition: "all 0.25s ease",
                     cursor: "pointer",
@@ -407,7 +407,7 @@ export default function Home() {
                   }}
                 >
                   {/* Red accent line top */}
-                  <div className="card-accent" style={{ position: "absolute", top: 0, left: 0, height: 3, width: "0%", background: RED, transition: "width 0.3s ease", borderRadius: "8px 8px 0 0" }} />
+                  <div className="card-accent" style={{ position: "absolute", top: 0, left: 0, height: 3, width: "0%", background: RED, transition: "width 0.3s ease", borderRadius: "12px 12px 0 0" }} />
                   {/* Icon with colored bg */}
                   <div style={{
                     width: 56, height: 56, borderRadius: 19,
@@ -444,7 +444,7 @@ export default function Home() {
                     display: "flex", alignItems: "center", justifyContent: "center",
                     background: RED, color: WHITE, fontWeight: 700, fontSize: "0.78rem",
                     letterSpacing: "0.05em", textTransform: "uppercase" as const,
-                    padding: "0.7rem 1rem", borderRadius: 4,
+                    padding: "0.7rem 1rem", borderRadius: 8,
                     transition: "background 0.2s",
                   }}>
                     Рассчитать стоимость →
@@ -476,7 +476,7 @@ export default function Home() {
             {objectTypes.map((o, i) => (
               <div key={i} style={{
                 background: WHITE, border: "1px solid #e8ecf2",
-                borderRadius: 4, overflow: "hidden",
+                borderRadius: 12, overflow: "hidden",
                 transition: "box-shadow 0.2s, transform 0.2s",
               }}
                 onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,9,25,0.1)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
@@ -502,7 +502,7 @@ export default function Home() {
                     display: "block", textAlign: "center" as const, background: i === 1 ? RED : "transparent",
                     color: i === 1 ? WHITE : RED, border: `1px solid ${RED}`,
                     fontWeight: 700, fontSize: "0.8rem", letterSpacing: "0.06em", textTransform: "uppercase" as const,
-                    padding: "0.7rem", borderRadius: 2, textDecoration: "none", transition: "all 0.2s",
+                    padding: "0.7rem", borderRadius: 8, textDecoration: "none", transition: "all 0.2s",
                   }}>
                     Рассчитать стоимость →
                   </Link>
@@ -604,7 +604,7 @@ export default function Home() {
           <div className="reviews-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1.5rem" }}>
             {reviews.map((r, i) => (
               <div key={i} style={{
-                background: WHITE, border: "1px solid #e8ecf2", borderRadius: 4,
+                background: WHITE, border: "1px solid #e8ecf2", borderRadius: 12,
                 padding: "1.75rem", display: "flex", flexDirection: "column", gap: "1rem",
                 transition: "box-shadow 0.2s",
               }}
@@ -654,7 +654,8 @@ export default function Home() {
                   { service: "Уничтожение грызунов",  period: "6 месяцев" },
                   { service: "Удаление плесени",      period: "2 года" },
                 ].map((g, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0.875rem 1.25rem", background: "#f8f9fc", borderRadius: 2, border: "1px solid #e8ecf2" }}>
+                  <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between",
+                    padding: "0.875rem 1.25rem", background: "#f8f9fc", borderRadius: 8, border: "1px solid #e8ecf2" }}>
                     <span style={{ fontSize: "0.88rem", fontWeight: 600, color: NAVY_TEXT }}>{g.service}</span>
                     <span style={{ fontSize: "0.88rem", fontWeight: 800, color: RED }}>{g.period}</span>
                   </div>
@@ -662,7 +663,7 @@ export default function Home() {
               </div>
             </div>
             {/* Right: CTA card */}
-            <div style={{ background: NAVY, borderRadius: 4, padding: "3rem", position: "relative", overflow: "hidden" }}>
+            <div style={{ background: NAVY, borderRadius: 12, padding: "3rem", position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: RED }} />
               <div style={{ position: "absolute", bottom: "-20%", right: "-10%", width: 200, height: 200, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.04)", pointerEvents: "none" }} />
               <div style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase" as const, color: RED, marginBottom: "1rem" }}>Получить консультацию</div>
@@ -672,15 +673,15 @@ export default function Home() {
               <p style={{ color: "rgba(255,255,255,0.55)", lineHeight: 1.7, marginBottom: "2rem", fontSize: "0.9rem" }}>
                 Специалист приедет, оценит объём работ и назовёт точную стоимость. Без предоплаты.
               </p>
-              <a href="tel:+74955550000" style={{
+              <a href="tel:+74951485806" style={{
                 display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem",
                 background: RED, color: WHITE, fontWeight: 800, fontSize: "0.85rem",
-                letterSpacing: "0.07em", textTransform: "uppercase" as const, padding: "1rem 1.75rem",
-                borderRadius: 2, textDecoration: "none", transition: "background 0.2s",
+                letterSpacing: "0.07em", textTransform: "uppercase" as const, padding: "0.875rem 1.75rem",
+                borderRadius: 8, textDecoration: "none", transition: "background 0.2s",
               }}
                 onMouseEnter={e => (e.currentTarget.style.background = RED_DARK)}
                 onMouseLeave={e => (e.currentTarget.style.background = RED)}>
-                ☎ Позвонить бесплатно
+                ☂ Позвонить бесплатно
               </a>
             </div>
           </div>
@@ -701,11 +702,11 @@ export default function Home() {
               <p style={{ color: GRAY_TEXT, lineHeight: 1.7, marginBottom: "2rem" }}>
                 Если не нашли ответ — позвоните нам, консультация бесплатна.
               </p>
-              <a href="tel:+74955550000" style={{
+              <a href="tel:+74951485806" style={{
                 display: "inline-flex", alignItems: "center", gap: "0.5rem",
                 background: RED, color: WHITE, fontWeight: 800, fontSize: "0.85rem",
                 letterSpacing: "0.07em", textTransform: "uppercase" as const, padding: "0.875rem 1.75rem",
-                borderRadius: 2, textDecoration: "none", transition: "background 0.2s",
+                borderRadius: 8, textDecoration: "none", transition: "background 0.2s",
               }}
                 onMouseEnter={e => (e.currentTarget.style.background = RED_DARK)}
                 onMouseLeave={e => (e.currentTarget.style.background = RED)}>
@@ -755,17 +756,17 @@ export default function Home() {
               display: "inline-flex", alignItems: "center", gap: "0.5rem",
               background: WHITE, color: RED, fontWeight: 800, fontSize: "0.85rem",
               letterSpacing: "0.07em", textTransform: "uppercase" as const, padding: "1rem 2.25rem",
-              borderRadius: 2, textDecoration: "none",
+              borderRadius: 8, textDecoration: "none",
             }}>
               Рассчитать стоимость →
             </Link>
-            <a href="tel:+74955550000" style={{
+            <a href="tel:+74951485806" style={{
               display: "inline-flex", alignItems: "center", gap: "0.5rem",
               background: "transparent", color: WHITE, fontWeight: 700, fontSize: "0.85rem",
               letterSpacing: "0.07em", textTransform: "uppercase" as const, padding: "1rem 2.25rem",
-              border: "2px solid rgba(255,255,255,0.6)", borderRadius: 2, textDecoration: "none",
+              border: "2px solid rgba(255,255,255,0.6)", borderRadius: 8, textDecoration: "none",
             }}>
-              ☎ +7 (495) 555-00-00
+              ☎ 8(495)148-58-06
             </a>
           </div>
         </div>
@@ -776,16 +777,16 @@ export default function Home() {
       ═══════════════════════════════════════════════════════════════════ */}
       <div className="sticky-cta">
         <div style={{ display: "flex", gap: "0.75rem" }}>
-          <a href="tel:+74955550000" style={{
+          <a href="tel:+74951485806" style={{
             flex: 1, display: "flex", alignItems: "center", justifyContent: "center",
             background: "rgba(255,255,255,0.1)", color: WHITE, fontWeight: 700, fontSize: "0.85rem",
             letterSpacing: "0.04em", padding: "0.875rem", border: "1px solid rgba(255,255,255,0.25)",
-            borderRadius: 2, textDecoration: "none",
+            borderRadius: 8, textDecoration: "none",
           }}>☎ Позвонить</a>
           <Link href="/calculator" style={{
             flex: 1, display: "flex", alignItems: "center", justifyContent: "center",
             background: RED, color: WHITE, fontWeight: 800, fontSize: "0.85rem",
-            letterSpacing: "0.04em", padding: "0.875rem", borderRadius: 2, textDecoration: "none",
+            letterSpacing: "0.04em", padding: "0.875rem", borderRadius: 8, textDecoration: "none",
           }}>Рассчитать →</Link>
         </div>
       </div>
