@@ -1,6 +1,6 @@
 import { Link, useParams } from "wouter";
 import SchemaMarkup from "@/components/SchemaMarkup";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import {
@@ -8,13 +8,31 @@ import {
   IconDeodorization, IconOzonation, IconOdor,
 } from "@/components/Icons";
 
-// ─── DESIGN TOKENS ────────────────────────────────────────────────────────────
-const NAVY     = "#000919";
-const NAVY_MID = "#001230";
-const RED      = "#CC0000";
+// ─── DESIGN TOKENS (unified with About/Blog/Contacts) ───────────────────────
+const NAVY     = "#0A0F1E";
+const NAVY_MID = "#162040";
+const RED      = "#D0021B";
 const WHITE    = "#FFFFFF";
-const GRAY_BG  = "#F5F7FA";
+const GRAY_BG  = "#F8F9FC";
 const GRAY_BD  = "#E2E8F0";
+
+// ─── FADE IN ON SCROLL ───────────────────────────────────────────────────────
+function FadeInSection({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold: 0.1 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return (
+    <div ref={ref} style={{ opacity: visible ? 1 : 0, transform: visible ? "translateY(0)" : "translateY(24px)", transition: `opacity 0.6s ease ${delay}s, transform 0.6s ease ${delay}s` }}>
+      {children}
+    </div>
+  );
+}
 
 // ─── CITY NAMES ───────────────────────────────────────────────────────────────
 const CITY_NAMES: Record<string, string> = {
@@ -450,7 +468,7 @@ export default function ServicePage() {
       />
 
       {/* ── HERO ── */}
-      <section style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_MID} 100%)`, position: "relative", overflow: "hidden" }}>
+      <section style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_MID} 60%, #0D2B5E 100%)`, position: "relative", overflow: "hidden" }}>
         {/* Decorative grid lines */}
         <div style={{ position: "absolute", inset: 0, backgroundImage: `linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)`, backgroundSize: "60px 60px", pointerEvents: "none" }} />
         {/* Decorative circles */}
@@ -459,7 +477,7 @@ export default function ServicePage() {
         {/* Red top accent */}
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${RED} 0%, rgba(204,0,0,0.3) 60%, transparent 100%)` }} />
 
-        <div className="container" style={{ position: "relative", zIndex: 1, paddingTop: "5rem", paddingBottom: "4rem" }}>
+        <div className="container" style={{ position: "relative", zIndex: 1, paddingTop: "5rem", paddingBottom: "4rem", animation: "fadeInUp 0.7s ease both" }}>
           {/* Breadcrumbs */}
           <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: "1.5rem", fontSize: "0.78rem", flexWrap: "wrap" }}>
             <Link href="/" style={{ color: "rgba(255,255,255,0.45)", textDecoration: "none" }}>Главная</Link>
@@ -469,7 +487,7 @@ export default function ServicePage() {
             <span style={{ color: "rgba(255,255,255,0.8)" }}>{service.title}</span>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "3rem", alignItems: "center" }}>
+          <div className="service-hero-grid" style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "3rem", alignItems: "center" }}>
             <div>
               {cityName && (
                 <div style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.55)", marginBottom: "0.625rem" }}>
@@ -483,23 +501,27 @@ export default function ServicePage() {
               <p style={{ fontSize: "1.3125rem", fontWeight: 600, color: "rgba(255,255,255,0.65)", lineHeight: 1.65, marginBottom: "2rem", maxWidth: 520 }}>
                 {service.subtitle}
               </p>
-              <div style={{ display: "flex", gap: "0.875rem", flexWrap: "wrap" }}>
+              <div className="service-hero-btns" style={{ display: "flex", gap: "0.875rem", flexWrap: "wrap" }}>
                 <a
                   href="#order"
-                  style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.875rem 1.75rem", background: RED, color: WHITE, textDecoration: "none", fontWeight: 800, fontSize: "0.85rem", letterSpacing: "0.08em", borderRadius: 3 }}
+                  style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.875rem 1.75rem", background: RED, color: WHITE, textDecoration: "none", fontWeight: 800, fontSize: "0.85rem", letterSpacing: "0.08em", borderRadius: 8, boxShadow: `0 4px 16px rgba(208,2,27,0.4)`, transition: "transform 0.2s, box-shadow 0.2s" }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)"; (e.currentTarget as HTMLAnchorElement).style.boxShadow = `0 8px 24px rgba(208,2,27,0.5)`; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.transform = "none"; (e.currentTarget as HTMLAnchorElement).style.boxShadow = `0 4px 16px rgba(208,2,27,0.4)`; }}
                 >
                   Рассчитать цену
                 </a>
                 <a
                   href="tel:+74951485806"
-                  style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.875rem 1.75rem", background: "transparent", color: WHITE, textDecoration: "none", fontWeight: 700, fontSize: "0.85rem", border: "1px solid rgba(255,255,255,0.25)", borderRadius: 3 }}
+                  style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.875rem 1.75rem", background: "transparent", color: WHITE, textDecoration: "none", fontWeight: 700, fontSize: "0.85rem", border: "1px solid rgba(255,255,255,0.35)", borderRadius: 8, transition: "background 0.2s" }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.1)"; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "transparent"; }}
                 >
-                  ☎ Позвонить
+                  ☘ Позвонить
                 </a>
               </div>
             </div>
             {/* Big icon — no background */}
-            <div style={{ opacity: 0.9, flexShrink: 0 }}>
+            <div className="service-icon-wrap" style={{ opacity: 0.9, flexShrink: 0 }}>
               <service.Icon size={160} />
             </div>
           </div>
@@ -518,21 +540,37 @@ export default function ServicePage() {
       </div>
 
       {/* ── MAIN CONTENT + SIDEBAR ── */}
-      <div className="container" style={{ padding: "3.5rem 0", display: "grid", gridTemplateColumns: "1fr 300px", gap: "3rem", alignItems: "start" }}>
+      <style>{`
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 900px) {
+          .service-layout { grid-template-columns: 1fr !important; }
+          .service-sidebar { position: static !important; }
+          .service-icon-wrap { display: none !important; }
+          .service-hero-grid { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 600px) {
+          .service-hero-btns { flex-direction: column !important; }
+          .service-hero-btns a { text-align: center !important; justify-content: center !important; }
+          .service-dangers-grid { grid-template-columns: 1fr !important; }
+          .service-results-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
+      <div className="container service-layout" style={{ padding: "3.5rem 0", display: "grid", gridTemplateColumns: "1fr min(320px, 100%)", gap: "3rem", alignItems: "start" }}>
 
         {/* LEFT COLUMN */}
         <div>
 
           {/* Description + Dangers */}
+          <FadeInSection>
           <section style={{ marginBottom: "2.75rem" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1.125rem" }}>
-              <div style={{ width: 4, height: 26, background: RED, flexShrink: 0 }} />
+              <div style={{ width: 4, height: 26, background: RED, flexShrink: 0, borderRadius: 2 }} />
               <h2 style={{ fontSize: "1.25rem", fontWeight: 800, color: NAVY, margin: 0 }}>О проблеме</h2>
             </div>
             <p style={{ fontSize: "0.9rem", color: "#4a5568", lineHeight: 1.8, marginBottom: "1.25rem" }}>{service.description}</p>
-            <div style={{ background: "#FFF5F5", border: "1px solid #FED7D7", borderRadius: 4, padding: "1.125rem 1.375rem" }}>
+            <div style={{ background: "#FFF5F5", border: "1px solid #FED7D7", borderRadius: 12, padding: "1.125rem 1.375rem" }}>
               <div style={{ fontSize: "0.825rem", fontWeight: 700, color: "#C53030", marginBottom: "0.75rem" }}>⚠ Чем опасно промедление:</div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
+              <div className="service-dangers-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
                 {service.dangers.map((d, i) => (
                   <div key={i} style={{ display: "flex", gap: "0.5rem", alignItems: "flex-start" }}>
                     <div style={{ width: 5, height: 5, background: RED, borderRadius: "50%", marginTop: 5, flexShrink: 0 }} />
@@ -542,19 +580,21 @@ export default function ServicePage() {
               </div>
             </div>
           </section>
+          </FadeInSection>
 
           {/* Methods + Pricing */}
+          <FadeInSection delay={0.1}>
           <section style={{ marginBottom: "2.75rem" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1.125rem" }}>
-              <div style={{ width: 4, height: 26, background: RED, flexShrink: 0 }} />
+              <div style={{ width: 4, height: 26, background: RED, flexShrink: 0, borderRadius: 2 }} />
               <h2 style={{ fontSize: "1.25rem", fontWeight: 800, color: NAVY, margin: 0 }}>Методы и цены</h2>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
               {service.methods.map((m, i) => (
                 <div key={i}
-                  style={{ border: `1.5px solid ${GRAY_BD}`, borderRadius: 4, padding: "1.125rem 1.375rem", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "1rem", transition: "border-color 0.2s, box-shadow 0.2s" }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = NAVY_MID; e.currentTarget.style.boxShadow = "0 4px 16px rgba(13,43,94,0.08)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = GRAY_BD; e.currentTarget.style.boxShadow = "none"; }}
+                  style={{ border: `1.5px solid ${GRAY_BD}`, borderRadius: 12, padding: "1.25rem 1.5rem", display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "1rem", transition: "border-color 0.2s, box-shadow 0.2s, transform 0.2s" }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = RED; e.currentTarget.style.boxShadow = "0 8px 24px rgba(208,2,27,0.08)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = GRAY_BD; e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "none"; }}
                 >
                   <div style={{ flex: 1 }}>
                     <div style={{ fontSize: "0.95rem", fontWeight: 700, color: NAVY, marginBottom: "0.3rem" }}>{m.name}</div>
@@ -568,11 +608,13 @@ export default function ServicePage() {
               ))}
             </div>
           </section>
+          </FadeInSection>
 
           {/* Stages */}
+          <FadeInSection delay={0.15}>
           <section style={{ marginBottom: "2.75rem" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1.125rem" }}>
-              <div style={{ width: 4, height: 26, background: RED, flexShrink: 0 }} />
+              <div style={{ width: 4, height: 26, background: RED, flexShrink: 0, borderRadius: 2 }} />
               <h2 style={{ fontSize: "1.25rem", fontWeight: 800, color: NAVY, margin: 0 }}>Этапы работы</h2>
             </div>
             <div>
@@ -589,14 +631,16 @@ export default function ServicePage() {
               ))}
             </div>
           </section>
+          </FadeInSection>
 
           {/* Preparation */}
+          <FadeInSection delay={0.2}>
           <section style={{ marginBottom: "2.75rem" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1.125rem" }}>
-              <div style={{ width: 4, height: 26, background: RED, flexShrink: 0 }} />
+              <div style={{ width: 4, height: 26, background: RED, flexShrink: 0, borderRadius: 2 }} />
               <h2 style={{ fontSize: "1.25rem", fontWeight: 800, color: NAVY, margin: 0 }}>Как подготовиться</h2>
             </div>
-            <div style={{ background: GRAY_BG, borderRadius: 4, padding: "1.375rem" }}>
+            <div style={{ background: GRAY_BG, borderRadius: 12, padding: "1.375rem" }}>
               {service.preparation.map((p, i) => (
                 <div key={i} style={{ display: "flex", gap: "0.875rem", alignItems: "flex-start", marginBottom: i < service.preparation.length - 1 ? "0.75rem" : 0 }}>
                   <div style={{ width: 22, height: 22, background: NAVY, color: WHITE, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.65rem", fontWeight: 800, flexShrink: 0 }}>{i + 1}</div>
@@ -605,11 +649,13 @@ export default function ServicePage() {
               ))}
             </div>
           </section>
+          </FadeInSection>
 
           {/* Results */}
-          <section style={{ background: "#EFF6FF", border: `1px solid #BFDBFE`, borderRadius: 4, padding: "1.125rem 1.375rem", marginBottom: "2.75rem" }}>
+          <FadeInSection delay={0.25}>
+          <section style={{ background: "#EFF6FF", border: `1px solid #BFDBFE`, borderRadius: 12, padding: "1.25rem 1.5rem", marginBottom: "2.75rem" }}>
             <div style={{ fontSize: "0.825rem", fontWeight: 700, color: NAVY, marginBottom: "0.75rem" }}>✓ Что вы получаете:</div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
+              <div className="service-results-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
               {service.results.map((r, i) => (
                 <div key={i} style={{ display: "flex", gap: "0.5rem", alignItems: "flex-start" }}>
                   <span style={{ color: NAVY, flexShrink: 0, marginTop: 1 }}>✓</span>
@@ -618,21 +664,24 @@ export default function ServicePage() {
               ))}
             </div>
           </section>
+          </FadeInSection>
 
           {/* FAQ */}
+          <FadeInSection delay={0.3}>
           <section>
             <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1.125rem" }}>
-              <div style={{ width: 4, height: 26, background: RED, flexShrink: 0 }} />
+              <div style={{ width: 4, height: 26, background: RED, flexShrink: 0, borderRadius: 2 }} />
               <h2 style={{ fontSize: "1.25rem", fontWeight: 800, color: NAVY, margin: 0 }}>Частые вопросы</h2>
             </div>
             {service.faq.map((item, i) => <FaqItem key={i} q={item.q} a={item.a} />)}
           </section>
+          </FadeInSection>
         </div>
 
         {/* RIGHT: Sticky sidebar */}
-        <div id="order" style={{ position: "sticky", top: 90 }}>
+        <div id="order" className="service-sidebar" style={{ position: "sticky", top: 90 }}>
           {/* Order form */}
-          <div style={{ background: `linear-gradient(160deg, ${NAVY} 0%, ${NAVY_MID} 100%)`, borderRadius: 4, padding: "1.625rem", marginBottom: "0.875rem" }}>
+          <div style={{ background: `linear-gradient(160deg, ${NAVY} 0%, ${NAVY_MID} 100%)`, borderRadius: 16, padding: "1.625rem", marginBottom: "0.875rem", boxShadow: "0 8px 32px rgba(10,15,30,0.25)" }}>
             <div style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: RED, marginBottom: "0.375rem" }}>Заказать обработку</div>
             <h3 style={{ fontSize: "1rem", fontWeight: 800, color: WHITE, marginBottom: "0.25rem", lineHeight: 1.3 }}>Перезвоним за 15 минут</h3>
             <div style={{ fontSize: "1.375rem", fontWeight: 900, color: WHITE, marginBottom: "1.125rem", letterSpacing: "-0.03em" }}>
@@ -642,14 +691,14 @@ export default function ServicePage() {
           </div>
 
           {/* Phone */}
-          <div style={{ background: GRAY_BG, borderRadius: 4, padding: "1.125rem", textAlign: "center", marginBottom: "0.875rem", border: `1px solid ${GRAY_BD}` }}>
+          <div style={{ background: GRAY_BG, borderRadius: 12, padding: "1.125rem", textAlign: "center", marginBottom: "0.875rem", border: `1px solid ${GRAY_BD}` }}>
             <div style={{ fontSize: "0.65rem", color: "#9CA3AF", marginBottom: "0.375rem", letterSpacing: "0.1em", textTransform: "uppercase" }}>Звонок бесплатный</div>
             <a href="tel:+74951485806" style={{ display: "block", fontSize: "1.15rem", fontWeight: 800, color: NAVY, textDecoration: "none", marginBottom: "0.2rem" }}>+7(495)148-58-06</a>
             <div style={{ fontSize: "0.72rem", color: "#9CA3AF" }}>Ежедневно 8:00–22:00</div>
           </div>
 
           {/* Guarantees */}
-          <div style={{ background: GRAY_BG, borderRadius: 4, padding: "1.125rem", border: `1px solid ${GRAY_BD}` }}>
+          <div style={{ background: GRAY_BG, borderRadius: 12, padding: "1.125rem", border: `1px solid ${GRAY_BD}` }}>
             <div style={{ fontSize: "0.78rem", fontWeight: 700, color: NAVY, marginBottom: "0.75rem" }}>Наши гарантии:</div>
             {["Гарантийный талон с печатью", "Договор на оказание услуг", "Сертифицированные препараты", "Бесплатный повторный выезд", "Безопасно для детей и животных"].map((g, i) => (
               <div key={i} style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginBottom: i < 4 ? "0.5rem" : 0 }}>
@@ -672,9 +721,9 @@ export default function ServicePage() {
             {Object.entries(SERVICES).filter(([slug]) => slug !== serviceSlug).map(([slug, svc]) => (
               <Link key={slug} href={`/services/${slug}`} style={{ textDecoration: "none" }}>
                 <div
-                  style={{ background: WHITE, borderRadius: 4, padding: "1.125rem", border: `1.5px solid ${GRAY_BD}`, cursor: "pointer", transition: "border-color 0.2s, box-shadow 0.2s" }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = NAVY_MID; e.currentTarget.style.boxShadow = "0 4px 16px rgba(13,43,94,0.08)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = GRAY_BD; e.currentTarget.style.boxShadow = "none"; }}
+                  style={{ background: WHITE, borderRadius: 12, padding: "1.125rem", border: `1.5px solid ${GRAY_BD}`, cursor: "pointer", transition: "border-color 0.2s, box-shadow 0.2s, transform 0.2s" }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = RED; e.currentTarget.style.boxShadow = "0 8px 24px rgba(208,2,27,0.08)"; e.currentTarget.style.transform = "translateY(-3px)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = GRAY_BD; e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "none"; }}
                 >
                   <svc.Icon size={32} />
                   <div style={{ fontSize: "0.825rem", fontWeight: 700, color: NAVY, marginBottom: "0.3rem", lineHeight: 1.3, marginTop: "0.75rem" }}>{svc.title}</div>
