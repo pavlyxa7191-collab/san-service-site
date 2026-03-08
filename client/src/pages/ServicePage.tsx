@@ -480,7 +480,7 @@ export default function ServicePage() {
               <h1 style={{ fontSize: "clamp(1.75rem, 4vw, 2.75rem)", fontWeight: 900, color: WHITE, letterSpacing: "-0.03em", lineHeight: 1.1, marginBottom: "0.875rem" }}>
                 {pageTitle}
               </h1>
-              <p style={{ fontSize: "1rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.65, marginBottom: "2rem", maxWidth: 520 }}>
+              <p style={{ fontSize: "0.9375rem", fontWeight: 600, color: "rgba(255,255,255,0.65)", lineHeight: 1.65, marginBottom: "2rem", maxWidth: 520 }}>
                 {service.subtitle}
               </p>
               <div style={{ display: "flex", gap: "0.875rem", flexWrap: "wrap" }}>
