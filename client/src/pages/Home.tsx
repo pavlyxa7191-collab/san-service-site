@@ -10,9 +10,9 @@ import {
 } from "@/components/Icons";
 
 // ─── DESIGN TOKENS ───────────────────────────────────────────────────────────
-const NAVY      = "#0d1f3c";
-const NAVY_MID  = "#0a1628";
-const NAVY_TEXT = "#0a1628";
+const NAVY      = "#0D1F33";
+const NAVY_MID  = "#0D1F33";
+const NAVY_TEXT = "#0D1F33";
 const RED       = "#CC0000";
 const RED_DARK  = "#a80000";
 const WHITE     = "#ffffff";

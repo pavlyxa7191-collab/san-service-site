@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import { ArrowRight, CheckCircle, Phone, ChevronDown } from "lucide-react";
 
 // ── Design tokens ──────────────────────────────────────────────────────────────
-const NAVY = "#000919";
+const NAVY = "#0D1F33";
 const RED = "#CC0000";
 const WHITE = "#ffffff";
 

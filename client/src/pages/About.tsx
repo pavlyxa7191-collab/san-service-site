@@ -409,7 +409,7 @@ export default function About() {
               <p style={{ color: GRAY, fontSize: 17, margin: 0 }}>Более 12 000 клиентов выбрали нас — вот почему</p>
             </div>
           </FadeIn>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 24 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 24, alignItems: "stretch" }}>
             {trusts.map((t, i) => (
               <FadeIn key={i} delay={i * 80}>
                 <div
@@ -423,6 +423,9 @@ export default function About() {
                     transition: "all 0.35s ease",
                     transform: hoveredTrust === i ? "translateY(-4px)" : "none",
                     cursor: "default",
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column" as const,
                   }}
                 >
                   <div style={{
@@ -436,7 +439,7 @@ export default function About() {
                   <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 10px", color: hoveredTrust === i ? WHITE : NAVY2, transition: "color 0.3s" }}>
                     {t.title}
                   </h3>
-                  <p style={{ fontSize: 14, lineHeight: 1.65, margin: 0, color: hoveredTrust === i ? "rgba(255,255,255,0.72)" : GRAY, transition: "color 0.3s" }}>
+                  <p style={{ fontSize: 14, lineHeight: 1.65, margin: 0, color: hoveredTrust === i ? "rgba(255,255,255,0.72)" : GRAY, transition: "color 0.3s", flex: 1 }}>
                     {t.desc}
                   </p>
                 </div>

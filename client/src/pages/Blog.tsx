@@ -1,6 +1,42 @@
+import { useState, useEffect, useRef } from "react";
 import { Link, useParams } from "wouter";
-import { ArrowRight, Clock, Tag } from "lucide-react";
+import { ArrowRight, Clock, Tag, ChevronRight } from "lucide-react";
 
+// ─── DESIGN TOKENS (matching About.tsx) ────────────────────────────────────────
+const NAVY = "#0D1F33";
+const NAVY2 = "#1a2f4a";
+const RED = "#CC0000";
+const WHITE = "#ffffff";
+const LIGHT_BG = "#f7f8fa";
+const GRAY = "#6b7280";
+const BORDER = "#e5e7eb";
+
+// ─── FADE IN ANIMATION ─────────────────────────────────────────────────────────
+function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold: 0.1 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return (
+    <div ref={ref} style={{
+      opacity: visible ? 1 : 0,
+      transform: visible ? "translateY(0)" : "translateY(24px)",
+      transition: `opacity 0.55s ease ${delay}ms, transform 0.55s ease ${delay}ms`,
+    }}>
+      {children}
+    </div>
+  );
+}
+
+// ─── ARTICLES DATA ──────────────────────────────────────────────────────────────
 const articles = [
   {
     slug: "kak-izbavitsya-ot-klopov",
@@ -9,6 +45,7 @@ const articles = [
     date: "15 февраля 2025",
     readTime: "7 мин",
     tag: "Клопы",
+    color: "#dc2626",
     content: `
 Постельные клопы (Cimex lectularius) — паразиты, питающиеся кровью человека. Они активны ночью, прячутся в щелях мебели, матрасах и плинтусах.
 
@@ -54,6 +91,7 @@ const articles = [
     date: "3 марта 2025",
     readTime: "5 мин",
     tag: "Дезинфекция",
+    color: "#0891b2",
     content: `
 После перенесённого COVID-19 многие задаются вопросом: нужна ли дезинфекция квартиры? Отвечаем подробно.
 
@@ -79,208 +117,219 @@ const articles = [
 - Хлорсодержащих препаратов
 - Перекиси водорода
 
-Все препараты сертифицированы и одобрены Роспотребнадзором.
+Все препараты сертифицированы и безопасны для людей после проветривания.
 
-## Документы после дезинфекции
+## Стоимость дезинфекции
 
-Для организаций мы выдаём:
-- Акт выполненных работ
-- Журнал дезинфекции
-- Сертификаты на препараты
-
-Это необходимо для проверок Роспотребнадзора.
+Однокомнатная квартира — от 2 000 ₽. Офис до 100 м² — от 5 000 ₽. Точная цена зависит от площади и выбранного метода.
     `,
   },
   {
-    slug: "kak-izbavitsya-ot-kryis",
-    title: "Как избавиться от крыс в квартире и частном доме",
-    excerpt: "Крысы — опасные переносчики болезней. Рассказываем о признаках заражения, методах дератизации и профилактике повторного появления.",
+    slug: "kak-vyvesti-tarakanov",
+    title: "Тараканы в квартире: причины появления и методы борьбы",
+    excerpt: "Откуда берутся тараканы, почему они возвращаются после самостоятельной обработки и как навсегда избавиться от них с гарантией.",
     date: "20 января 2025",
     readTime: "6 мин",
-    tag: "Грызуны",
+    tag: "Тараканы",
+    color: "#d97706",
     content: `
-Крысы — одни из самых опасных вредителей. Они переносят более 35 болезней, портят имущество и продукты питания.
+Тараканы — одни из самых живучих насекомых. Они адаптируются к инсектицидам, прячутся в щелях и размножаются с огромной скоростью.
 
-## Признаки появления крыс
+## Почему появляются тараканы
 
-- Характерный запах мочи
-- Погрызенные продукты, провода, мебель
-- Экскременты (тёмные продолговатые гранулы)
-- Шум в стенах и под полом ночью
-- Следы лап на пыльных поверхностях
+- Соседи провели обработку — тараканы мигрировали к вам
+- Принесли с продуктами или вещами
+- Проникли через вентиляцию или канализацию
 
-## Почему крысы опасны
+## Почему самостоятельные методы не работают
 
-Крысы переносят лептоспироз, хантавирус, сальмонеллёз и другие опасные заболевания. Они перегрызают электропроводку, что может привести к пожару.
+Гели и аэрозоли из магазина убивают только взрослых особей. Яйца (оотеки) устойчивы к большинству препаратов. Через 3–4 недели популяция восстанавливается.
 
-## Методы дератизации
+## Профессиональные методы
 
-**Родентицидные приманки** — наиболее эффективный метод. Приманки раскладываются в специальных защитных станциях, недоступных для детей и животных.
+**Холодный туман** — мелкодисперсный аэрозоль проникает в щели и труднодоступные места. Быстро, без запаха.
 
-**Механические ловушки** — используются как дополнение к основному методу.
+**Гелевые приманки** — долгосрочный эффект. Тараканы поедают приманку и заражают колонию.
 
-**Клеевые ловушки** — для мышей в небольших помещениях.
+**Комплексная обработка** — сочетание методов для максимального результата.
 
-## Профилактика
+## Гарантия результата
 
-- Устраните все щели и отверстия в фундаменте и стенах
-- Храните продукты в герметичных контейнерах
-- Регулярно вывозите мусор
-- Не оставляйте еду в открытом доступе
-
-## Дератизация для предприятий
-
-Для кафе, ресторанов, складов и производств мы заключаем договоры на регулярное обслуживание с ведением журнала дератизации.
+Профессиональная обработка даёт гарантию до 3 лет. При повторном появлении — бесплатная обработка.
     `,
   },
   {
-    slug: "pleseni-v-kvartire",
-    title: "Плесень в квартире: причины, опасность и методы удаления",
-    excerpt: "Плесень опасна для здоровья и разрушает конструкции. Объясняем, почему она появляется, чем грозит и как правильно от неё избавиться.",
-    date: "10 февраля 2025",
-    readTime: "8 мин",
-    tag: "Плесень",
+    slug: "dezinsektsiya-ofisa",
+    title: "Дезинсекция офиса: как провести без остановки работы",
+    excerpt: "Как организовать профессиональную обработку офиса от насекомых без простоя бизнеса. Требования СанПиН, сроки и стоимость.",
+    date: "10 апреля 2025",
+    readTime: "4 мин",
+    tag: "Коммерция",
+    color: "#7c3aed",
     content: `
-Плесень — это грибок, который размножается спорами. Она появляется в местах с высокой влажностью и плохой вентиляцией.
+Насекомые в офисе — это не только неприятно, но и нарушение санитарных норм. Рассказываем, как провести обработку без остановки работы.
 
-## Почему появляется плесень
+## Требования СанПиН
 
-- Высокая влажность воздуха (более 60%)
-- Плохая вентиляция
-- Промерзание стен
-- Протечки труб и кровли
-- Конденсат на окнах
+Организации обязаны проводить профилактическую дезинсекцию согласно СП 3.5.3.3223-14. При обнаружении насекомых — немедленная обработка.
 
-## Чем опасна плесень
+## Как провести обработку без простоя
 
-Споры плесени вызывают:
-- Аллергические реакции
-- Бронхиальную астму
-- Хронический бронхит
-- Снижение иммунитета
-- Головные боли и усталость
+1. Обработка в нерабочее время (ночью или в выходные)
+2. Поэтапная обработка по зонам
+3. Быстросохнущие препараты без запаха
 
-Особенно опасна плесень для детей, пожилых людей и людей с хроническими заболеваниями.
+## Что входит в обработку офиса
 
-## Почему самостоятельная обработка не помогает
+- Осмотр и выявление очагов
+- Обработка всех помещений
+- Обработка технических зон (серверные, склады)
+- Акт выполненных работ для СЭС
 
-Бытовые средства (белизна, уксус) убивают видимую плесень, но не проникают в глубину материала. Через 2–4 недели плесень появляется снова.
+## Стоимость
 
-## Профессиональное удаление плесени
-
-1. Механическое удаление видимой плесени
-2. Обработка антисептиком глубокого проникновения
-3. Нанесение защитного покрытия
-4. Рекомендации по устранению причин
-
-## Профилактика
-
-- Обеспечьте хорошую вентиляцию
-- Поддерживайте влажность воздуха 40–60%
-- Регулярно проветривайте помещение
-- Устраните источники протечек
+Офис до 100 м² — от 5 000 ₽. Торговый центр — по договорённости. Договор и официальные документы.
     `,
   },
 ];
 
-// ─── ARTICLE PAGE ─────────────────────────────────────────────────────────────
-
+// ─── ARTICLE PAGE ───────────────────────────────────────────────────────────────
 function ArticlePage({ slug }: { slug: string }) {
   const article = articles.find((a) => a.slug === slug);
-
-  if (!article) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="font-black text-2xl mb-4" style={{ color: "#000919" }}>Статья не найдена</h1>
-          <Link href="/blog" className="btn-red no-underline">К статьям</Link>
-        </div>
+  if (!article) return (
+    <div style={{ minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ textAlign: "center" }}>
+        <h2 style={{ color: NAVY, fontSize: 24, fontWeight: 800, marginBottom: 12 }}>Статья не найдена</h2>
+        <Link href="/blog" style={{ color: RED, textDecoration: "none", fontWeight: 600 }}>← Вернуться в блог</Link>
       </div>
-    );
-  }
+    </div>
+  );
 
   const paragraphs = article.content.trim().split("\n\n");
 
   return (
-    <div className="bg-white">
-      <section style={{ background: "#000919", borderBottom: "2px solid #CC0000" }}>
-        <div className="container py-16">
-          <div className="flex items-center gap-2 mb-4 text-sm" style={{ color: "#666" }}>
-            <Link href="/" className="no-underline" style={{ color: "#666" }}>Главная</Link>
-            <span>/</span>
-            <Link href="/blog" className="no-underline" style={{ color: "#666" }}>Блог</Link>
-            <span>/</span>
-            <span style={{ color: "#CC0000" }}>{article.tag}</span>
+    <div style={{ background: WHITE }}>
+      {/* Hero */}
+      <section style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY2} 100%)`, padding: "80px 0 60px" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
+          {/* Breadcrumb */}
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 28, fontSize: 13, color: "rgba(255,255,255,0.5)" }}>
+            <Link href="/" style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Главная</Link>
+            <ChevronRight size={14} />
+            <Link href="/blog" style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Блог</Link>
+            <ChevronRight size={14} />
+            <span style={{ color: "rgba(255,255,255,0.8)" }}>{article.tag}</span>
           </div>
-          <div className="flex items-center gap-3 mb-4">
-            <div className="red-square" />
-            <span className="section-label">{article.tag}</span>
+          {/* Tag badge */}
+          <div style={{
+            display: "inline-block", background: `${RED}22`, color: RED,
+            borderRadius: 100, padding: "6px 18px", fontSize: 12, fontWeight: 700,
+            letterSpacing: "0.08em", marginBottom: 20, textTransform: "uppercase" as const,
+            border: `1px solid ${RED}44`,
+          }}>
+            {article.tag}
           </div>
-          <h1
-            className="font-black text-white mb-4"
-            style={{ fontSize: "clamp(1.5rem, 3vw, 2.5rem)", letterSpacing: "-0.03em", maxWidth: "800px" }}
-          >
+          <h1 style={{
+            fontSize: "clamp(1.75rem, 3.5vw, 2.75rem)", fontWeight: 900, color: WHITE,
+            margin: "0 0 20px", letterSpacing: "-0.03em", lineHeight: 1.15, maxWidth: 760,
+          }}>
             {article.title}
           </h1>
-          <div className="flex items-center gap-4 text-xs" style={{ color: "#666" }}>
-            <span className="flex items-center gap-1"><Clock size={12} /> {article.readTime}</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 20, color: "rgba(255,255,255,0.5)", fontSize: 13 }}>
+            <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <Clock size={13} /> {article.readTime}
+            </span>
             <span>{article.date}</span>
           </div>
         </div>
       </section>
 
-      <div className="container py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          <div className="lg:col-span-2">
-            <div className="prose max-w-none" style={{ color: "#444" }}>
+      {/* Content */}
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "64px 24px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 60, alignItems: "start" }}>
+          {/* Article body */}
+          <div>
+            <div style={{ fontSize: 16, lineHeight: 1.75, color: "#374151" }}>
               {paragraphs.map((para, i) => {
                 if (para.startsWith("## ")) {
                   return (
-                    <h2 key={i} className="font-black text-xl mt-8 mb-4" style={{ color: "#000919", letterSpacing: "-0.02em" }}>
+                    <h2 key={i} style={{ fontSize: 22, fontWeight: 800, color: NAVY, margin: "40px 0 16px", letterSpacing: "-0.02em", lineHeight: 1.2 }}>
                       {para.replace("## ", "")}
                     </h2>
                   );
                 }
-                if (para.startsWith("**") && para.endsWith("**")) {
+                if (para.includes("**")) {
+                  const parts = para.split(/\*\*(.*?)\*\*/g);
                   return (
-                    <p key={i} className="font-bold text-sm mb-3" style={{ color: "#000919" }}>
-                      {para.replace(/\*\*/g, "")}
+                    <p key={i} style={{ marginBottom: 16, color: "#374151" }}>
+                      {parts.map((p, j) => j % 2 === 1 ? <strong key={j} style={{ color: NAVY, fontWeight: 700 }}>{p}</strong> : p)}
                     </p>
                   );
                 }
                 if (para.startsWith("- ")) {
                   const items = para.split("\n").filter((l) => l.startsWith("- "));
                   return (
-                    <ul key={i} className="mb-4 space-y-2">
+                    <ul key={i} style={{ margin: "0 0 20px", paddingLeft: 0, listStyle: "none" }}>
                       {items.map((item, j) => (
-                        <li key={j} className="flex items-start gap-2 text-sm">
-                          <div className="red-square mt-1 flex-shrink-0" />
-                          <span>{item.replace("- ", "")}</span>
+                        <li key={j} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 10, color: "#374151", fontSize: 15 }}>
+                          <span style={{ width: 6, height: 6, borderRadius: "50%", background: RED, flexShrink: 0, marginTop: 8 }} />
+                          {item.replace("- ", "")}
                         </li>
                       ))}
                     </ul>
                   );
                 }
+                if (para.match(/^\d+\./)) {
+                  const items = para.split("\n").filter((l) => l.match(/^\d+\./));
+                  return (
+                    <ol key={i} style={{ margin: "0 0 20px", paddingLeft: 0, listStyle: "none" }}>
+                      {items.map((item, j) => (
+                        <li key={j} style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 10, color: "#374151", fontSize: 15 }}>
+                          <span style={{ width: 24, height: 24, borderRadius: "50%", background: `${RED}15`, color: RED, fontSize: 12, fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                            {j + 1}
+                          </span>
+                          {item.replace(/^\d+\.\s/, "")}
+                        </li>
+                      ))}
+                    </ol>
+                  );
+                }
                 return (
-                  <p key={i} className="text-sm leading-relaxed mb-4" style={{ color: "#444" }}>
+                  <p key={i} style={{ marginBottom: 18, color: "#374151", fontSize: 15, lineHeight: 1.75 }}>
                     {para}
                   </p>
                 );
               })}
             </div>
 
-            <div className="mt-12 p-8" style={{ background: "#CC0000" }}>
-              <h3 className="font-black text-white text-xl mb-3" style={{ letterSpacing: "-0.02em" }}>
+            {/* CTA block */}
+            <div style={{
+              marginTop: 48, borderRadius: 20, padding: "40px 36px",
+              background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY2} 100%)`,
+              position: "relative", overflow: "hidden",
+            }}>
+              <div style={{ position: "absolute", top: -20, right: -20, width: 120, height: 120, borderRadius: "50%", background: `${RED}15` }} />
+              <h3 style={{ fontSize: 22, fontWeight: 800, color: WHITE, margin: "0 0 10px", letterSpacing: "-0.02em", position: "relative" }}>
                 Нужна профессиональная помощь?
               </h3>
-              <p className="text-sm mb-6" style={{ color: "rgba(255,255,255,0.8)" }}>
+              <p style={{ fontSize: 14, color: "rgba(255,255,255,0.65)", margin: "0 0 24px", position: "relative" }}>
                 Оставьте заявку — специалист приедет в день обращения
               </p>
-              <div className="flex gap-4">
-                <Link href="/calculator" className="no-underline inline-flex items-center gap-2 font-bold text-sm px-6 py-3" style={{ background: "white", color: "#CC0000", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" as const, position: "relative" }}>
+                <Link href="/calculator" style={{
+                  display: "inline-flex", alignItems: "center", gap: 8,
+                  background: RED, color: WHITE, textDecoration: "none",
+                  padding: "12px 24px", borderRadius: 10, fontWeight: 700, fontSize: 14,
+                  letterSpacing: "0.02em",
+                }}>
                   Рассчитать стоимость <ArrowRight size={14} />
                 </Link>
-                <a href="tel:+79300354841" className="no-underline inline-flex items-center gap-2 font-bold text-sm px-6 py-3" style={{ background: "transparent", color: "white", border: "2px solid rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                <a href="tel:+74951485806" style={{
+                  display: "inline-flex", alignItems: "center", gap: 8,
+                  background: "transparent", color: WHITE, textDecoration: "none",
+                  padding: "12px 24px", borderRadius: 10, fontWeight: 700, fontSize: 14,
+                  border: "1.5px solid rgba(255,255,255,0.3)",
+                }}>
                   Позвонить
                 </a>
               </div>
@@ -288,102 +337,210 @@ function ArticlePage({ slug }: { slug: string }) {
           </div>
 
           {/* Sidebar */}
-          <div>
-            <div className="p-6 mb-6" style={{ background: "#F5F5F5", border: "1px solid #E0E0E0" }}>
-              <div className="section-label mb-4">Другие статьи</div>
-              <div className="space-y-4">
+          <div style={{ position: "sticky", top: 100 }}>
+            {/* Other articles */}
+            <div style={{ background: LIGHT_BG, borderRadius: 16, padding: 28, marginBottom: 20, border: `1px solid ${BORDER}` }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: RED, letterSpacing: "0.1em", textTransform: "uppercase" as const, marginBottom: 20 }}>
+                Другие статьи
+              </div>
+              <div style={{ display: "flex", flexDirection: "column" as const, gap: 16 }}>
                 {articles.filter((a) => a.slug !== slug).slice(0, 3).map((a) => (
-                  <Link key={a.slug} href={`/blog/${a.slug}`} className="block no-underline group">
-                    <div className="text-xs font-bold mb-1" style={{ color: "#CC0000", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-                      {a.tag}
-                    </div>
-                    <div className="text-sm font-semibold group-hover:underline" style={{ color: "#000919" }}>
-                      {a.title}
+                  <Link key={a.slug} href={`/blog/${a.slug}`} style={{ textDecoration: "none", display: "block" }}>
+                    <div style={{
+                      padding: "14px 16px", borderRadius: 10, background: WHITE,
+                      border: `1px solid ${BORDER}`, transition: "border-color 0.2s, box-shadow 0.2s",
+                    }}
+                      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.borderColor = RED; (e.currentTarget as HTMLElement).style.boxShadow = `0 4px 16px ${RED}15`; }}
+                      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.borderColor = BORDER; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
+                    >
+                      <div style={{ fontSize: 10, fontWeight: 700, color: RED, letterSpacing: "0.08em", textTransform: "uppercase" as const, marginBottom: 6 }}>
+                        {a.tag}
+                      </div>
+                      <div style={{ fontSize: 13, fontWeight: 600, color: NAVY, lineHeight: 1.4 }}>
+                        {a.title}
+                      </div>
                     </div>
                   </Link>
                 ))}
               </div>
             </div>
 
-            <div className="p-6" style={{ background: "#000919" }}>
-              <div className="section-label mb-3">Позвонить</div>
-              <a href="tel:+79300354841" className="font-black text-xl text-white no-underline block mb-2">
-                8(930)035-48-41
+            {/* Phone card */}
+            <div style={{
+              background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY2} 100%)`,
+              borderRadius: 16, padding: 28,
+            }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: `${RED}`, letterSpacing: "0.1em", textTransform: "uppercase" as const, marginBottom: 12 }}>
+                Позвонить
+              </div>
+              <a href="tel:+74951485806" style={{ fontSize: 22, fontWeight: 900, color: WHITE, textDecoration: "none", display: "block", marginBottom: 6 }}>
+                8(495)148-58-06
               </a>
-              <p className="text-xs" style={{ color: "#666" }}>Работаем 24/7</p>
+              <p style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", margin: 0 }}>Работаем 24/7</p>
             </div>
           </div>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 900px) {
+          .blog-article-grid { grid-template-columns: 1fr !important; }
+          .blog-sidebar { position: static !important; }
+        }
+      `}</style>
     </div>
   );
 }
 
-// ─── BLOG LIST ─────────────────────────────────────────────────────────────────
-
+// ─── BLOG LIST ──────────────────────────────────────────────────────────────────
 export default function Blog() {
   const params = useParams<{ slug?: string }>();
+  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
   if (params.slug) {
     return <ArticlePage slug={params.slug} />;
   }
 
   return (
-    <div className="bg-white">
-      <section style={{ background: "#000919", borderBottom: "2px solid #CC0000" }}>
-        <div className="container py-16">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="red-square" />
-            <span className="section-label">Блог</span>
-          </div>
-          <h1
-            className="font-black text-white mb-4"
-            style={{ fontSize: "clamp(2rem, 4vw, 3rem)", letterSpacing: "-0.03em" }}
-          >
-            Полезные статьи
-          </h1>
-          <p className="text-base" style={{ color: "#999" }}>
-            Советы специалистов по дезинфекции, дезинсекции и дератизации
-          </p>
+    <div style={{ background: WHITE }}>
+      {/* Hero */}
+      <section style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY2} 100%)`, padding: "80px 0 60px" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
+          <FadeIn>
+            <div style={{
+              display: "inline-block", background: `${RED}22`, color: RED,
+              borderRadius: 100, padding: "6px 18px", fontSize: 12, fontWeight: 700,
+              letterSpacing: "0.08em", marginBottom: 20, textTransform: "uppercase" as const,
+              border: `1px solid ${RED}44`,
+            }}>
+              Блог
+            </div>
+            <h1 style={{
+              fontSize: "clamp(2rem, 4vw, 3.25rem)", fontWeight: 900, color: WHITE,
+              margin: "0 0 16px", letterSpacing: "-0.03em", lineHeight: 1.1,
+            }}>
+              Полезные статьи
+            </h1>
+            <p style={{ fontSize: 18, color: "rgba(255,255,255,0.6)", margin: 0, maxWidth: 520 }}>
+              Советы специалистов по дезинфекции, дезинсекции и дератизации
+            </p>
+          </FadeIn>
         </div>
       </section>
 
-      <div className="container py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px" style={{ background: "#E0E0E0" }}>
-          {articles.map((article) => (
-            <Link key={article.slug} href={`/blog/${article.slug}`} className="no-underline group">
-              <div className="bg-white p-8 h-full" style={{ transition: "background 0.15s" }}>
-                <div className="flex items-center gap-3 mb-4">
+      {/* Articles grid */}
+      <section style={{ padding: "80px 0", background: LIGHT_BG }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 24 }}>
+            {articles.map((article, i) => (
+              <FadeIn key={article.slug} delay={i * 80}>
+                <Link href={`/blog/${article.slug}`} style={{ textDecoration: "none", display: "block", height: "100%" }}>
                   <div
-                    className="inline-flex items-center gap-1 text-xs font-bold px-2 py-1"
-                    style={{ background: "#CC0000", color: "white", letterSpacing: "0.05em", textTransform: "uppercase" }}
+                    onMouseEnter={() => setHoveredCard(i)}
+                    onMouseLeave={() => setHoveredCard(null)}
+                    style={{
+                      background: WHITE, borderRadius: 16,
+                      border: `1.5px solid ${hoveredCard === i ? RED + "44" : BORDER}`,
+                      boxShadow: hoveredCard === i ? `0 16px 48px ${RED}12` : "0 2px 8px rgba(0,9,25,0.04)",
+                      transition: "all 0.3s ease",
+                      transform: hoveredCard === i ? "translateY(-4px)" : "none",
+                      overflow: "hidden", height: "100%", display: "flex", flexDirection: "column" as const,
+                    }}
                   >
-                    <Tag size={10} /> {article.tag}
+                    {/* Card top accent */}
+                    <div style={{ height: 4, background: `linear-gradient(90deg, ${RED}, ${RED}88)` }} />
+
+                    <div style={{ padding: "28px 28px 24px", flex: 1, display: "flex", flexDirection: "column" as const }}>
+                      {/* Tag + read time */}
+                      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
+                        <span style={{
+                          display: "inline-flex", alignItems: "center", gap: 5,
+                          background: `${RED}12`, color: RED,
+                          borderRadius: 100, padding: "4px 12px", fontSize: 11, fontWeight: 700,
+                          letterSpacing: "0.06em", textTransform: "uppercase" as const,
+                        }}>
+                          <Tag size={9} /> {article.tag}
+                        </span>
+                        <span style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 12, color: GRAY }}>
+                          <Clock size={11} /> {article.readTime}
+                        </span>
+                      </div>
+
+                      {/* Title */}
+                      <h2 style={{
+                        fontSize: 18, fontWeight: 800, color: NAVY, margin: "0 0 12px",
+                        letterSpacing: "-0.02em", lineHeight: 1.25,
+                      }}>
+                        {article.title}
+                      </h2>
+
+                      {/* Excerpt */}
+                      <p style={{ fontSize: 14, lineHeight: 1.65, color: GRAY, margin: "0 0 24px", flex: 1 }}>
+                        {article.excerpt}
+                      </p>
+
+                      {/* Footer */}
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: 16, borderTop: `1px solid ${BORDER}` }}>
+                        <span style={{ fontSize: 12, color: GRAY }}>{article.date}</span>
+                        <span style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 13, fontWeight: 700, color: RED }}>
+                          Читать <ArrowRight size={13} />
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1 text-xs" style={{ color: "#999" }}>
-                    <Clock size={10} /> {article.readTime}
-                  </div>
-                </div>
-                <h2
-                  className="font-black text-lg mb-3 group-hover:underline"
-                  style={{ color: "#000919", letterSpacing: "-0.02em", lineHeight: 1.2 }}
-                >
-                  {article.title}
-                </h2>
-                <p className="text-sm leading-relaxed mb-4" style={{ color: "#666" }}>
-                  {article.excerpt}
-                </p>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs" style={{ color: "#999" }}>{article.date}</span>
-                  <span className="flex items-center gap-1 text-xs font-bold" style={{ color: "#CC0000" }}>
-                    Читать <ArrowRight size={10} />
-                  </span>
-                </div>
-              </div>
-            </Link>
-          ))}
+                </Link>
+              </FadeIn>
+            ))}
+          </div>
         </div>
-      </div>
+      </section>
+
+      {/* CTA section */}
+      <section style={{ padding: "80px 0", background: WHITE }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
+          <FadeIn>
+            <div style={{
+              background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY2} 100%)`,
+              borderRadius: 24, padding: "60px 48px",
+              display: "grid", gridTemplateColumns: "1fr auto", gap: 40, alignItems: "center",
+            }}>
+              <div>
+                <div style={{
+                  display: "inline-block", background: `${RED}22`, color: RED,
+                  borderRadius: 100, padding: "5px 14px", fontSize: 11, fontWeight: 700,
+                  letterSpacing: "0.08em", marginBottom: 16, textTransform: "uppercase" as const,
+                }}>
+                  Нужна помощь?
+                </div>
+                <h2 style={{ fontSize: "clamp(20px, 2.5vw, 32px)", fontWeight: 800, color: WHITE, margin: "0 0 10px", letterSpacing: "-0.02em" }}>
+                  Оставьте заявку прямо сейчас
+                </h2>
+                <p style={{ fontSize: 15, color: "rgba(255,255,255,0.6)", margin: 0 }}>
+                  Специалист приедет в день обращения. Работаем 24/7.
+                </p>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column" as const, gap: 12, minWidth: 200 }}>
+                <Link href="/calculator" style={{
+                  display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
+                  background: RED, color: WHITE, textDecoration: "none",
+                  padding: "14px 28px", borderRadius: 10, fontWeight: 700, fontSize: 14,
+                  whiteSpace: "nowrap" as const,
+                }}>
+                  Рассчитать цену <ArrowRight size={14} />
+                </Link>
+                <a href="tel:+74951485806" style={{
+                  display: "inline-flex", alignItems: "center", justifyContent: "center",
+                  background: "transparent", color: WHITE, textDecoration: "none",
+                  padding: "14px 28px", borderRadius: 10, fontWeight: 700, fontSize: 14,
+                  border: "1.5px solid rgba(255,255,255,0.25)", whiteSpace: "nowrap" as const,
+                }}>
+                  8(495)148-58-06
+                </a>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
     </div>
   );
 }

@@ -9,7 +9,7 @@ import {
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 const RED = "#CC0000";
-const NAVY = "#0d1f3c";
+const NAVY = "#0D1F33";
 const WHITE = "#ffffff";
 const LIGHT_BG = "#f8f9fc";
 const BORDER = "#e8ecf2";
@@ -312,9 +312,9 @@ export default function CalculatorPage() {
               <div style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.65rem", letterSpacing: "0.08em", textTransform: "uppercase" as const }}>Санитарная служба</div>
             </div>
           </Link>
-          <a href="tel:+79300354841" style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: WHITE, textDecoration: "none", fontSize: "0.85rem", fontWeight: 600 }}>
+          <a href="tel:+74951485806" style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: WHITE, textDecoration: "none", fontSize: "0.85rem", fontWeight: 600 }}>
             <Phone size={15} color={RED} />
-            8(930)035-48-41
+            8(495)148-58-06
           </a>
         </div>
       </div>
