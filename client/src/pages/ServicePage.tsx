@@ -1,5 +1,6 @@
 import { Link, useParams } from "wouter";
 import SchemaMarkup from "@/components/SchemaMarkup";
+import { BeforeAfterSlider } from "@/components/BeforeAfterSlider";
 import { useState, useEffect, useRef } from "react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
@@ -55,6 +56,7 @@ interface ServiceInfo {
   methods: ServiceMethod[]; stages: ServiceStage[];
   faq: ServiceFaq[]; dangers: string[]; results: string[];
   preparation: string[];
+  beforeAfter?: { before: string; after: string; label?: string };
 }
 
 const SERVICES: Record<string, ServiceInfo> = {
@@ -143,6 +145,11 @@ const SERVICES: Record<string, ServiceInfo> = {
       "Вынесите мусор",
       "При обработке туманом — уберите животных",
     ],
+    beforeAfter: {
+      before: "https://d2xsxph8kpxj0f.cloudfront.net/310519663313765274/L8SjSLKH4wQcbNtHZ9BCPq/before-cockroaches-BTYhhZhJ8quyP6f4hdfz5S.webp",
+      after: "https://d2xsxph8kpxj0f.cloudfront.net/310519663313765274/L8SjSLKH4wQcbNtHZ9BCPq/after-cockroaches-5NVmkjyze5Xwfm97pSQhtE.webp",
+      label: "Кухня до и после обработки",
+    },
   },
   gryzunov: {
     title: "Уничтожение грызунов",
@@ -185,6 +192,11 @@ const SERVICES: Record<string, ServiceInfo> = {
       "Уберите домашних животных в день обработки",
       "Сообщите о местах, где видели грызунов",
     ],
+    beforeAfter: {
+      before: "https://d2xsxph8kpxj0f.cloudfront.net/310519663313765274/L8SjSLKH4wQcbNtHZ9BCPq/before-rodents-7jmmuuT4U7QAjBSqn4sDdU.webp",
+      after: "https://d2xsxph8kpxj0f.cloudfront.net/310519663313765274/L8SjSLKH4wQcbNtHZ9BCPq/after-rodents-Va7VznE4Tjb9YNTYdyDbpf.webp",
+      label: "Кладовая до и после дератизации",
+    },
   },
   kleshhej: {
     title: "Уничтожение клещей",
@@ -227,6 +239,11 @@ const SERVICES: Record<string, ServiceInfo> = {
       "Уберите домашних животных на 3 часа",
       "Уберите продукты и посуду с открытых мест",
     ],
+    beforeAfter: {
+      before: "https://d2xsxph8kpxj0f.cloudfront.net/310519663313765274/L8SjSLKH4wQcbNtHZ9BCPq/before-ticks-nDTV8M8tQ5H7fFf5TttdFb.webp",
+      after: "https://d2xsxph8kpxj0f.cloudfront.net/310519663313765274/L8SjSLKH4wQcbNtHZ9BCPq/after-ticks-9kdyKagqAmZWCFMydGMjau.webp",
+      label: "Участок до и после обработки",
+    },
   },
   pleseni: {
     title: "Удаление плесени",
@@ -269,6 +286,11 @@ const SERVICES: Record<string, ServiceInfo> = {
       "Проветрите помещение перед приездом специалиста",
       "Уберите детей и животных на время обработки",
     ],
+    beforeAfter: {
+      before: "https://d2xsxph8kpxj0f.cloudfront.net/310519663313765274/L8SjSLKH4wQcbNtHZ9BCPq/before-mold-CWHqCRgqAXHkzb7qCr5vDz.webp",
+      after: "https://d2xsxph8kpxj0f.cloudfront.net/310519663313765274/L8SjSLKH4wQcbNtHZ9BCPq/after-mold-LaQDKswZpVYZ3ccLygjiny.webp",
+      label: "Помещение до и после дезинфекции",
+    },
   },
   dezinfektsii: {
     title: "Дезинфекция",
@@ -311,6 +333,11 @@ const SERVICES: Record<string, ServiceInfo> = {
       "Уберите домашних животных и детей",
       "Обеспечьте доступ ко всем помещениям",
     ],
+    beforeAfter: {
+      before: "https://d2xsxph8kpxj0f.cloudfront.net/310519663313765274/L8SjSLKH4wQcbNtHZ9BCPq/before-cockroaches-BTYhhZhJ8quyP6f4hdfz5S.webp",
+      after: "https://d2xsxph8kpxj0f.cloudfront.net/310519663313765274/L8SjSLKH4wQcbNtHZ9BCPq/after-cockroaches-5NVmkjyze5Xwfm97pSQhtE.webp",
+      label: "Помещение до и после дезинфекции",
+    },
   },
   zapahov: {
     title: "Борьба с запахами",
@@ -353,6 +380,11 @@ const SERVICES: Record<string, ServiceInfo> = {
       "Обеспечьте доступ ко всем комнатам",
       "Проветрите помещение перед обработкой",
     ],
+    beforeAfter: {
+      before: "https://d2xsxph8kpxj0f.cloudfront.net/310519663313765274/L8SjSLKH4wQcbNtHZ9BCPq/before-mold-CWHqCRgqAXHkzb7qCr5vDz.webp",
+      after: "https://d2xsxph8kpxj0f.cloudfront.net/310519663313765274/L8SjSLKH4wQcbNtHZ9BCPq/after-mold-LaQDKswZpVYZ3ccLygjiny.webp",
+      label: "Помещение до и после устранения запаха",
+    },
   },
 };
 
@@ -654,6 +686,30 @@ export default function ServicePage() {
             </div>
           </section>
           </FadeInSection>
+
+          {/* Before / After slider */}
+          {service.beforeAfter && (
+            <FadeInSection delay={0.22}>
+            <section style={{ marginBottom: "2.75rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1.125rem" }}>
+                <div style={{ width: 4, height: 26, background: RED, flexShrink: 0, borderRadius: 2 }} />
+                <h2 style={{ fontSize: "1.25rem", fontWeight: 800, color: NAVY, margin: 0 }}>До и после обработки</h2>
+              </div>
+              <BeforeAfterSlider
+                beforeSrc={service.beforeAfter.before}
+                afterSrc={service.beforeAfter.after}
+                beforeLabel="До"
+                afterLabel="После"
+                alt={service.beforeAfter.label ?? service.title}
+              />
+              {service.beforeAfter.label && (
+                <p style={{ fontSize: "0.8rem", color: "#6B7280", textAlign: "center", marginTop: "0.5rem", fontStyle: "italic" }}>
+                  {service.beforeAfter.label} — перетащите разделитель для сравнения
+                </p>
+              )}
+            </section>
+            </FadeInSection>
+          )}
 
           {/* Results */}
           <FadeInSection delay={0.25}>
