@@ -407,7 +407,7 @@ export default function Home() {
                   }}
                 >
                   {/* Red accent line top */}
-                  <div className="card-accent" style={{ position: "absolute", top: 0, left: 0, height: 3, width: "0%", background: RED, transition: "width 0.3s ease", borderRadius: "12px 12px 0 0" }} />
+                  <div className="card-accent" style={{ position: "absolute", top: 0, left: 0, height: 3, width: "100%", background: RED, transition: "width 0.3s ease", borderRadius: "12px 12px 0 0" }} />
                   {/* Icon with colored bg */}
                   <div style={{
                     width: 56, height: 56, borderRadius: 19,
