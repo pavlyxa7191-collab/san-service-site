@@ -387,6 +387,10 @@ function ArticlePage({ slug }: { slug: string }) {
           .blog-article-grid { grid-template-columns: 1fr !important; }
           .blog-sidebar { position: static !important; }
         }
+        @media (max-width: 600px) {
+          .blog-cta-grid { grid-template-columns: 1fr !important; }
+          .blog-cta-btns { min-width: 0 !important; width: 100% !important; }
+        }
       `}</style>
     </div>
   );
@@ -499,7 +503,7 @@ export default function Blog() {
       <section style={{ padding: "80px 0", background: WHITE }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
           <FadeIn>
-            <div style={{
+            <div className="blog-cta-grid" style={{
               background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY2} 100%)`,
               borderRadius: 24, padding: "60px 48px",
               display: "grid", gridTemplateColumns: "1fr auto", gap: 40, alignItems: "center",
@@ -519,7 +523,7 @@ export default function Blog() {
                   Специалист приедет в день обращения. Работаем 24/7.
                 </p>
               </div>
-              <div style={{ display: "flex", flexDirection: "column" as const, gap: 12, minWidth: 200 }}>
+              <div className="blog-cta-btns" style={{ display: "flex", flexDirection: "column" as const, gap: 12, minWidth: 200 }}>
                 <Link href="/calculator" style={{
                   display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
                   background: RED, color: WHITE, textDecoration: "none",

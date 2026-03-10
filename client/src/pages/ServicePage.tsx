@@ -549,10 +549,14 @@ export default function ServicePage() {
           .service-hero-grid { grid-template-columns: 1fr !important; }
         }
         @media (max-width: 600px) {
-          .service-hero-btns { flex-direction: column !important; }
-          .service-hero-btns a { text-align: center !important; justify-content: center !important; }
+          .service-hero-btns { flex-direction: column !important; align-items: stretch !important; }
+          .service-hero-btns a, .service-hero-btns button { text-align: center !important; justify-content: center !important; width: 100% !important; }
           .service-dangers-grid { grid-template-columns: 1fr !important; }
           .service-results-grid { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 480px) {
+          .service-layout { padding: 2rem 0 !important; }
+          .service-sidebar { margin-top: 0 !important; }
         }
       `}</style>
       <div className="container service-layout" style={{ padding: "3.5rem 0", display: "grid", gridTemplateColumns: "1fr min(320px, 100%)", gap: "3rem", alignItems: "start" }}>

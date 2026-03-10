@@ -176,7 +176,7 @@ export default function Home() {
               </p>
 
               {/* CTA Buttons */}
-              <div style={{ display: "flex", gap: "0.875rem", flexWrap: "wrap" as const, marginBottom: "2.5rem" }}>
+              <div className="hero-cta-row" style={{ display: "flex", gap: "0.875rem", flexWrap: "wrap" as const, marginBottom: "2.5rem" }}>
                 <Link href="/calculator" style={{
                   display: "inline-flex", alignItems: "center", gap: "0.5rem",
                   background: RED, color: WHITE, fontWeight: 800, fontSize: "0.85rem",
@@ -201,14 +201,14 @@ export default function Home() {
               </div>
 
               {/* Stats */}
-              <div style={{ display: "flex", gap: "0", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "1.75rem" }}>
+              <div className="hero-stats" style={{ display: "flex", gap: "0", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "1.75rem" }}>
                 {[
                   { n: "15+",     label: "лет на рынке" },
                   { n: "12 000+", label: "обработок" },
                   { n: "3 года",  label: "макс. гарантия" },
                   { n: "24/7",    label: "выезд" },
                 ].map((s, i) => (
-                  <div key={i} style={{
+                  <div key={i} className="hero-stat-item" style={{
                     flex: 1,
                     paddingRight: i < 3 ? "1.25rem" : 0,
                     borderRight: i < 3 ? "1px solid rgba(255,255,255,0.08)" : "none",
@@ -222,7 +222,7 @@ export default function Home() {
             </div>
 
             {/* -- COL 2: Specialist PNG -- */}
-            <div style={{ position: "relative", overflow: "visible", marginRight: "138px" }}>
+            <div className="hero-img-col" style={{ position: "relative", overflow: "visible", marginRight: "138px" }}>
               {/* Glow under specialist */}
               <div style={{
                 position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)",
@@ -253,7 +253,7 @@ export default function Home() {
             </div>
 
             {/* -- COL 3: Lead Form -- */}
-            <div style={{ display: "flex", alignItems: "center", paddingLeft: "2rem" }}>
+            <div className="hero-form-col" style={{ display: "flex", alignItems: "center", paddingLeft: "2rem" }}>
               <div style={{
                 width: "100%",
                 background: "rgba(255,255,255,0.04)",
@@ -343,7 +343,7 @@ export default function Home() {
       ═══════════════════════════════════════════════════════════════════ */}
       <div style={{ background: NAVY_MID, borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
         <div className="container" style={{ padding: "0.875rem 0" }}>
-          <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "0.25rem", justifyContent: "space-between", alignItems: "center" }}>
+          <div className="trust-bar" style={{ display: "flex", flexWrap: "wrap" as const, gap: "0.25rem", justifyContent: "space-between", alignItems: "center" }}>
             {[
               "✓ Лицензия СЭС",
               "✓ Сертифицированные препараты",

@@ -456,6 +456,11 @@ export default function Contacts() {
         @media (max-width: 600px) {
           .contacts-name-phone { grid-template-columns: 1fr !important; }
         }
+        @media (max-width: 480px) {
+          .contacts-hero { padding: 2rem 0 !important; }
+          .contacts-cta-btns { flex-direction: column !important; align-items: stretch !important; }
+          .contacts-cta-btns a { text-align: center !important; justify-content: center !important; }
+        }
       `}</style>
     </div>
   );

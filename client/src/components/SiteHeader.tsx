@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Phone, Menu, X, ChevronDown } from "lucide-react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 /* Design Tokens */
 const NAVY = "#0d1f3c";
@@ -30,7 +30,24 @@ export default function SiteHeader() {
   const [location] = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileOpen(false);
+    setMobileServicesOpen(false);
+  }, [location]);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
 
   const openServices = () => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
@@ -42,47 +59,147 @@ export default function SiteHeader() {
 
   return (
     <>
-      {/* CSS for responsive nav */}
       <style>{`
+        /* ── HEADER RESPONSIVE ── */
         .site-nav-desktop {
           display: flex;
           align-items: center;
           flex: 1;
           overflow: visible;
           gap: 0;
+          min-width: 0;
         }
         .site-nav-mobile-toggle {
           display: none;
+          flex-shrink: 0;
         }
         .site-phone-link {
           display: flex;
           align-items: center;
           gap: 6px;
+          white-space: nowrap;
+          flex-shrink: 0;
         }
         .site-cta-btn {
           display: inline-flex;
           align-items: center;
+          flex-shrink: 0;
+          white-space: nowrap;
         }
         @media (max-width: 900px) {
-          .site-nav-desktop {
-            display: none !important;
-          }
-          .site-nav-mobile-toggle {
-            display: flex !important;
-          }
-          .site-phone-link {
-            display: none !important;
-          }
-          .site-cta-btn {
-            display: none !important;
-          }
+          .site-nav-desktop { display: none !important; }
+          .site-nav-mobile-toggle { display: flex !important; }
+          .site-phone-link { display: none !important; }
+          .site-cta-btn { display: none !important; }
         }
-        .nav-link-item:hover {
-          color: white !important;
-        }
+        .nav-link-item:hover { color: white !important; }
         .dropdown-item:hover {
           background: rgba(255,255,255,0.07) !important;
           color: white !important;
+        }
+
+        /* ── OFF-CANVAS MOBILE MENU ── */
+        .mobile-menu-overlay {
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,0.55);
+          z-index: 98;
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 0.3s ease;
+        }
+        .mobile-menu-overlay.open {
+          opacity: 1;
+          pointer-events: auto;
+        }
+        .mobile-menu-drawer {
+          position: fixed;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          width: min(320px, 90vw);
+          max-width: 100vw;
+          background: #0d1f3c;
+          z-index: 99;
+          transform: translateX(100%);
+          transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          overflow-y: auto;
+          overflow-x: hidden;
+          -webkit-overflow-scrolling: touch;
+          display: flex;
+          flex-direction: column;
+        }
+        .mobile-menu-drawer.open {
+          transform: translateX(0);
+        }
+        .mobile-menu-close {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 1rem 1.25rem;
+          border-bottom: 1px solid rgba(255,255,255,0.08);
+          flex-shrink: 0;
+        }
+        .mobile-menu-nav {
+          flex: 1;
+          padding: 0.75rem 0;
+          overflow-y: auto;
+        }
+        .mobile-nav-link {
+          display: block;
+          padding: 0.85rem 1.25rem;
+          font-size: 1rem;
+          font-weight: 600;
+          color: rgba(255,255,255,0.9);
+          text-decoration: none;
+          border-left: 3px solid transparent;
+          transition: background 0.15s, border-color 0.15s;
+        }
+        .mobile-nav-link:hover,
+        .mobile-nav-link.active {
+          background: rgba(255,255,255,0.05);
+          border-left-color: ${RED};
+          color: white;
+        }
+        .mobile-nav-link.active { color: ${RED}; }
+        .mobile-services-toggle {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+          padding: 0.85rem 1.25rem;
+          font-size: 1rem;
+          font-weight: 600;
+          color: rgba(255,255,255,0.9);
+          background: none;
+          border: none;
+          border-left: 3px solid transparent;
+          cursor: pointer;
+          text-align: left;
+          transition: background 0.15s;
+        }
+        .mobile-services-toggle:hover { background: rgba(255,255,255,0.05); }
+        .mobile-services-children {
+          background: rgba(0,0,0,0.2);
+          overflow: hidden;
+          max-height: 0;
+          transition: max-height 0.3s ease;
+        }
+        .mobile-services-children.open { max-height: 400px; }
+        .mobile-services-child {
+          display: block;
+          padding: 0.65rem 1.25rem 0.65rem 2rem;
+          font-size: 0.9rem;
+          font-weight: 500;
+          color: rgba(255,255,255,0.7);
+          text-decoration: none;
+          transition: background 0.15s, color 0.15s;
+        }
+        .mobile-services-child:hover { background: rgba(255,255,255,0.05); color: white; }
+        .mobile-menu-footer {
+          padding: 1rem 1.25rem 1.5rem;
+          border-top: 1px solid rgba(255,255,255,0.08);
+          flex-shrink: 0;
         }
       `}</style>
 
@@ -96,20 +213,43 @@ export default function SiteHeader() {
           background: NAVY,
           borderBottom: "1px solid rgba(255,255,255,0.1)",
           boxShadow: "0 4px 24px rgba(0,0,0,0.35)",
+          maxWidth: "100vw",
+          overflow: "visible",
         }}
       >
         {/* Top bar */}
         <div style={{ background: NAVY_DARK, borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "0.3rem 0" }}>
-          <div className="container" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <span style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.4)", letterSpacing: "0.05em" }}>Работаем 24/7 · Выезд в день обращения</span>
-            <span style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.4)", letterSpacing: "0.05em" }}>Москва и Московская область</span>
+          <div className="container" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "0.5rem" }}>
+            <span style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.4)", letterSpacing: "0.05em", whiteSpace: "nowrap" }}>Работаем 24/7 · Выезд в день обращения</span>
+            <span style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.4)", letterSpacing: "0.05em", whiteSpace: "nowrap" }}>Москва и МО</span>
           </div>
         </div>
 
         {/* Main nav */}
-        <div className="container" style={{ display: "flex", alignItems: "center", height: "64px", overflow: "visible", gap: 0 }}>
+        <div
+          className="container"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            height: "64px",
+            overflow: "visible",
+            gap: 0,
+            maxWidth: "100%",
+          }}
+        >
           {/* Logo */}
-          <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "10px", flexShrink: 0, marginRight: "28px" }}>
+          <Link
+            href="/"
+            style={{
+              textDecoration: "none",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              flexShrink: 0,
+              marginRight: "28px",
+              minWidth: 0,
+            }}
+          >
             <div
               style={{
                 width: "36px",
@@ -125,7 +265,7 @@ export default function SiteHeader() {
             >
               <span style={{ color: "white", fontWeight: 900, fontSize: "1rem", letterSpacing: "-0.05em" }}>СЭС</span>
             </div>
-            <div>
+            <div style={{ minWidth: 0 }}>
               <div style={{ fontSize: "0.9rem", fontWeight: 900, color: "white", letterSpacing: "-0.02em", lineHeight: 1.1 }}>
                 Экоцентр
               </div>
@@ -275,130 +415,178 @@ export default function SiteHeader() {
             >
               Заявка
             </Link>
-            {/* Mobile menu toggle — hidden on ≥900px via CSS */}
+            {/* Mobile hamburger — hidden on ≥900px via CSS */}
             <button
               className="site-nav-mobile-toggle"
               onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label={mobileOpen ? "Закрыть меню" : "Открыть меню"}
+              aria-expanded={mobileOpen}
               style={{
                 background: "rgba(255,255,255,0.07)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                borderRadius: "3px",
+                border: "1px solid rgba(255,255,255,0.15)",
+                borderRadius: "6px",
                 padding: "0.5rem",
                 color: "white",
                 cursor: "pointer",
                 alignItems: "center",
                 justifyContent: "center",
+                minWidth: "40px",
+                minHeight: "40px",
+                flexShrink: 0,
               }}
             >
-              {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </div>
+      </header>
 
-        {/* Mobile menu — shown only when mobileOpen */}
-        {mobileOpen && (
-          <div
+      {/* ── OFF-CANVAS OVERLAY ── */}
+      <div
+        className={`mobile-menu-overlay${mobileOpen ? " open" : ""}`}
+        onClick={() => setMobileOpen(false)}
+        aria-hidden="true"
+      />
+
+      {/* ── OFF-CANVAS DRAWER ── */}
+      <div
+        className={`mobile-menu-drawer${mobileOpen ? " open" : ""}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Навигационное меню"
+      >
+        {/* Drawer header */}
+        <div className="mobile-menu-close">
+          <Link
+            href="/"
+            style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "8px" }}
+            onClick={() => setMobileOpen(false)}
+          >
+            <div
+              style={{
+                width: "30px",
+                height: "30px",
+                background: "linear-gradient(135deg, #CC0000, #880000)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "3px",
+                flexShrink: 0,
+              }}
+            >
+              <span style={{ color: "white", fontWeight: 900, fontSize: "0.8rem" }}>СЭС</span>
+            </div>
+            <span style={{ color: "white", fontWeight: 700, fontSize: "0.9rem" }}>Экоцентр</span>
+          </Link>
+          <button
+            onClick={() => setMobileOpen(false)}
+            aria-label="Закрыть меню"
             style={{
-              background: "rgba(13,31,51,0.99)",
-              borderTop: "1px solid rgba(255,255,255,0.07)",
-              padding: "1rem 0 1.5rem",
+              background: "rgba(255,255,255,0.07)",
+              border: "1px solid rgba(255,255,255,0.15)",
+              borderRadius: "6px",
+              padding: "0.4rem",
+              color: "white",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <div className="container" style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-              {navLinks.map((link) => (
-                <div key={link.label}>
-                  {link.children ? (
-                    <>
-                      <div
-                        style={{
-                          padding: "0.6rem 0",
-                          fontSize: "0.75rem",
-                          fontWeight: 700,
-                          color: "rgba(255,255,255,0.4)",
-                          letterSpacing: "0.12em",
-                          textTransform: "uppercase",
-                        }}
-                      >
-                        {link.label}
-                      </div>
-                      {link.children.map((child) => (
-                        <Link
-                          key={child.href}
-                          href={child.href}
-                          style={{
-                            display: "block",
-                            padding: "0.6rem 0.75rem",
-                            fontSize: "0.88rem",
-                            fontWeight: 500,
-                            color: location === child.href ? RED : "rgba(255,255,255,0.75)",
-                            textDecoration: "none",
-                            borderRadius: "4px",
-                            borderLeft: location === child.href ? `3px solid ${RED}` : "3px solid transparent",
-                          }}
-                        >
-                          {child.label}
-                        </Link>
-                      ))}
-                    </>
-                  ) : (
+            <X size={18} />
+          </button>
+        </div>
+
+        {/* Nav links */}
+        <nav className="mobile-menu-nav">
+          {navLinks.map((link) =>
+            link.children ? (
+              <div key={link.label}>
+                <button
+                  className="mobile-services-toggle"
+                  onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                  aria-expanded={mobileServicesOpen}
+                >
+                  <span>{link.label}</span>
+                  <ChevronDown
+                    size={16}
+                    style={{
+                      color: "rgba(255,255,255,0.5)",
+                      transition: "transform 0.25s",
+                      transform: mobileServicesOpen ? "rotate(180deg)" : "rotate(0deg)",
+                      flexShrink: 0,
+                    }}
+                  />
+                </button>
+                <div className={`mobile-services-children${mobileServicesOpen ? " open" : ""}`}>
+                  {link.children.map((child) => (
                     <Link
-                      href={link.href!}
+                      key={child.href}
+                      href={child.href}
+                      className="mobile-services-child"
+                      onClick={() => setMobileOpen(false)}
                       style={{
-                        display: "block",
-                        padding: "0.7rem 0.75rem",
-                        fontSize: "0.95rem",
-                        fontWeight: 600,
-                        color: location === link.href ? RED : "white",
-                        textDecoration: "none",
-                        borderRadius: "4px",
-                        borderLeft: location === link.href ? `3px solid ${RED}` : "3px solid transparent",
+                        color: location === child.href ? RED : "rgba(255,255,255,0.7)",
                       }}
                     >
-                      {link.label}
+                      {child.label}
                     </Link>
-                  )}
+                  ))}
                 </div>
-              ))}
-              <div style={{ marginTop: "1rem", paddingTop: "1rem", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-                <a
-                  href="tel:+74951485806"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    fontSize: "1rem",
-                    fontWeight: 700,
-                    color: "white",
-                    textDecoration: "none",
-                    marginBottom: "0.75rem",
-                  }}
-                >
-                  <Phone size={16} style={{ color: RED }} />
-                  8(495)148-58-06
-                </a>
-                <Link
-                  href="/calculator"
-                  style={{
-                    display: "block",
-                    background: "linear-gradient(135deg, #CC0000, #880000)",
-                    color: "white",
-                    fontWeight: 700,
-                    fontSize: "0.85rem",
-                    letterSpacing: "0.07em",
-                    textTransform: "uppercase",
-                    padding: "0.75rem 1.5rem",
-                    borderRadius: "4px",
-                    textDecoration: "none",
-                    textAlign: "center",
-                  }}
-                >
-                  Рассчитать стоимость
-                </Link>
               </div>
-            </div>
-          </div>
-        )}
-      </header>
+            ) : (
+              <Link
+                key={link.href}
+                href={link.href!}
+                className={`mobile-nav-link${location === link.href ? " active" : ""}`}
+                onClick={() => setMobileOpen(false)}
+              >
+                {link.label}
+              </Link>
+            )
+          )}
+        </nav>
+
+        {/* Footer with phone + CTA */}
+        <div className="mobile-menu-footer">
+          <a
+            href="tel:+74951485806"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              fontSize: "1.05rem",
+              fontWeight: 700,
+              color: "white",
+              textDecoration: "none",
+              marginBottom: "0.75rem",
+            }}
+          >
+            <Phone size={18} style={{ color: RED, flexShrink: 0 }} />
+            8(495)148-58-06
+          </a>
+          <Link
+            href="/calculator"
+            onClick={() => setMobileOpen(false)}
+            style={{
+              display: "block",
+              background: "linear-gradient(135deg, #CC0000, #880000)",
+              color: "white",
+              fontWeight: 700,
+              fontSize: "0.85rem",
+              letterSpacing: "0.07em",
+              textTransform: "uppercase",
+              padding: "0.875rem 1.5rem",
+              borderRadius: "6px",
+              textDecoration: "none",
+              textAlign: "center",
+              boxShadow: "0 4px 16px rgba(204,0,0,0.35)",
+            }}
+          >
+            Рассчитать стоимость
+          </Link>
+        </div>
+      </div>
     </>
   );
 }

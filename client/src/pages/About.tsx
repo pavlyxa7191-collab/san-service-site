@@ -259,7 +259,7 @@ export default function About() {
             <span style={{ color: WHITE, fontSize: 13 }}>›</span>
             <span style={{ color: WHITE, fontSize: 13 }}>О компании</span>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }}>
+          <div className="about-hero-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }}>
             <div>
               <div style={{
                 display: "inline-flex", alignItems: "center", gap: 8,
@@ -465,7 +465,7 @@ export default function About() {
               <p style={{ color: GRAY, fontSize: 17, margin: 0 }}>4 простых шага от заявки до гарантии</p>
             </div>
           </FadeIn>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 24, position: "relative" }}>
+          <div className="about-steps-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 24, position: "relative" }}>
             {steps.map((step, i) => (
               <FadeIn key={i} delay={i * 100}>
                 <div style={{ textAlign: "center" }}>

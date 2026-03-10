@@ -295,3 +295,24 @@
 - [x] Обновить border-radius всех кнопок: 2px → 8px
 - [x] Обновить border-radius hero lead form: 4px → 12px
 - [x] Все 10 тестов vitest проходят
+
+## Итерация 10: Полная мобильная оптимизация
+
+- [x] SiteHeader: исправить hamburger-кнопку (не выходит за viewport)
+- [x] SiteHeader: мобильное меню через transform/translate (off-canvas)
+- [x] SiteHeader: max-width: 100%, overflow-x: hidden
+- [x] index.css: body overflow-x: hidden, html overflow-x: hidden
+- [x] index.css: .container — responsive padding, max-width
+- [x] index.css: responsive typography через clamp()
+- [x] Home.tsx: hero-блок — заголовки clamp(), кнопки flex-wrap
+- [x] Home.tsx: карточки услуг — grid → 1 колонка на mobile
+- [x] Home.tsx: hero form — скрыть/перенести на mobile
+- [x] Home.tsx: блок типов объектов — 1 колонка на mobile
+- [x] Home.tsx: review-карточки — 1 колонка на mobile
+- [x] Home.tsx: CTA-баннер — flex-col на mobile
+- [x] ServicePage.tsx: hero, цены, FAQ — проверено mobile
+- [x] Calculator.tsx: шаги — проверено mobile (auto-fill minmax)
+- [x] About.tsx: карточки — проверено mobile
+- [x] Contacts.tsx: форма — проверено mobile
+- [x] Prices.tsx: таблицы — проверено mobile (auto-fill minmax)
+- [x] Все 10 тестов vitest проходят
