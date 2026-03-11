@@ -906,14 +906,14 @@
     display: none !important;
   }
 
-  /* Mobile master photo: show on mobile, centered block between buttons and stats */
+  /* Mobile master photo: shown alongside stats row on mobile */
   .hero-mobile-master {
     display: flex !important;
     justify-content: center;
     align-items: center;
-    float: none;
-    width: 100%;
-    margin: 1.5rem auto 1.5rem auto;
+    flex-shrink: 0;
+    width: 110px;
+    margin: 0 0 0 0.75rem;
     border-radius: 0;
     overflow: visible;
     border: none;
@@ -921,11 +921,11 @@
     background: transparent;
   }
   .hero-mobile-master img {
-    width: 240px !important;
-    max-width: 80% !important;
+    width: 110px !important;
+    max-width: 110px !important;
     height: auto !important;
     display: block;
-    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.4));
+    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5));
   }
 
   /* Stat blocks: wrap on mobile */

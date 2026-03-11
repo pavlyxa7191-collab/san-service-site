@@ -227,14 +227,14 @@ export default function CalculatorPage() {
   const [area, setArea] = useState("");
   const [pest, setPest] = useState("");
 
-  // Preselect service from URL param ?service=klopov
+  // Preselect service from URL param ?service=klopov (start from step 0, pest is pre-filled)
   useEffect(() => {
     const params = new URLSearchParams(search);
     const serviceParam = params.get("service");
     if (serviceParam && SERVICE_TO_PEST[serviceParam]) {
       setPest(SERVICE_TO_PEST[serviceParam]);
-      // Jump to step 2 (pest selection) so user sees their preselected service
-      setStep(2);
+      // Stay on step 0 so user goes through all steps naturally
+      setStep(0);
     }
   }, [search]);
   const [contactWays, setContactWays] = useState<string[]>([]);

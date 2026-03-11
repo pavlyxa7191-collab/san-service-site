@@ -202,33 +202,35 @@ export default function Home() {
                 </a>
               </div>
 
-              {/* Mobile master photo — shown only on mobile, centered between buttons and stats */}
-              <div className="hero-mobile-master" style={{ display: "none" }}>
-                <img
-                  src="/specialist-mobile.png"
-                  alt="Специалист по дезинфекции"
-                  style={{ width: "100%", height: "auto", objectFit: "contain", objectPosition: "center top", display: "block" }}
-                />
-              </div>
-
-              {/* Stats */}
-              <div className="hero-stats" style={{ display: "flex", gap: "0", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "1.75rem" }}>
-                {[
-                  { n: "15+",     label: "лет на рынке" },
-                  { n: "12 000+", label: "обработок" },
-                  { n: "3 года",  label: "макс. гарантия" },
-                  { n: "24/7",    label: "выезд" },
-                ].map((s, i) => (
-                  <div key={i} className="hero-stat-item" style={{
-                    flex: 1,
-                    paddingRight: i < 3 ? "1.25rem" : 0,
-                    borderRight: i < 3 ? "1px solid rgba(255,255,255,0.08)" : "none",
-                    marginRight: i < 3 ? "1.25rem" : 0,
-                  }}>
-                    <div style={{ fontSize: "1.6rem", fontWeight: 900, color: WHITE, letterSpacing: "-0.04em", lineHeight: 1 }}>{s.n}</div>
-                    <div style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.4)", marginTop: "0.25rem", textTransform: "uppercase" as const, letterSpacing: "0.08em" }}>{s.label}</div>
-                  </div>
-                ))}
+               {/* Stats + mobile photo in parallel (photo visible only on mobile via CSS) */}
+              <div className="hero-bottom-row" style={{ display: "flex", alignItems: "center", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "1.75rem", gap: "0" }}>
+                {/* Stats */}
+                <div className="hero-stats" style={{ display: "flex", gap: "0", flex: 1 }}>
+                  {[
+                    { n: "15+",     label: "лет на рынке" },
+                    { n: "12 000+", label: "обработок" },
+                    { n: "3 года",  label: "макс. гарантия" },
+                    { n: "24/7",    label: "выезд" },
+                  ].map((s, i) => (
+                    <div key={i} className="hero-stat-item" style={{
+                      flex: 1,
+                      paddingRight: i < 3 ? "1.25rem" : 0,
+                      borderRight: i < 3 ? "1px solid rgba(255,255,255,0.08)" : "none",
+                      marginRight: i < 3 ? "1.25rem" : 0,
+                    }}>
+                      <div style={{ fontSize: "1.6rem", fontWeight: 900, color: WHITE, letterSpacing: "-0.04em", lineHeight: 1 }}>{s.n}</div>
+                      <div style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.4)", marginTop: "0.25rem", textTransform: "uppercase" as const, letterSpacing: "0.08em" }}>{s.label}</div>
+                    </div>
+                  ))}
+                </div>
+                {/* Mobile master photo — shown only on mobile, to the right of stats */}
+                <div className="hero-mobile-master" style={{ display: "none" }}>
+                  <img
+                    src="/specialist-mobile.png"
+                    alt="Специалист по дезинфекции"
+                    style={{ width: "100%", height: "auto", objectFit: "contain", objectPosition: "center top", display: "block" }}
+                  />
+                </div>
               </div>
             </div>
 
