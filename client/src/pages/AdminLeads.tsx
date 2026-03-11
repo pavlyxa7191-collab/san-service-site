@@ -457,8 +457,6 @@ export default function AdminLeads() {
                     </p>
                     <a
                       href={amoCrmStatus.oauthUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
                       style={{ display: "inline-block", background: "#1a56db", color: "white", borderRadius: 8, padding: "10px 24px", fontWeight: 700, fontSize: "0.9rem", textDecoration: "none" }}
                     >
                       🔐 Авторизоваться в amoCRM

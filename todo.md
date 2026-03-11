@@ -395,3 +395,10 @@
 - [x] Обновить AdminLeads: кнопка OAuth авторизации, статус токенов в БД
 - [x] Исправить getAccessToken: поддержка env vars как fallback для тестов
 - [x] Все 22 теста vitest проходят
+
+## Итерация 16: Исправление OAuth2 ошибки amoCRM
+
+- [x] Диагностировать ошибку "Authorization code has been revoked" при обмене кода
+- [x] Причина: OAuth URL использовал mode=post_message (код отправлялся через postMessage, не доходил до сервера)
+- [x] Исправлено: изменён mode=popup + redirect_uri в URL, кнопка открывает в текущей вкладке
+- [x] Все 22 теста vitest проходят

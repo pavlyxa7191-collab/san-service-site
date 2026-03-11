@@ -168,8 +168,11 @@ export const appRouter = router({
       const clientId = process.env.AMO_CLIENT_ID || null;
 
       // Build OAuth2 authorization URL
+      // Use mode=popup so amoCRM does a real redirect to our callback URL
+      // (post_message sends code via window.postMessage which we can't intercept server-side)
+      const redirectUri = process.env.AMO_REDIRECT_URI || "";
       const oauthUrl = subdomain && clientId
-        ? `https://www.amocrm.ru/oauth?client_id=${clientId}&state=admin&mode=post_message`
+        ? `https://${subdomain}.amocrm.ru/oauth?client_id=${clientId}&state=admin&mode=popup&redirect_uri=${encodeURIComponent(redirectUri)}`
         : null;
 
       return {
