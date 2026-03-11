@@ -7,7 +7,7 @@ import { getDb } from "./db";
 import { leads } from "../drizzle/schema";
 import { eq, desc } from "drizzle-orm";
 import { notifyOwner } from "./_core/notification";
-import { createAmoCrmLead, testAmoCrmConnection, isAmoCrmConfigured } from "./amocrm";
+import { createAmoCrmLead, testAmoCrmConnection, isAmoCrmConfigured, hasAmoCrmTokens } from "./amocrm";
 
 const serviceLabels: Record<string, string> = {
   klopov: "Клопы",
@@ -163,13 +163,25 @@ export const appRouter = router({
     amoCrmStatus: protectedProcedure.query(async ({ ctx }) => {
       if (ctx.user?.role !== "admin") throw new Error("Forbidden");
       const configured = isAmoCrmConfigured();
+      const hasTokensInDb = await hasAmoCrmTokens();
+      const subdomain = process.env.AMO_SUBDOMAIN || null;
+      const clientId = process.env.AMO_CLIENT_ID || null;
+
+      // Build OAuth2 authorization URL
+      const oauthUrl = subdomain && clientId
+        ? `https://www.amocrm.ru/oauth?client_id=${clientId}&state=admin&mode=post_message`
+        : null;
+
       return {
         configured,
-        subdomain: process.env.AMO_SUBDOMAIN || null,
+        subdomain,
         hasClientId: !!process.env.AMO_CLIENT_ID,
         hasClientSecret: !!process.env.AMO_CLIENT_SECRET,
-        hasAccessToken: !!process.env.AMO_ACCESS_TOKEN,
-        hasRefreshToken: !!process.env.AMO_REFRESH_TOKEN,
+        hasAccessToken: !!process.env.AMO_ACCESS_TOKEN || hasTokensInDb,
+        hasRefreshToken: !!process.env.AMO_REFRESH_TOKEN || hasTokensInDb,
+        hasTokensInDb,
+        oauthUrl,
+        redirectUri: process.env.AMO_REDIRECT_URI || null,
       };
     }),
   }),

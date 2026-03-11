@@ -45,3 +45,17 @@ export const leads = mysqlTable("leads", {
 
 export type Lead = typeof leads.$inferSelect;
 export type InsertLead = typeof leads.$inferInsert;
+
+// amoCRM OAuth2 tokens — stores access/refresh tokens persistently
+export const amocrmTokens = mysqlTable("amocrm_tokens", {
+  id: int("id").autoincrement().primaryKey(),
+  subdomain: varchar("subdomain", { length: 100 }).notNull(),
+  accessToken: text("accessToken").notNull(),
+  refreshToken: text("refreshToken").notNull(),
+  expiresAt: timestamp("expiresAt").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type AmocrmToken = typeof amocrmTokens.$inferSelect;
+export type InsertAmocrmToken = typeof amocrmTokens.$inferInsert;

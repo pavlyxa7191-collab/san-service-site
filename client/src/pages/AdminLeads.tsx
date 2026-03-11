@@ -436,8 +436,8 @@ export default function AdminLeads() {
                     { label: "Поддомен (AMO_SUBDOMAIN)", ok: !!amoCrmStatus?.subdomain, value: amoCrmStatus?.subdomain },
                     { label: "Client ID (AMO_CLIENT_ID)", ok: amoCrmStatus?.hasClientId },
                     { label: "Client Secret (AMO_CLIENT_SECRET)", ok: amoCrmStatus?.hasClientSecret },
-                    { label: "Access Token (AMO_ACCESS_TOKEN)", ok: amoCrmStatus?.hasAccessToken },
-                    { label: "Refresh Token (AMO_REFRESH_TOKEN)", ok: amoCrmStatus?.hasRefreshToken },
+                    { label: "Токены OAuth2 (в БД)", ok: !!amoCrmStatus?.hasTokensInDb, value: amoCrmStatus?.hasTokensInDb ? "✓ Авторизован" : undefined },
+                    { label: "Redirect URI", ok: !!amoCrmStatus?.redirectUri, value: amoCrmStatus?.redirectUri ? "✓ Задан" : undefined },
                   ].map((item) => (
                     <div key={item.label} style={{ background: item.ok ? "#f0fdf4" : "#fff5f5", border: `1px solid ${item.ok ? "#86efac" : "#fca5a5"}`, borderRadius: 8, padding: "10px 14px" }}>
                       <div style={{ fontSize: "0.7rem", color: "#718096", fontWeight: 600, marginBottom: 4 }}>{item.label}</div>
@@ -448,16 +448,45 @@ export default function AdminLeads() {
                   ))}
                 </div>
 
+                {/* OAuth2 Authorization Button */}
+                {amoCrmStatus?.oauthUrl && !amoCrmStatus?.hasTokensInDb && (
+                  <div style={{ background: "#fffbeb", border: "1px solid #fbbf24", borderRadius: 12, padding: 16, marginBottom: 16 }}>
+                    <div style={{ fontWeight: 700, color: "#92400e", fontSize: "0.9rem", marginBottom: 8 }}>⚠️ Требуется авторизация в amoCRM</div>
+                    <p style={{ color: "#78350f", fontSize: "0.82rem", lineHeight: 1.6, marginBottom: 12 }}>
+                      Нажмите кнопку ниже, чтобы авторизоваться в amoCRM. После авторизации токены будут автоматически сохранены.
+                    </p>
+                    <a
+                      href={amoCrmStatus.oauthUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ display: "inline-block", background: "#1a56db", color: "white", borderRadius: 8, padding: "10px 24px", fontWeight: 700, fontSize: "0.9rem", textDecoration: "none" }}
+                    >
+                      🔐 Авторизоваться в amoCRM
+                    </a>
+                    {amoCrmStatus.redirectUri && (
+                      <div style={{ marginTop: 10, fontSize: "0.75rem", color: "#78350f" }}>
+                        Callback URL: <code style={{ background: "rgba(0,0,0,0.05)", padding: "1px 6px", borderRadius: 4 }}>{amoCrmStatus.redirectUri}</code>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {amoCrmStatus?.hasTokensInDb && (
+                  <div style={{ background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 12, padding: 16, marginBottom: 16 }}>
+                    <div style={{ fontWeight: 700, color: "#166534", fontSize: "0.9rem", marginBottom: 4 }}>✅ OAuth2 авторизация выполнена</div>
+                    <p style={{ color: "#15803d", fontSize: "0.82rem", lineHeight: 1.6, margin: 0 }}>
+                      Токены сохранены в базе данных. Обновление происходит автоматически.
+                    </p>
+                  </div>
+                )}
+
                 <div style={{ background: "#f8fafc", borderRadius: 12, padding: 16, marginBottom: 16 }}>
                   <h5 style={{ color: NAVY, fontWeight: 700, fontSize: "0.85rem", marginBottom: 8 }}>Как настроить:</h5>
                   <ol style={{ color: "#4a5568", fontSize: "0.82rem", lineHeight: 1.8, paddingLeft: 20, margin: 0 }}>
                     <li>Создайте интеграцию в amoCRM: <strong>Настройки → Интеграции → Создать интеграцию</strong></li>
-                    <li>Получите <code>client_id</code> и <code>client_secret</code></li>
-                    <li>Пройдите OAuth2 авторизацию и получите <code>access_token</code> и <code>refresh_token</code></li>
-                    <li>Добавьте переменные окружения в <strong>Настройки → Secrets</strong> проекта:
-                      <br/><code>AMO_SUBDOMAIN</code>, <code>AMO_CLIENT_ID</code>, <code>AMO_CLIENT_SECRET</code>,
-                      <br/><code>AMO_ACCESS_TOKEN</code>, <code>AMO_REFRESH_TOKEN</code>, <code>AMO_REDIRECT_URI</code>
-                    </li>
+                    <li>Укажите Redirect URI: <code style={{ background: "#e2e8f0", padding: "1px 6px", borderRadius: 4 }}>{amoCrmStatus?.redirectUri || "https://sanservice-l8sjslkh.manus.space/api/amocrm/oauth"}</code></li>
+                    <li>Добавьте секреты <code>AMO_SUBDOMAIN</code>, <code>AMO_CLIENT_ID</code>, <code>AMO_CLIENT_SECRET</code> в настройки проекта</li>
+                    <li>Нажмите кнопку «Авторизоваться в amoCRM» выше — токены сохранятся автоматически</li>
                   </ol>
                 </div>
 

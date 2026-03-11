@@ -385,3 +385,13 @@
 - [x] Написать vitest тесты для amocrm.ts (12 тестов: isAmoCrmConfigured, createAmoCrmLead, testAmoCrmConnection)
 - [x] Исправить leads.test.ts для совместимости с новым ответом (toMatchObject)
 - [x] Все 22 теста vitest проходят
+
+## Итерация 15: amoCRM OAuth Callback
+
+- [x] Добавить Express endpoint /api/amocrm/oauth для получения authorization code
+- [x] Автоматически обменять code на access_token + refresh_token через amoCRM API
+- [x] Сохранить токены в БД (таблица amocrm_tokens)
+- [x] Добавить секреты AMO_SUBDOMAIN, AMO_CLIENT_ID, AMO_CLIENT_SECRET, AMO_REDIRECT_URI
+- [x] Обновить AdminLeads: кнопка OAuth авторизации, статус токенов в БД
+- [x] Исправить getAccessToken: поддержка env vars как fallback для тестов
+- [x] Все 22 теста vitest проходят
