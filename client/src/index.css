@@ -879,6 +879,8 @@
   .services-grid-new { grid-template-columns: 1fr !important; }
   .steps-grid { grid-template-columns: 1fr !important; }
   .advantages-grid { grid-template-columns: 1fr !important; }
+  .objects-grid { grid-template-columns: 1fr !important; }
+  .reviews-grid { grid-template-columns: 1fr !important; }
   .hero-grid > div:nth-child(3) { display: none !important; }
 }
 
@@ -981,6 +983,34 @@
   /* Top bar: hide second item on very small screens */
   .topbar-right {
     display: none !important;
+  }
+
+  /* Service card price row: prevent guarantee badge overflow */
+  .service-price-row {
+    flex-wrap: wrap !important;
+    gap: 0.35rem !important;
+    align-items: flex-start !important;
+  }
+
+  /* Advantages grid: 1 column on very small screens */
+  .advantages-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Objects grid: 1 column */
+  .objects-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Reviews grid: 1 column */
+  .reviews-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Reduce section padding on tiny screens */
+  section {
+    padding-top: 2.5rem !important;
+    padding-bottom: 2.5rem !important;
   }
 }
 

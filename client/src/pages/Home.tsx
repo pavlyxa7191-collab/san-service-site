@@ -437,7 +437,7 @@ export default function Home() {
                   {/* Price + guarantee row */}
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem", paddingTop: "0.75rem", borderTop: "1px solid #f3f4f6" }}>
                     <span style={{ fontSize: "1.1rem", fontWeight: 900, color: RED }}>{s.price}</span>
-                    <span style={{ fontSize: "0.7rem", color: "#9ca3af", background: "#f9fafb", padding: "0.2rem 0.6rem", borderRadius: 20, border: "1px solid #e5e7eb" }}>Гарантия {s.guarantee}</span>
+                    <span style={{ fontSize: "0.6rem", color: "#9ca3af", background: "#f9fafb", padding: "0.2rem 0.5rem", borderRadius: 20, border: "1px solid #e5e7eb", whiteSpace: "nowrap" as const, overflow: "hidden", textOverflow: "ellipsis", maxWidth: "50%" }}>Гарантия {s.guarantee}</span>
                   </div>
                   {/* CTA Button */}
                   <div style={{
@@ -483,7 +483,9 @@ export default function Home() {
                 onMouseLeave={e => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.transform = "translateY(0)"; }}
               >
                 <div style={{ background: i === 1 ? NAVY : "#f0f4ff", padding: "1.5rem 1.75rem", borderBottom: "1px solid #e8ecf2", display: "flex", alignItems: "center", gap: "1rem" }}>
-                  <o.Icon size={32} />
+                  <div style={{ width: 52, height: 52, borderRadius: "50%", background: "white", border: "1px solid #e8ecf2", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 2px 8px rgba(0,9,25,0.08)" }}>
+                    <o.Icon size={26} color={i === 1 ? NAVY : RED} />
+                  </div>
                   <div>
                     <h3 style={{ fontSize: "1.05rem", fontWeight: 800, color: i === 1 ? WHITE : NAVY_TEXT, margin: 0 }}>{o.title}</h3>
                     <span style={{ fontSize: "0.8rem", fontWeight: 700, color: RED }}>{o.price}</span>
@@ -580,7 +582,9 @@ export default function Home() {
                 onMouseLeave={e => (e.currentTarget.style.background = i === 0 ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.025)")}
               >
                 <div style={{ fontSize: "2.5rem", fontWeight: 900, color: RED, letterSpacing: "-0.04em", lineHeight: 1, marginBottom: "1rem" }}>{a.num}</div>
-                <a.Icon size={28} />
+                <div style={{ width: 52, height: 52, borderRadius: "50%", background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.18)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <a.Icon size={26} color="white" />
+                </div>
                 <h3 style={{ fontSize: "0.95rem", fontWeight: 800, color: WHITE, marginBottom: "0.4rem", marginTop: "0.875rem" }}>{a.title}</h3>
                 <p style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.45)", lineHeight: 1.65, margin: 0 }}>{a.desc}</p>
                 {i === 0 && <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 2, background: RED }} />}

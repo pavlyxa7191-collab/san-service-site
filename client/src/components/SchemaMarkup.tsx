@@ -24,8 +24,8 @@ interface BreadcrumbSchemaProps {
 type SchemaMarkupProps = LocalBusinessSchemaProps | ServiceSchemaProps | BreadcrumbSchemaProps;
 
 const SITE_URL = "https://sanservice-l8sjslkh.manus.space";
-const PHONE = "+78930035-48-41";
-const PHONE_CLEAN = "+78930035-48-41";
+const PHONE = "+74951485806";
+const PHONE_CLEAN = "+74951485806";
 const ORG_NAME = "ЭкоЦентр — Санитарная служба";
 const ORG_DESCRIPTION =
   "Профессиональная дезинсекция, дезинфекция и дератизация в Москве и Московской области. Уничтожение клопов, тараканов, грызунов, клещей, плесени. Гарантия до 3 лет.";

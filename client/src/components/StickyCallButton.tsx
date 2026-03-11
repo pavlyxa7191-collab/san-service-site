@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 
-const PHONE = "89300354841";
-const PHONE_DISPLAY = "8 (930) 035-48-41";
-const WHATSAPP_URL = `https://wa.me/7${PHONE.slice(1)}`;
+const PHONE = "84951485806";
+const PHONE_DISPLAY = "8(495)148-58-06";
+const WHATSAPP_URL = `https://wa.me/74951485806`;
 
 export default function StickyCallButton() {
   const [visible, setVisible] = useState(false);
