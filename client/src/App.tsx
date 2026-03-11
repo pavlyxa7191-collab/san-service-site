@@ -1,7 +1,8 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
+import { Route, Switch, useLocation } from "wouter";
+import { useEffect } from "react";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
@@ -17,9 +18,18 @@ import AdminLeads from "./pages/AdminLeads";
 import StickyCallButton from "./components/StickyCallButton";
 import ExitIntentPopup from "./components/ExitIntentPopup";
 
+function ScrollToTop() {
+  const [location] = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [location]);
+  return null;
+}
+
 function PublicRouter() {
   return (
     <div className="flex flex-col min-h-screen">
+      <ScrollToTop />
       <SiteHeader />
       <main className="flex-1">
         <Switch>

@@ -52,10 +52,19 @@ interface ServiceInfo {
   title: string; subtitle: string; description: string;
   priceFrom: number; guarantee: string;
   Icon: React.ComponentType<{ size?: number; className?: string }>;
+  heroImage?: string;
   methods: ServiceMethod[]; stages: ServiceStage[];
   faq: ServiceFaq[]; dangers: string[]; results: string[];
   preparation: string[];
 }
+
+// Pest images (transparent PNG, served from public folder)
+const PEST_IMAGES: Record<string, string> = {
+  klopov: "/pest-bedbug.png",
+  tarakanov: "/pest-cockroach.png",
+  pleseni: "/pest-mold.png",
+  dezinfektsii: "/pest-bacteria.png",
+};
 
 const SERVICES: Record<string, ServiceInfo> = {
   klopov: {
@@ -520,9 +529,23 @@ export default function ServicePage() {
                 </a>
               </div>
             </div>
-            {/* Big icon — no background */}
-            <div className="service-icon-wrap" style={{ opacity: 0.9, flexShrink: 0 }}>
-              <service.Icon size={160} />
+            {/* Pest image or icon */}
+            <div className="service-icon-wrap" style={{ opacity: 1, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              {PEST_IMAGES[serviceSlug] ? (
+                <img
+                  src={PEST_IMAGES[serviceSlug]}
+                  alt={service.title}
+                  style={{
+                    width: 200,
+                    height: 200,
+                    objectFit: "contain",
+                    filter: "drop-shadow(0 8px 32px rgba(0,0,0,0.5))",
+                    animation: "floatPest 4s ease-in-out infinite",
+                  }}
+                />
+              ) : (
+                <service.Icon size={160} />
+              )}
             </div>
           </div>
         </div>
@@ -542,6 +565,7 @@ export default function ServicePage() {
       {/* ── MAIN CONTENT + SIDEBAR ── */}
       <style>{`
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes floatPest { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-12px) rotate(3deg); } }
         @media (max-width: 900px) {
           .service-layout { grid-template-columns: 1fr !important; }
           .service-sidebar { position: static !important; }

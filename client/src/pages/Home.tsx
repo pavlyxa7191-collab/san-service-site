@@ -202,6 +202,15 @@ export default function Home() {
                 </a>
               </div>
 
+              {/* Mobile master photo — shown only on mobile, positioned right */}
+              <div className="hero-mobile-master" style={{ display: "none" }}>
+                <img
+                  src="/specialist-mobile.png"
+                  alt="Специалист по дезинфекции"
+                  style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }}
+                />
+              </div>
+
               {/* Stats */}
               <div className="hero-stats" style={{ display: "flex", gap: "0", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "1.75rem" }}>
                 {[

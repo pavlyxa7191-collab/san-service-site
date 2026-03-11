@@ -4,7 +4,7 @@ const PHONE = "84951485806";
 const PHONE_DISPLAY = "8(495)148-58-06";
 const WHATSAPP_NUMBER = "79099030699";
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
-const TELEGRAM_URL = `https://t.me/${WHATSAPP_NUMBER}`;
+const TELEGRAM_URL = `https://t.me/dezmasters`;
 
 // Phone SVG icon (proper telephone handset)
 function PhoneIcon({ size = 24, color = "white" }: { size?: number; color?: string }) {
