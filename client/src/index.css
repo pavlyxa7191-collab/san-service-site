@@ -906,26 +906,9 @@
     display: none !important;
   }
 
-  /* Mobile master photo: shown alongside stats row on mobile */
+  /* Mobile master photo: hidden on mobile (removed per user request) */
   .hero-mobile-master {
-    display: flex !important;
-    justify-content: center;
-    align-items: center;
-    flex-shrink: 0;
-    width: 110px;
-    margin: 0 0 0 0.75rem;
-    border-radius: 0;
-    overflow: visible;
-    border: none;
-    box-shadow: none;
-    background: transparent;
-  }
-  .hero-mobile-master img {
-    width: 110px !important;
-    max-width: 110px !important;
-    height: auto !important;
-    display: block;
-    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5));
+    display: none !important;
   }
 
   /* Stat blocks: wrap on mobile */

@@ -64,7 +64,7 @@ const PEST_IMAGES: Record<string, string> = {
   tarakanov: "/pest-cockroach.png",
   pleseni: "/pest-mold.png",
   dezinfektsii: "/pest-virus.png",
-  gryzunov: "/pest-mouse.png",
+  gryzunov: "/pest-rat.png",
   kleshhej: "/pest-tick.png",
 };
 
@@ -633,20 +633,37 @@ export default function ServicePage() {
                 </a>
               </div>
             </div>
-            {/* Pest image or icon */}
+            {/* Pest image or icon with prohibition circle */}
             <div className="service-icon-wrap" style={{ opacity: 1, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
               {PEST_IMAGES[serviceSlug] ? (
-                <img
-                  src={PEST_IMAGES[serviceSlug]}
-                  alt={service.title}
-                  style={{
-                    width: 200,
-                    height: 200,
-                    objectFit: "contain",
-                    filter: "drop-shadow(0 8px 32px rgba(0,0,0,0.5))",
-                    animation: "floatPest 4s ease-in-out infinite",
-                  }}
-                />
+                <div style={{ position: "relative", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+                  <img
+                    src={PEST_IMAGES[serviceSlug]}
+                    alt={service.title}
+                    style={{
+                      width: serviceSlug === "gryzunov" ? 280 : 200,
+                      height: serviceSlug === "gryzunov" ? 280 : 200,
+                      objectFit: "contain",
+                      filter: "drop-shadow(0 8px 32px rgba(0,0,0,0.5))",
+                      animation: "floatPest 4s ease-in-out infinite",
+                    }}
+                  />
+                  {/* Red prohibition circle overlay */}
+                  <svg
+                    viewBox="0 0 100 100"
+                    style={{
+                      position: "absolute",
+                      top: 0, left: 0,
+                      width: "100%",
+                      height: "100%",
+                      pointerEvents: "none",
+                    }}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle cx="50" cy="50" r="46" fill="none" stroke="#cc0000" strokeWidth="7" />
+                    <line x1="18" y1="18" x2="82" y2="82" stroke="#cc0000" strokeWidth="7" strokeLinecap="round" />
+                  </svg>
+                </div>
               ) : (
                 <service.Icon size={160} />
               )}

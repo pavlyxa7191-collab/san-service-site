@@ -254,7 +254,7 @@ export default function Home() {
                   left: "50%",
                   transform: "translateX(-50%)",
                   width: "auto",
-                  height: "105%",
+                  height: "92%",
                   maxHeight: "none",
                   objectFit: "contain",
                   objectPosition: "center bottom",
