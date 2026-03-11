@@ -3,8 +3,8 @@ import { Link } from "wouter";
 import { ArrowRight, CheckCircle, Phone, ChevronDown } from "lucide-react";
 
 // ── Design tokens ──────────────────────────────────────────────────────────────
-const NAVY = "#0D1F33";
-const RED = "#CC0000";
+const NAVY = "#0A0F1E";
+const RED = "#D0021B";
 const WHITE = "#ffffff";
 
 // ── SVG Icons ─────────────────────────────────────────────────────────────────
@@ -382,7 +382,7 @@ export default function Prices() {
     <div style={{ background: "#F7F8FA", minHeight: "100vh" }}>
 
       {/* ── HERO ── */}
-      <section style={{ background: NAVY, borderBottom: `3px solid ${RED}` }}>
+      <section className="prices-hero" style={{ background: NAVY, borderBottom: `3px solid ${RED}` }}>
         <div className="container" style={{ paddingTop: "4rem", paddingBottom: "4rem" }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, marginBottom: "1rem" }}>
             <div style={{ width: 32, height: 3, background: RED, borderRadius: 2 }} />
@@ -603,6 +603,14 @@ export default function Prices() {
         </div>
       </div>
 
+      <style>{`
+        @media (max-width: 768px) {
+          .prices-hero .container { padding-top: 3rem !important; padding-bottom: 2.5rem !important; }
+        }
+        @media (max-width: 480px) {
+          .prices-hero .container { padding-top: 2rem !important; padding-bottom: 2rem !important; }
+        }
+      `}</style>
     </div>
   );
 }

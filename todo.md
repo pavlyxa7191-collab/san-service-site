@@ -350,3 +350,16 @@
 - [x] Мобильная адаптивность: objects-grid, reviews-grid, advantages-grid → 1 колонка на 480px
 - [x] Исправить phone display в ServicePage: +7(495) → 8(495)
 - [x] Все 10 тестов vitest проходят
+
+## Итерация 13: Полная мобильная оптимизация всех страниц
+
+- [ ] Home.tsx: hero заголовок обрезается справа — исправить overflow, clamp()
+- [ ] Home.tsx: hero subtitle текст выходит за viewport — padding + max-width
+- [ ] ServicePage.tsx: большое пустое пространство в hero (декоративные круги)
+- [ ] ServicePage.tsx: большой gap между секцией "Опасность" и "Методы и цены"
+- [ ] ServicePage.tsx: единый padding секций на мобильных
+- [ ] About.tsx: проверить и исправить мобильный layout
+- [ ] Prices.tsx: проверить и исправить мобильный layout
+- [ ] Contacts.tsx: проверить и исправить мобильный layout
+- [ ] Blog.tsx: проверить и исправить мобильный layout
+- [ ] Все 10 тестов vitest проходят

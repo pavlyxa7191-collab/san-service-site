@@ -477,7 +477,7 @@ export default function ServicePage() {
         {/* Red top accent */}
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${RED} 0%, rgba(204,0,0,0.3) 60%, transparent 100%)` }} />
 
-        <div className="container" style={{ position: "relative", zIndex: 1, paddingTop: "5rem", paddingBottom: "4rem", animation: "fadeInUp 0.7s ease both" }}>
+        <div className="container service-hero-container" style={{ position: "relative", zIndex: 1, paddingTop: "4rem", paddingBottom: "3rem", animation: "fadeInUp 0.7s ease both" }}>
           {/* Breadcrumbs */}
           <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: "1.5rem", fontSize: "0.78rem", flexWrap: "wrap" }}>
             <Link href="/" style={{ color: "rgba(255,255,255,0.45)", textDecoration: "none" }}>Главная</Link>
@@ -498,7 +498,7 @@ export default function ServicePage() {
               <h1 style={{ fontSize: "clamp(1.75rem, 4vw, 2.75rem)", fontWeight: 900, color: WHITE, letterSpacing: "-0.03em", lineHeight: 1.1, marginBottom: "0.875rem" }}>
                 {pageTitle}
               </h1>
-              <p style={{ fontSize: "1.3125rem", fontWeight: 600, color: "rgba(255,255,255,0.65)", lineHeight: 1.65, marginBottom: "2rem", maxWidth: 520 }}>
+              <p style={{ fontSize: "clamp(0.95rem, 2.5vw, 1.3125rem)", fontWeight: 600, color: "rgba(255,255,255,0.65)", lineHeight: 1.6, marginBottom: "1.5rem", maxWidth: 520, width: "100%" }}>
                 {service.subtitle}
               </p>
               <div className="service-hero-btns" style={{ display: "flex", gap: "0.875rem", flexWrap: "wrap" }}>
@@ -557,6 +557,10 @@ export default function ServicePage() {
         @media (max-width: 480px) {
           .service-layout { padding: 2rem 0 !important; }
           .service-sidebar { margin-top: 0 !important; }
+          .service-hero-container { padding-top: 2rem !important; padding-bottom: 2rem !important; }
+        }
+        @media (max-width: 768px) {
+          .service-hero-container { padding-top: 2.5rem !important; padding-bottom: 2.5rem !important; }
         }
       `}</style>
       <div className="container service-layout" style={{ padding: "3.5rem 0", display: "grid", gridTemplateColumns: "1fr min(320px, 100%)", gap: "3rem", alignItems: "start" }}>

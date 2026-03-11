@@ -7,7 +7,7 @@ import { useLocation } from "wouter";
 
 // ─── DESIGN TOKENS ────────────────────────────────────────────────────────────
 const NAVY = "#0d1f3c";
-const RED = "#CC0000";
+const RED = "#D0021B";
 
 // ─── STATUS CONFIG ─────────────────────────────────────────────────────────────
 const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string }> = {

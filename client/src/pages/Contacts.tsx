@@ -5,9 +5,9 @@ import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 
 // ─── DESIGN TOKENS (matching About.tsx) ────────────────────────────────────────
-const NAVY = "#0D1F33";
-const NAVY2 = "#1a2f4a";
-const RED = "#CC0000";
+const NAVY = "#0A0F1E";
+const NAVY2 = "#0D1F33";
+const RED = "#D0021B";
 const WHITE = "#ffffff";
 const LIGHT_BG = "#f7f8fa";
 const GRAY = "#6b7280";
@@ -123,7 +123,7 @@ export default function Contacts() {
   return (
     <div style={{ background: WHITE }}>
       {/* Hero */}
-      <section style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY2} 100%)`, padding: "80px 0 60px" }}>
+      <section className="contacts-hero" style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY2} 100%)`, padding: "80px 0 60px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
           <FadeIn>
             {/* Breadcrumb */}
@@ -455,6 +455,9 @@ export default function Contacts() {
         }
         @media (max-width: 600px) {
           .contacts-name-phone { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 768px) {
+          .contacts-hero { padding: 3rem 0 2.5rem !important; }
         }
         @media (max-width: 480px) {
           .contacts-hero { padding: 2rem 0 !important; }

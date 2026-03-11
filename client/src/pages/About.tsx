@@ -239,7 +239,7 @@ export default function About() {
     <div style={{ background: WHITE, minHeight: "100vh" }}>
 
       {/* BLOCK 1: HERO */}
-      <section style={{
+      <section className="about-hero-section" style={{
         background: `linear-gradient(135deg, ${NAVY} 0%, #1a2340 60%, #0d1526 100%)`,
         position: "relative", overflow: "hidden", padding: "80px 0 60px",
       }}>
@@ -572,8 +572,13 @@ export default function About() {
           .about-hero-grid > div:last-child { display: none !important; }
           .about-steps-grid { grid-template-columns: 1fr 1fr !important; }
         }
+        @media (max-width: 768px) {
+          .about-hero-section { padding: 3rem 0 2.5rem !important; }
+          .about-hero-grid { gap: 2rem !important; }
+        }
         @media (max-width: 480px) {
           .about-steps-grid { grid-template-columns: 1fr !important; }
+          .about-hero-section { padding: 2rem 0 2rem !important; }
         }
       `}</style>
     </div>

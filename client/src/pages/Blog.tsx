@@ -3,9 +3,9 @@ import { Link, useParams } from "wouter";
 import { ArrowRight, Clock, Tag, ChevronRight } from "lucide-react";
 
 // ─── DESIGN TOKENS (matching About.tsx) ────────────────────────────────────────
-const NAVY = "#0D1F33";
-const NAVY2 = "#1a2f4a";
-const RED = "#CC0000";
+const NAVY = "#0A0F1E";
+const NAVY2 = "#0D1F33";
+const RED = "#D0021B";
 const WHITE = "#ffffff";
 const LIGHT_BG = "#f7f8fa";
 const GRAY = "#6b7280";
@@ -210,7 +210,7 @@ function ArticlePage({ slug }: { slug: string }) {
   return (
     <div style={{ background: WHITE }}>
       {/* Hero */}
-      <section style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY2} 100%)`, padding: "80px 0 60px" }}>
+      <section className="blog-hero" style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY2} 100%)`, padding: "80px 0 60px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
           {/* Breadcrumb */}
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 28, fontSize: 13, color: "rgba(255,255,255,0.5)" }}>
@@ -387,9 +387,15 @@ function ArticlePage({ slug }: { slug: string }) {
           .blog-article-grid { grid-template-columns: 1fr !important; }
           .blog-sidebar { position: static !important; }
         }
+        @media (max-width: 768px) {
+          .blog-hero { padding: 3rem 0 2.5rem !important; }
+        }
         @media (max-width: 600px) {
           .blog-cta-grid { grid-template-columns: 1fr !important; }
           .blog-cta-btns { min-width: 0 !important; width: 100% !important; }
+        }
+        @media (max-width: 480px) {
+          .blog-hero { padding: 2rem 0 !important; }
         }
       `}</style>
     </div>
@@ -408,7 +414,7 @@ export default function Blog() {
   return (
     <div style={{ background: WHITE }}>
       {/* Hero */}
-      <section style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY2} 100%)`, padding: "80px 0 60px" }}>
+      <section className="blog-hero" style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY2} 100%)`, padding: "80px 0 60px" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
           <FadeIn>
             <div style={{

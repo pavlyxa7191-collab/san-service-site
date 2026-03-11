@@ -151,25 +151,27 @@ export default function Home() {
             gap: "0",
             alignItems: "stretch",
             width: "100%",
+            maxWidth: "100%",
             paddingTop: "2rem",
             paddingBottom: "0",
+            overflow: "hidden",
           }}>
 
             {/* -- COL 1: Text -- */}
-            <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", paddingRight: "2.5rem" }}>
+            <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", paddingRight: "2.5rem", minWidth: 0, overflow: "hidden" }}>
               {/* Badge */}
-              <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", marginBottom: "1.75rem", padding: "0.4rem 1rem", border: `1px solid rgba(204,0,0,0.4)`, borderRadius: 2, width: "fit-content" }}>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", marginBottom: "1.75rem", padding: "0.4rem 1rem", border: `1px solid rgba(204,0,0,0.4)`, borderRadius: 2, width: "fit-content", maxWidth: "100%", overflow: "hidden" }}>
                 <div style={{ width: 6, height: 6, borderRadius: "50%", background: RED, flexShrink: 0 }} />
-                <span style={{ fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase" as const, color: RED }}>Лицензированная санитарная служба</span>
+                <span style={{ fontSize: "clamp(0.55rem, 2vw, 0.68rem)", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: RED, whiteSpace: "nowrap" as const, overflow: "hidden", textOverflow: "ellipsis" }}>Лицензированная санитарная служба</span>
               </div>
 
               {/* H1 */}
-              <h1 style={{ fontSize: "clamp(2.4rem, 4.5vw, 3.8rem)", fontWeight: 900, lineHeight: 1.06, letterSpacing: "-0.03em", color: WHITE, marginBottom: "1.25rem" }}>
+              <h1 style={{ fontSize: "clamp(1.9rem, 5vw, 3.8rem)", fontWeight: 900, lineHeight: 1.08, letterSpacing: "-0.02em", color: WHITE, marginBottom: "1.25rem", wordBreak: "break-word" as const }}>
                 Профессиональная<br /><span style={{ color: RED }}>дезинсекция</span><br />и дезинфекция
               </h1>
 
               {/* Subtitle */}
-              <p style={{ fontSize: "clamp(0.95rem, 1.3vw, 1.1rem)", color: "rgba(255,255,255,0.65)", lineHeight: 1.75, marginBottom: "2rem", maxWidth: 460 }}>
+              <p style={{ fontSize: "clamp(0.9rem, 1.3vw, 1.1rem)", color: "rgba(255,255,255,0.65)", lineHeight: 1.65, marginBottom: "2rem", maxWidth: 460, width: "100%" }}>
                 Уничтожение клопов, тараканов, грызунов и плесени.<br />
                 Обработка без запаха. Холодный туман от 1 500 ₽.<br />
                 Гарантия до 3 лет. Без запаха.

@@ -8,8 +8,8 @@ import {
 } from "lucide-react";
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
-const RED = "#CC0000";
-const NAVY = "#0D1F33";
+const RED = "#D0021B";
+const NAVY = "#0A0F1E";
 const WHITE = "#ffffff";
 const LIGHT_BG = "#f8f9fc";
 const BORDER = "#e8ecf2";
