@@ -86,7 +86,7 @@ describe("amoCRM module", () => {
       expect(mockFetch).toHaveBeenCalledOnce();
 
       const [url, options] = mockFetch.mock.calls[0];
-      expect(url).toContain("testcompany.kommo.com");
+      expect(url).toContain("testcompany.amocrm.ru");
       expect(url).toContain("/api/v4/leads/complex");
       expect(options.method).toBe("POST");
       expect(options.headers["Authorization"]).toBe("Bearer test-access-token");

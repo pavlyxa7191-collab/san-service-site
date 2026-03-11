@@ -80,7 +80,11 @@ export function isAmoCrmConfigured(): boolean {
 function getBaseUrl(subdomain?: string): string {
   const cfg = getConfig();
   const sub = subdomain || cfg.subdomain;
-  return `https://${sub}.kommo.com`;
+  // Use amocrm.ru for Russian accounts, kommo.com is the international domain
+  // The subdomain env var determines which base domain to use
+  // If AMO_BASE_DOMAIN is set, use it; otherwise default to amocrm.ru
+  const baseDomain = process.env.AMO_BASE_DOMAIN || "amocrm.ru";
+  return `https://${sub}.${baseDomain}`;
 }
 
 /**
