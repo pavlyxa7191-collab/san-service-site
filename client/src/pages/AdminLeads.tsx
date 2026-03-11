@@ -60,10 +60,23 @@ export default function AdminLeads() {
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [showAmoSettings, setShowAmoSettings] = useState(false);
+  const [manualCode, setManualCode] = useState("");
+  const [showManualCode, setShowManualCode] = useState(false);
 
-  const { data: amoCrmStatus } = trpc.leads.amoCrmStatus.useQuery(undefined, {
+  const exchangeCode = trpc.leads.exchangeCode.useMutation({
+    onSuccess: (data) => {
+      toast.success(`Токены успешно получены! Действуют ${Math.round((data.expiresIn || 86400) / 3600)} часов.`);
+      setManualCode("");
+      setShowManualCode(false);
+      amoCrmStatusQuery.refetch();
+    },
+    onError: (err) => toast.error("Ошибка: " + err.message),
+  });
+
+  const amoCrmStatusQuery = trpc.leads.amoCrmStatus.useQuery(undefined, {
     enabled: !!user && user.role === "admin",
   });
+  const amoCrmStatus = amoCrmStatusQuery.data;
 
   const testAmoCrm = trpc.leads.testAmoCrm.useMutation({
     onSuccess: (data) => {
@@ -448,22 +461,44 @@ export default function AdminLeads() {
                   ))}
                 </div>
 
-                {/* OAuth2 Authorization Button */}
-                {amoCrmStatus?.oauthUrl && !amoCrmStatus?.hasTokensInDb && (
+                {/* Manual Code Entry - Primary Method */}
+                {amoCrmStatus?.configured && !amoCrmStatus?.hasTokensInDb && (
                   <div style={{ background: "#fffbeb", border: "1px solid #fbbf24", borderRadius: 12, padding: 16, marginBottom: 16 }}>
                     <div style={{ fontWeight: 700, color: "#92400e", fontSize: "0.9rem", marginBottom: 8 }}>⚠️ Требуется авторизация в amoCRM</div>
                     <p style={{ color: "#78350f", fontSize: "0.82rem", lineHeight: 1.6, marginBottom: 12 }}>
-                      Нажмите кнопку ниже, чтобы авторизоваться в amoCRM. После авторизации токены будут автоматически сохранены.
+                      Перейдите в <strong>amoCRM → Настройки → Интеграции</strong>, откройте вашу интеграцию, вкладка <strong>"Ключи и доступы"</strong>.
+                      Скопируйте <strong>"Код авторизации"</strong> и вставьте его ниже.
+                      Код действует 20 минут.
                     </p>
-                    <a
-                      href={amoCrmStatus.oauthUrl}
-                      style={{ display: "inline-block", background: "#1a56db", color: "white", borderRadius: 8, padding: "10px 24px", fontWeight: 700, fontSize: "0.9rem", textDecoration: "none" }}
-                    >
-                      🔐 Авторизоваться в amoCRM
-                    </a>
-                    {amoCrmStatus.redirectUri && (
-                      <div style={{ marginTop: 10, fontSize: "0.75rem", color: "#78350f" }}>
-                        Callback URL: <code style={{ background: "rgba(0,0,0,0.05)", padding: "1px 6px", borderRadius: 4 }}>{amoCrmStatus.redirectUri}</code>
+                    {!showManualCode ? (
+                      <button
+                        onClick={() => setShowManualCode(true)}
+                        style={{ background: "#1a56db", color: "white", border: "none", borderRadius: 8, padding: "10px 24px", fontWeight: 700, fontSize: "0.9rem", cursor: "pointer" }}
+                      >
+                        🔑 Ввести код авторизации
+                      </button>
+                    ) : (
+                      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                        <input
+                          type="text"
+                          value={manualCode}
+                          onChange={(e) => setManualCode(e.target.value)}
+                          placeholder="Вставьте код авторизации из amoCRM..."
+                          style={{ flex: 1, minWidth: 200, padding: "10px 14px", border: "1px solid #fbbf24", borderRadius: 8, fontSize: "0.85rem", fontFamily: "monospace" }}
+                        />
+                        <button
+                          onClick={() => exchangeCode.mutate({ code: manualCode.trim() })}
+                          disabled={!manualCode.trim() || exchangeCode.isPending}
+                          style={{ background: "#1a56db", color: "white", border: "none", borderRadius: 8, padding: "10px 20px", fontWeight: 700, fontSize: "0.9rem", cursor: manualCode.trim() ? "pointer" : "not-allowed", opacity: manualCode.trim() ? 1 : 0.6 }}
+                        >
+                          {exchangeCode.isPending ? "Обмен..." : "Получить токены"}
+                        </button>
+                        <button
+                          onClick={() => { setShowManualCode(false); setManualCode(""); }}
+                          style={{ background: "transparent", color: "#78350f", border: "1px solid #fbbf24", borderRadius: 8, padding: "10px 16px", fontWeight: 600, fontSize: "0.9rem", cursor: "pointer" }}
+                        >
+                          Отмена
+                        </button>
                       </div>
                     )}
                   </div>
@@ -472,19 +507,43 @@ export default function AdminLeads() {
                 {amoCrmStatus?.hasTokensInDb && (
                   <div style={{ background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 12, padding: 16, marginBottom: 16 }}>
                     <div style={{ fontWeight: 700, color: "#166534", fontSize: "0.9rem", marginBottom: 4 }}>✅ OAuth2 авторизация выполнена</div>
-                    <p style={{ color: "#15803d", fontSize: "0.82rem", lineHeight: 1.6, margin: 0 }}>
+                    <p style={{ color: "#15803d", fontSize: "0.82rem", lineHeight: 1.6, marginBottom: 8 }}>
                       Токены сохранены в базе данных. Обновление происходит автоматически.
                     </p>
+                    <button
+                      onClick={() => setShowManualCode(!showManualCode)}
+                      style={{ background: "transparent", color: "#15803d", border: "1px solid #86efac", borderRadius: 8, padding: "8px 16px", fontWeight: 600, fontSize: "0.82rem", cursor: "pointer" }}
+                    >
+                      🔄 Переавторизоваться
+                    </button>
+                    {showManualCode && (
+                      <div style={{ marginTop: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
+                        <input
+                          type="text"
+                          value={manualCode}
+                          onChange={(e) => setManualCode(e.target.value)}
+                          placeholder="Новый код авторизации из amoCRM..."
+                          style={{ flex: 1, minWidth: 200, padding: "10px 14px", border: "1px solid #86efac", borderRadius: 8, fontSize: "0.85rem", fontFamily: "monospace" }}
+                        />
+                        <button
+                          onClick={() => exchangeCode.mutate({ code: manualCode.trim() })}
+                          disabled={!manualCode.trim() || exchangeCode.isPending}
+                          style={{ background: "#057a55", color: "white", border: "none", borderRadius: 8, padding: "10px 20px", fontWeight: 700, fontSize: "0.9rem", cursor: manualCode.trim() ? "pointer" : "not-allowed", opacity: manualCode.trim() ? 1 : 0.6 }}
+                        >
+                          {exchangeCode.isPending ? "Обмен..." : "Обновить токены"}
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
 
                 <div style={{ background: "#f8fafc", borderRadius: 12, padding: 16, marginBottom: 16 }}>
-                  <h5 style={{ color: NAVY, fontWeight: 700, fontSize: "0.85rem", marginBottom: 8 }}>Как настроить:</h5>
+                  <h5 style={{ color: NAVY, fontWeight: 700, fontSize: "0.85rem", marginBottom: 8 }}>Как получить код авторизации:</h5>
                   <ol style={{ color: "#4a5568", fontSize: "0.82rem", lineHeight: 1.8, paddingLeft: 20, margin: 0 }}>
-                    <li>Создайте интеграцию в amoCRM: <strong>Настройки → Интеграции → Создать интеграцию</strong></li>
-                    <li>Укажите Redirect URI: <code style={{ background: "#e2e8f0", padding: "1px 6px", borderRadius: 4 }}>{amoCrmStatus?.redirectUri || "https://sanservice-l8sjslkh.manus.space/api/amocrm/oauth"}</code></li>
-                    <li>Добавьте секреты <code>AMO_SUBDOMAIN</code>, <code>AMO_CLIENT_ID</code>, <code>AMO_CLIENT_SECRET</code> в настройки проекта</li>
-                    <li>Нажмите кнопку «Авторизоваться в amoCRM» выше — токены сохранятся автоматически</li>
+                    <li>Откройте amoCRM → <strong>Настройки → Интеграции</strong></li>
+                    <li>Найдите вашу интеграцию → вкладка <strong>"Ключи и доступы"</strong></li>
+                    <li>Скопируйте <strong>"Код авторизации"</strong> (def50200...)</li>
+                    <li>Вставьте код в поле выше и нажмите <strong>"Получить токены"</strong></li>
                   </ol>
                 </div>
 

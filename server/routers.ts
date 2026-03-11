@@ -159,6 +159,17 @@ export const appRouter = router({
       return testAmoCrmConnection();
     }),
 
+    // Exchange authorization code manually (admin only)
+    // User copies the code from amoCRM integration settings and pastes it here
+    exchangeCode: protectedProcedure
+      .input(z.object({ code: z.string().min(10) }))
+      .mutation(async ({ ctx, input }) => {
+        if (ctx.user?.role !== "admin") throw new Error("Forbidden");
+        const { exchangeCodeForTokens } = await import("./amocrm");
+        const tokens = await exchangeCodeForTokens(input.code);
+        return { success: true, expiresIn: tokens.expires_in };
+      }),
+
     // Get amoCRM configuration status (admin only)
     amoCrmStatus: protectedProcedure.query(async ({ ctx }) => {
       if (ctx.user?.role !== "admin") throw new Error("Forbidden");
