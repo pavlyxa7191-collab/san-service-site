@@ -202,12 +202,12 @@ export default function Home() {
                 </a>
               </div>
 
-              {/* Mobile master photo — shown only on mobile, positioned right */}
+              {/* Mobile master photo — shown only on mobile, positioned right, no borders */}
               <div className="hero-mobile-master" style={{ display: "none" }}>
                 <img
                   src="/specialist-mobile.png"
                   alt="Специалист по дезинфекции"
-                  style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center" }}
+                  style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "top center", display: "block" }}
                 />
               </div>
 

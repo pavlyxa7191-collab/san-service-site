@@ -66,6 +66,93 @@ const PEST_IMAGES: Record<string, string> = {
   dezinfektsii: "/pest-bacteria.png",
 };
 
+// Animated pest overlay configs per service
+interface PestOverlayItem {
+  src: string;
+  top?: string; bottom?: string; left?: string; right?: string;
+  size: number;
+  opacity: number;
+  rotation: number;
+  animDelay: number;
+  animDuration: number;
+  blur?: number;
+  flipX?: boolean;
+}
+
+const PEST_OVERLAYS: Record<string, PestOverlayItem[]> = {
+  klopov: [
+    // Large semi-transparent bedbugs scattered around the hero
+    { src: "/pest-bedbug.png",  top: "5%",    left: "2%",   size: 50,  opacity: 0.30, rotation: 25,  animDelay: 0,   animDuration: 7,  blur: 0 },
+    { src: "/pest-bedbug.png",  top: "60%",   right: "3%",  size: 44,  opacity: 0.35, rotation: -15, animDelay: 1.5, animDuration: 9,  blur: 0 },
+    { src: "/pest-bedbug.png",  bottom: "8%", left: "5%",   size: 52,  opacity: 0.25, rotation: 60,  animDelay: 2,   animDuration: 11, blur: 0.5 },
+    { src: "/pest-bedbug.png",  top: "30%",   left: "0%",   size: 36,  opacity: 0.20, rotation: -40, animDelay: 0.5, animDuration: 8,  blur: 1 },
+    { src: "/pest-bedbug.png",  bottom: "20%", right: "10%", size: 40, opacity: 0.28, rotation: 10,  animDelay: 3,   animDuration: 10, blur: 0 },
+    { src: "/pest-bedbug.png",  top: "45%",   right: "16%", size: 32,  opacity: 0.18, rotation: 80,  animDelay: 1,   animDuration: 13, blur: 1.5 },
+    { src: "/pest-bedbug.png",  top: "75%",   left: "10%",  size: 46,  opacity: 0.22, rotation: -20, animDelay: 2.5, animDuration: 8,  blur: 0 },
+    { src: "/pest-bedbug.png",  top: "15%",   right: "25%", size: 28,  opacity: 0.15, rotation: 45,  animDelay: 4,   animDuration: 12, blur: 2 },
+  ],
+  tarakanov: [
+    { src: "/pest-cockroach.png", top: "5%",   left: "2%",   size: 72,  opacity: 0.28, rotation: 15,  animDelay: 0,   animDuration: 8,  blur: 0 },
+    { src: "/pest-cockroach.png", top: "60%",  right: "5%",  size: 56,  opacity: 0.30, rotation: -30, animDelay: 2,   animDuration: 10, blur: 0 },
+    { src: "/pest-cockroach.png", bottom: "5%", left: "3%",  size: 64,  opacity: 0.22, rotation: 50,  animDelay: 1,   animDuration: 12, blur: 0.5 },
+    { src: "/pest-cockroach.png", top: "30%",  left: "0%",   size: 44,  opacity: 0.18, rotation: -10, animDelay: 3,   animDuration: 9,  blur: 1 },
+    { src: "/pest-cockroach.png", bottom: "25%", right: "12%", size: 50, opacity: 0.32, rotation: 70,  animDelay: 0.5, animDuration: 11, blur: 0 },
+    { src: "/pest-cockroach.png", top: "50%",  right: "22%", size: 38,  opacity: 0.16, rotation: -55, animDelay: 1.5, animDuration: 14, blur: 1.5 },
+    { src: "/pest-cockroach.png", top: "15%",  left: "6%",   size: 58,  opacity: 0.20, rotation: 35,  animDelay: 2.5, animDuration: 7,  blur: 0 },
+    { src: "/pest-cockroach.png", top: "80%",  right: "20%", size: 42,  opacity: 0.14, rotation: -25, animDelay: 3.5, animDuration: 9,  blur: 1 },
+  ],
+  pleseni: [
+    { src: "/pest-mold.png",  top: "5%",   right: "3%",  size: 90,  opacity: 0.22, rotation: 0,   animDelay: 0,   animDuration: 12, blur: 2 },
+    { src: "/pest-mold.png",  bottom: "5%", left: "2%",  size: 110, opacity: 0.15, rotation: 15,  animDelay: 2,   animDuration: 15, blur: 3 },
+    { src: "/pest-mold.png",  top: "50%",  right: "8%",  size: 70,  opacity: 0.18, rotation: -10, animDelay: 1,   animDuration: 10, blur: 1.5 },
+    { src: "/pest-mold.png",  top: "25%",  left: "4%",   size: 55,  opacity: 0.12, rotation: 30,  animDelay: 3,   animDuration: 13, blur: 3 },
+    { src: "/pest-mold.png",  bottom: "30%", right: "20%", size: 65, opacity: 0.10, rotation: -20, animDelay: 1.5, animDuration: 16, blur: 4 },
+  ],
+  dezinfektsii: [
+    { src: "/pest-bacteria.png", top: "5%",   right: "2%",  size: 100, opacity: 0.18, rotation: 0,   animDelay: 0,   animDuration: 14, blur: 2 },
+    { src: "/pest-bacteria.png", bottom: "5%", left: "1%",  size: 80,  opacity: 0.14, rotation: 20,  animDelay: 2,   animDuration: 16, blur: 3 },
+    { src: "/pest-bacteria.png", top: "45%",  right: "10%", size: 65,  opacity: 0.12, rotation: -15, animDelay: 1,   animDuration: 11, blur: 1.5 },
+    { src: "/pest-bacteria.png", top: "25%",  left: "3%",   size: 50,  opacity: 0.10, rotation: 40,  animDelay: 3,   animDuration: 18, blur: 4 },
+    { src: "/pest-bacteria.png", bottom: "25%", right: "18%", size: 70, opacity: 0.08, rotation: -30, animDelay: 1.5, animDuration: 13, blur: 2 },
+  ],
+};
+
+// PestOverlay component — renders animated pest images in hero background
+function PestOverlay({ slug }: { slug: string }) {
+  const items = PEST_OVERLAYS[slug];
+  if (!items || items.length === 0) return null;
+  return (
+    <>
+      {items.map((p, i) => (
+        <img
+          key={i}
+          src={p.src}
+          alt=""
+          aria-hidden="true"
+          className="pest-overlay-img"
+          style={{
+            position: "absolute",
+            top: p.top,
+            bottom: p.bottom,
+            left: p.left,
+            right: p.right,
+            width: p.size,
+            height: p.size,
+            objectFit: "contain",
+            opacity: p.opacity,
+            transform: `rotate(${p.rotation}deg) scaleX(${p.flipX ? -1 : 1})`,
+            filter: `drop-shadow(0 2px 8px rgba(0,0,0,0.3))${p.blur ? ` blur(${p.blur}px)` : ""}`,
+            animation: `pestCrawl${i % 3} ${p.animDuration}s ease-in-out ${p.animDelay}s infinite`,
+            pointerEvents: "none",
+            userSelect: "none" as const,
+            zIndex: 0,
+          }}
+        />
+      ))}
+    </>
+  );
+}
+
 const SERVICES: Record<string, ServiceInfo> = {
   klopov: {
     title: "Уничтожение клопов",
@@ -485,6 +572,8 @@ export default function ServicePage() {
         <div style={{ position: "absolute", top: "5%", right: "8%", width: 240, height: 240, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.06)", pointerEvents: "none" }} />
         {/* Red top accent */}
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${RED} 0%, rgba(204,0,0,0.3) 60%, transparent 100%)` }} />
+        {/* Animated pest overlays */}
+        <PestOverlay slug={serviceSlug} />
 
         <div className="container service-hero-container" style={{ position: "relative", zIndex: 1, paddingTop: "4rem", paddingBottom: "3rem", animation: "fadeInUp 0.7s ease both" }}>
           {/* Breadcrumbs */}
@@ -566,6 +655,30 @@ export default function ServicePage() {
       <style>{`
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes floatPest { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-12px) rotate(3deg); } }
+        @keyframes pestCrawl0 {
+          0%   { transform: translate(0px, 0px) rotate(var(--r, 0deg)); }
+          25%  { transform: translate(6px, -8px) rotate(calc(var(--r, 0deg) + 5deg)); }
+          50%  { transform: translate(12px, -4px) rotate(calc(var(--r, 0deg) - 3deg)); }
+          75%  { transform: translate(4px, -12px) rotate(calc(var(--r, 0deg) + 8deg)); }
+          100% { transform: translate(0px, 0px) rotate(var(--r, 0deg)); }
+        }
+        @keyframes pestCrawl1 {
+          0%   { transform: translate(0px, 0px) rotate(var(--r, 0deg)); }
+          20%  { transform: translate(-8px, -5px) rotate(calc(var(--r, 0deg) - 6deg)); }
+          40%  { transform: translate(-4px, -14px) rotate(calc(var(--r, 0deg) + 4deg)); }
+          60%  { transform: translate(-10px, -8px) rotate(calc(var(--r, 0deg) - 2deg)); }
+          80%  { transform: translate(-3px, -3px) rotate(calc(var(--r, 0deg) + 7deg)); }
+          100% { transform: translate(0px, 0px) rotate(var(--r, 0deg)); }
+        }
+        @keyframes pestCrawl2 {
+          0%   { transform: translate(0px, 0px) rotate(var(--r, 0deg)); }
+          33%  { transform: translate(10px, -6px) rotate(calc(var(--r, 0deg) + 10deg)); }
+          66%  { transform: translate(5px, -16px) rotate(calc(var(--r, 0deg) - 5deg)); }
+          100% { transform: translate(0px, 0px) rotate(var(--r, 0deg)); }
+        }
+        @media (max-width: 768px) {
+          .pest-overlay-img { display: none !important; }
+        }
         @media (max-width: 900px) {
           .service-layout { grid-template-columns: 1fr !important; }
           .service-sidebar { position: static !important; }
