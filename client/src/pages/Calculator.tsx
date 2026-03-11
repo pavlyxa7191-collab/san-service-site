@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "wouter";
+import { useState, useEffect } from "react";
+import { Link, useSearch } from "wouter";
 import { trpc } from "@/lib/trpc";
 import {
   ChevronLeft, ChevronRight, Check,
@@ -208,12 +208,35 @@ function formatPhone(raw: string): string {
   return f;
 }
 
+// Service slug → pestType id mapping
+const SERVICE_TO_PEST: Record<string, string> = {
+  klopov: "klopov",
+  tarakanov: "tarakanov",
+  gryzunov: "gryzunov",
+  kleshhej: "kleshchey",
+  pleseni: "pleseni",
+  dezinfektsii: "zapahov",
+  zapahov: "zapahov",
+};
+
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
 export default function CalculatorPage() {
+  const search = useSearch();
   const [step, setStep] = useState(0);
   const [property, setProperty] = useState("");
   const [area, setArea] = useState("");
   const [pest, setPest] = useState("");
+
+  // Preselect service from URL param ?service=klopov
+  useEffect(() => {
+    const params = new URLSearchParams(search);
+    const serviceParam = params.get("service");
+    if (serviceParam && SERVICE_TO_PEST[serviceParam]) {
+      setPest(SERVICE_TO_PEST[serviceParam]);
+      // Jump to step 2 (pest selection) so user sees their preselected service
+      setStep(2);
+    }
+  }, [search]);
   const [contactWays, setContactWays] = useState<string[]>([]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("+7 (");

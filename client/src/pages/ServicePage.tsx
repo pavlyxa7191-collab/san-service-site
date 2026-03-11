@@ -63,7 +63,9 @@ const PEST_IMAGES: Record<string, string> = {
   klopov: "/pest-bedbug.png",
   tarakanov: "/pest-cockroach.png",
   pleseni: "/pest-mold.png",
-  dezinfektsii: "/pest-bacteria.png",
+  dezinfektsii: "/pest-virus.png",
+  gryzunov: "/pest-mouse.png",
+  kleshhej: "/pest-tick.png",
 };
 
 // Animated pest overlay configs per service
@@ -109,11 +111,24 @@ const PEST_OVERLAYS: Record<string, PestOverlayItem[]> = {
     { src: "/pest-mold.png",  bottom: "30%", right: "20%", size: 65, opacity: 0.10, rotation: -20, animDelay: 1.5, animDuration: 16, blur: 4 },
   ],
   dezinfektsii: [
-    { src: "/pest-bacteria.png", top: "5%",   right: "2%",  size: 100, opacity: 0.18, rotation: 0,   animDelay: 0,   animDuration: 14, blur: 2 },
-    { src: "/pest-bacteria.png", bottom: "5%", left: "1%",  size: 80,  opacity: 0.14, rotation: 20,  animDelay: 2,   animDuration: 16, blur: 3 },
-    { src: "/pest-bacteria.png", top: "45%",  right: "10%", size: 65,  opacity: 0.12, rotation: -15, animDelay: 1,   animDuration: 11, blur: 1.5 },
-    { src: "/pest-bacteria.png", top: "25%",  left: "3%",   size: 50,  opacity: 0.10, rotation: 40,  animDelay: 3,   animDuration: 18, blur: 4 },
-    { src: "/pest-bacteria.png", bottom: "25%", right: "18%", size: 70, opacity: 0.08, rotation: -30, animDelay: 1.5, animDuration: 13, blur: 2 },
+    { src: "/pest-virus.png", top: "5%",   right: "2%",  size: 100, opacity: 0.22, rotation: 0,   animDelay: 0,   animDuration: 14, blur: 1 },
+    { src: "/pest-virus.png", bottom: "5%", left: "1%",  size: 80,  opacity: 0.18, rotation: 20,  animDelay: 2,   animDuration: 16, blur: 2 },
+    { src: "/pest-virus.png", top: "45%",  right: "10%", size: 65,  opacity: 0.15, rotation: -15, animDelay: 1,   animDuration: 11, blur: 1 },
+    { src: "/pest-virus.png", top: "25%",  left: "3%",   size: 50,  opacity: 0.12, rotation: 40,  animDelay: 3,   animDuration: 18, blur: 3 },
+    { src: "/pest-virus.png", bottom: "25%", right: "18%", size: 70, opacity: 0.10, rotation: -30, animDelay: 1.5, animDuration: 13, blur: 2 },
+  ],
+  gryzunov: [
+    { src: "/pest-mouse.png", top: "5%",    right: "2%",  size: 120, opacity: 0.20, rotation: 10,  animDelay: 0,   animDuration: 10, blur: 0 },
+    { src: "/pest-mouse.png", bottom: "5%", left: "1%",   size: 90,  opacity: 0.15, rotation: -15, animDelay: 2,   animDuration: 13, blur: 1 },
+    { src: "/pest-mouse.png", top: "50%",   right: "15%", size: 70,  opacity: 0.12, rotation: 5,   animDelay: 1,   animDuration: 11, blur: 1.5 },
+    { src: "/pest-mouse.png", top: "25%",   left: "2%",   size: 55,  opacity: 0.10, rotation: -20, animDelay: 3,   animDuration: 14, blur: 2 },
+  ],
+  kleshhej: [
+    { src: "/pest-tick.png", top: "5%",    right: "2%",  size: 90,  opacity: 0.28, rotation: 15,  animDelay: 0,   animDuration: 9,  blur: 0 },
+    { src: "/pest-tick.png", bottom: "5%", left: "2%",   size: 70,  opacity: 0.22, rotation: -20, animDelay: 1.5, animDuration: 11, blur: 0.5 },
+    { src: "/pest-tick.png", top: "50%",   right: "12%", size: 55,  opacity: 0.18, rotation: 40,  animDelay: 1,   animDuration: 13, blur: 1 },
+    { src: "/pest-tick.png", top: "25%",   left: "3%",   size: 45,  opacity: 0.14, rotation: -35, animDelay: 2.5, animDuration: 10, blur: 1.5 },
+    { src: "/pest-tick.png", bottom: "25%", right: "20%", size: 60, opacity: 0.16, rotation: 60,  animDelay: 0.5, animDuration: 12, blur: 0 },
   ],
 };
 
@@ -600,14 +615,14 @@ export default function ServicePage() {
                 {service.subtitle}
               </p>
               <div className="service-hero-btns" style={{ display: "flex", gap: "0.875rem", flexWrap: "wrap" }}>
-                <a
-                  href="#order"
+                <Link
+                  href={`/calculator?service=${serviceSlug}`}
                   style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.875rem 1.75rem", background: RED, color: WHITE, textDecoration: "none", fontWeight: 800, fontSize: "0.85rem", letterSpacing: "0.08em", borderRadius: 8, boxShadow: `0 4px 16px rgba(208,2,27,0.4)`, transition: "transform 0.2s, box-shadow 0.2s" }}
                   onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)"; (e.currentTarget as HTMLAnchorElement).style.boxShadow = `0 8px 24px rgba(208,2,27,0.5)`; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.transform = "none"; (e.currentTarget as HTMLAnchorElement).style.boxShadow = `0 4px 16px rgba(208,2,27,0.4)`; }}
                 >
                   Рассчитать цену
-                </a>
+                </Link>
                 <a
                   href="tel:+74951485806"
                   style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.875rem 1.75rem", background: "transparent", color: WHITE, textDecoration: "none", fontWeight: 700, fontSize: "0.85rem", border: "1px solid rgba(255,255,255,0.35)", borderRadius: 8, transition: "background 0.2s" }}

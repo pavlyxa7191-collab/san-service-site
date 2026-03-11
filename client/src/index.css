@@ -906,19 +906,26 @@
     display: none !important;
   }
 
-  /* Mobile master photo: show on mobile, float right — no border, no container */
+  /* Mobile master photo: show on mobile, centered block between buttons and stats */
   .hero-mobile-master {
-    display: block !important;
-    float: right;
-    width: 150px;
-    height: 220px;
-    margin: -0.5rem 0 1rem 0.75rem;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    float: none;
+    width: 100%;
+    margin: 1.5rem auto 1.5rem auto;
     border-radius: 0;
-    overflow: hidden;
-    shape-outside: margin-box;
+    overflow: visible;
     border: none;
     box-shadow: none;
     background: transparent;
+  }
+  .hero-mobile-master img {
+    width: 240px !important;
+    max-width: 80% !important;
+    height: auto !important;
+    display: block;
+    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.4));
   }
 
   /* Stat blocks: wrap on mobile */
