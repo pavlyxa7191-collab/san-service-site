@@ -59,6 +59,22 @@ export default function AdminLeads() {
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [showAmoSettings, setShowAmoSettings] = useState(false);
+
+  const { data: amoCrmStatus } = trpc.leads.amoCrmStatus.useQuery(undefined, {
+    enabled: !!user && user.role === "admin",
+  });
+
+  const testAmoCrm = trpc.leads.testAmoCrm.useMutation({
+    onSuccess: (data) => {
+      if (data.ok) {
+        toast.success(`amoCRM подключён: ${data.account || "успешно"}`);
+      } else {
+        toast.error(`amoCRM ошибка: ${data.error || "неизвестная ошибка"}`);
+      }
+    },
+    onError: (err) => toast.error("Ошибка: " + err.message),
+  });
 
   const { data: leadsData, isLoading, refetch } = trpc.leads.list.useQuery(undefined, {
     enabled: !!user && user.role === "admin",
@@ -388,6 +404,84 @@ export default function AdminLeads() {
             })}
           </div>
         )}
+
+        {/* amoCRM Settings Panel */}
+        <div style={{ marginTop: 32, background: "white", borderRadius: 16, border: "1.5px solid #e2e8f0", overflow: "hidden" }}>
+          <button
+            onClick={() => setShowAmoSettings(!showAmoSettings)}
+            style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 24px", background: "none", border: "none", cursor: "pointer", textAlign: "left" }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <div style={{ width: 36, height: 36, borderRadius: 8, background: amoCrmStatus?.configured ? "#def7ec" : "#fde8e8", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>
+                {amoCrmStatus?.configured ? "✅" : "⚙️"}
+              </div>
+              <div>
+                <div style={{ fontWeight: 700, color: NAVY, fontSize: "0.95rem" }}>Интеграция amoCRM</div>
+                <div style={{ fontSize: "0.78rem", color: amoCrmStatus?.configured ? "#057a55" : "#718096", marginTop: 2 }}>
+                  {amoCrmStatus?.configured
+                    ? `Подключено: ${amoCrmStatus.subdomain}.kommo.com`
+                    : "Не настроено — лиды сохраняются только в базе данных"}
+                </div>
+              </div>
+            </div>
+            <span style={{ color: "#718096", fontSize: "1.2rem", transform: showAmoSettings ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}>▾</span>
+          </button>
+
+          {showAmoSettings && (
+            <div style={{ padding: "0 24px 24px", borderTop: "1px solid #f0f4f8" }}>
+              <div style={{ marginTop: 20 }}>
+                <h4 style={{ color: NAVY, fontWeight: 700, fontSize: "0.9rem", marginBottom: 12 }}>Статус подключения</h4>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 10, marginBottom: 20 }}>
+                  {[
+                    { label: "Поддомен (AMO_SUBDOMAIN)", ok: !!amoCrmStatus?.subdomain, value: amoCrmStatus?.subdomain },
+                    { label: "Client ID (AMO_CLIENT_ID)", ok: amoCrmStatus?.hasClientId },
+                    { label: "Client Secret (AMO_CLIENT_SECRET)", ok: amoCrmStatus?.hasClientSecret },
+                    { label: "Access Token (AMO_ACCESS_TOKEN)", ok: amoCrmStatus?.hasAccessToken },
+                    { label: "Refresh Token (AMO_REFRESH_TOKEN)", ok: amoCrmStatus?.hasRefreshToken },
+                  ].map((item) => (
+                    <div key={item.label} style={{ background: item.ok ? "#f0fdf4" : "#fff5f5", border: `1px solid ${item.ok ? "#86efac" : "#fca5a5"}`, borderRadius: 8, padding: "10px 14px" }}>
+                      <div style={{ fontSize: "0.7rem", color: "#718096", fontWeight: 600, marginBottom: 4 }}>{item.label}</div>
+                      <div style={{ fontSize: "0.85rem", fontWeight: 700, color: item.ok ? "#16a34a" : "#dc2626" }}>
+                        {item.ok ? (item.value || "✓ Задан") : "✗ Не задан"}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div style={{ background: "#f8fafc", borderRadius: 12, padding: 16, marginBottom: 16 }}>
+                  <h5 style={{ color: NAVY, fontWeight: 700, fontSize: "0.85rem", marginBottom: 8 }}>Как настроить:</h5>
+                  <ol style={{ color: "#4a5568", fontSize: "0.82rem", lineHeight: 1.8, paddingLeft: 20, margin: 0 }}>
+                    <li>Создайте интеграцию в amoCRM: <strong>Настройки → Интеграции → Создать интеграцию</strong></li>
+                    <li>Получите <code>client_id</code> и <code>client_secret</code></li>
+                    <li>Пройдите OAuth2 авторизацию и получите <code>access_token</code> и <code>refresh_token</code></li>
+                    <li>Добавьте переменные окружения в <strong>Настройки → Secrets</strong> проекта:
+                      <br/><code>AMO_SUBDOMAIN</code>, <code>AMO_CLIENT_ID</code>, <code>AMO_CLIENT_SECRET</code>,
+                      <br/><code>AMO_ACCESS_TOKEN</code>, <code>AMO_REFRESH_TOKEN</code>, <code>AMO_REDIRECT_URI</code>
+                    </li>
+                  </ol>
+                </div>
+
+                <button
+                  onClick={() => testAmoCrm.mutate()}
+                  disabled={!amoCrmStatus?.configured || testAmoCrm.isPending}
+                  style={{
+                    background: amoCrmStatus?.configured ? RED : "#e2e8f0",
+                    color: amoCrmStatus?.configured ? "white" : "#a0aec0",
+                    border: "none",
+                    borderRadius: 8,
+                    padding: "10px 24px",
+                    fontWeight: 700,
+                    fontSize: "0.9rem",
+                    cursor: amoCrmStatus?.configured ? "pointer" : "not-allowed",
+                    transition: "all 0.15s",
+                  }}
+                >
+                  {testAmoCrm.isPending ? "Проверка..." : "Проверить подключение"}
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
 
         {/* Footer note */}
         <div style={{ textAlign: "center", padding: "24px 0", color: "#a0aec0", fontSize: "0.75rem" }}>

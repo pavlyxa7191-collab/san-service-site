@@ -73,7 +73,7 @@ describe("leads.create", () => {
       phone: "+79300354841",
     });
 
-    expect(result).toEqual({ success: true });
+    expect(result).toMatchObject({ success: true });
   });
 
   it("creates a lead with all fields from calculator", async () => {
@@ -93,7 +93,7 @@ describe("leads.create", () => {
       priceMax: 3000,
     });
 
-    expect(result).toEqual({ success: true });
+    expect(result).toMatchObject({ success: true });
   });
 
   it("rejects lead with empty name", async () => {

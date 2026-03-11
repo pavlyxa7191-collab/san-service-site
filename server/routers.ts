@@ -7,6 +7,7 @@ import { getDb } from "./db";
 import { leads } from "../drizzle/schema";
 import { eq, desc } from "drizzle-orm";
 import { notifyOwner } from "./_core/notification";
+import { createAmoCrmLead, testAmoCrmConnection, isAmoCrmConfigured } from "./amocrm";
 
 const serviceLabels: Record<string, string> = {
   klopov: "Клопы",
@@ -14,6 +15,8 @@ const serviceLabels: Record<string, string> = {
   gryzunov: "Крысы/мыши",
   pleseni: "Плесень/грибок",
   kleshchey: "Клещи",
+  dezinfektsii: "Дезинфекция",
+  zapahov: "Борьба с запахами",
   nasekomyh: "Другие насекомые",
 };
 
@@ -37,7 +40,7 @@ export const appRouter = router({
   }),
 
   leads: router({
-    // Create a new lead from calculator or contact form
+    // Create a new lead from any form on the site
     create: publicProcedure
       .input(
         z.object({
@@ -58,6 +61,7 @@ export const appRouter = router({
         const db = await getDb();
         if (!db) throw new Error("Database unavailable");
 
+        // 1. Save to local database
         await db.insert(leads).values({
           name: input.name,
           phone: input.phone,
@@ -73,11 +77,32 @@ export const appRouter = router({
           status: "new",
         });
 
-        // Notify owner
+        // 2. Push to amoCRM (non-blocking — failure doesn't break form submission)
+        let amoCrmLeadId: number | null = null;
+        try {
+          const amoResult = await createAmoCrmLead({
+            name: input.name,
+            phone: input.phone,
+            email: input.email || null,
+            service: input.service || null,
+            propertyType: input.propertyType || null,
+            area: input.area || null,
+            method: input.method || null,
+            source: input.source || null,
+            priceMin: input.priceMin || null,
+            priceMax: input.priceMax || null,
+            message: input.message || null,
+          });
+          amoCrmLeadId = amoResult?.id || null;
+        } catch (err) {
+          console.error("[leads.create] amoCRM push failed (non-fatal):", err);
+        }
+
+        // 3. Notify owner
         const serviceLabel = input.service ? (serviceLabels[input.service] || input.service) : "—";
         const propertyLabel = input.propertyType ? (propertyLabels[input.propertyType] || input.propertyType) : "—";
         const priceStr = input.priceMin
-          ? `${input.priceMin.toLocaleString()} – ${(input.priceMax || input.priceMin * 1.2).toLocaleString()} ₽`
+          ? `${input.priceMin.toLocaleString()} – ${(input.priceMax || Math.round(input.priceMin * 1.2)).toLocaleString()} ₽`
           : "—";
 
         await notifyOwner({
@@ -93,12 +118,13 @@ export const appRouter = router({
             `**Расчётная стоимость:** ${priceStr}`,
             `**Источник:** ${input.source || "сайт"}`,
             input.message ? `**Сообщение:** ${input.message}` : null,
+            amoCrmLeadId ? `**amoCRM лид ID:** ${amoCrmLeadId}` : null,
           ]
             .filter(Boolean)
             .join("\n"),
         });
 
-        return { success: true };
+        return { success: true, amoCrmLeadId };
       }),
 
     // List all leads (admin only)
@@ -126,6 +152,26 @@ export const appRouter = router({
         await db.update(leads).set({ status: input.status }).where(eq(leads.id, input.id));
         return { success: true };
       }),
+
+    // Test amoCRM connection (admin only)
+    testAmoCrm: protectedProcedure.mutation(async ({ ctx }) => {
+      if (ctx.user?.role !== "admin") throw new Error("Forbidden");
+      return testAmoCrmConnection();
+    }),
+
+    // Get amoCRM configuration status (admin only)
+    amoCrmStatus: protectedProcedure.query(async ({ ctx }) => {
+      if (ctx.user?.role !== "admin") throw new Error("Forbidden");
+      const configured = isAmoCrmConfigured();
+      return {
+        configured,
+        subdomain: process.env.AMO_SUBDOMAIN || null,
+        hasClientId: !!process.env.AMO_CLIENT_ID,
+        hasClientSecret: !!process.env.AMO_CLIENT_SECRET,
+        hasAccessToken: !!process.env.AMO_ACCESS_TOKEN,
+        hasRefreshToken: !!process.env.AMO_REFRESH_TOKEN,
+      };
+    }),
   }),
 });
 

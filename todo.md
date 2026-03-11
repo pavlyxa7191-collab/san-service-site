@@ -363,3 +363,25 @@
 - [ ] Contacts.tsx: проверить и исправить мобильный layout
 - [ ] Blog.tsx: проверить и исправить мобильный layout
 - [ ] Все 10 тестов vitest проходят
+
+## Итерация 14: amoCRM Webhook интеграция
+
+- [ ] Изучить amoCRM API v4: OAuth2, создание лидов и контактов
+- [ ] Аудит всех форм на сайте (Home, ServicePage, Contacts, Calculator, Prices)
+- [ ] Создать server/amocrm.ts: OAuth2 токены, createLead, createContact
+- [ ] Добавить tRPC процедуру leads.submit с amoCRM интеграцией
+- [ ] Подключить все формы к trpc.leads.submit
+- [ ] Добавить настройки amoCRM в AdminLeads (webhook URL, статус подключения)
+- [ ] Написать тесты для amoCRM модуля
+- [ ] Все тесты vitest проходят
+
+## Итерация 14: amoCRM Webhook интеграция
+
+- [x] Изучить amoCRM (Kommo) API v4 OAuth2 и leads/complex endpoint
+- [x] Создать server/amocrm.ts: OAuth2 токены, auto-refresh, createAmoCrmLead, testAmoCrmConnection, isAmoCrmConfigured
+- [x] Обновить server/routers.ts: интегрировать amoCRM в leads.create (non-blocking, не ломает форму при ошибке CRM)
+- [x] Добавить tRPC процедуры: leads.testAmoCrm, leads.amoCrmStatus
+- [x] Добавить панель настроек amoCRM в AdminLeads.tsx (статус, тест подключения, инструкция)
+- [x] Написать vitest тесты для amocrm.ts (12 тестов: isAmoCrmConfigured, createAmoCrmLead, testAmoCrmConnection)
+- [x] Исправить leads.test.ts для совместимости с новым ответом (toMatchObject)
+- [x] Все 22 теста vitest проходят
