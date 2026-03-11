@@ -417,3 +417,11 @@
 - [x] Исправлен getBaseUrl: теперь использует amocrm.ru по умолчанию (AMO_BASE_DOMAIN для оверрайда)
 - [x] Обновлён тест: testcompany.amocrm.ru вместо testcompany.kommo.com
 - [x] Все 22 теста vitest проходят
+
+## Итерация 19: UI исправления (мобильная версия)
+
+- [x] Иконки в карточках преимуществ — исправлены (IconGuarantee, IconSpecialist, IconCalculator, IconColdFog теперь принимают color prop)
+- [x] Плавающая кнопка звонка — перемещена выше (bottom: 90px вместо 20px)
+- [x] WhatsApp кнопка — номер 79099030699 вставлен
+- [x] Добавлена кнопка Telegram (синяя, SVG иконка)
+- [x] Иконка на плавающей кнопке — SVG Phone (белый телефонный аппарат)

@@ -14,20 +14,21 @@ const NAVY = "#000919";
 const RED = "#CC0000";
 const NAVY_LIGHT = "#1A3050";
 
-export function IconColdFog({ size = 48, className = "" }: IconProps) {
+export function IconColdFog({ size = 48, className = "", color }: IconProps) {
+  const c = color || NAVY;
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width={size} height={size} fill="none" className={className}>
-      <circle cx="32" cy="32" r="28" stroke={NAVY} strokeWidth="2" fill="none"/>
-      <rect x="20" y="26" width="18" height="10" rx="2" stroke={NAVY} strokeWidth="2" fill={NAVY_LIGHT} fillOpacity="0.15"/>
-      <rect x="38" y="29" width="8" height="4" rx="1" stroke={NAVY} strokeWidth="1.5" fill="none"/>
-      <circle cx="50" cy="24" r="2" fill={NAVY} opacity="0.6"/>
-      <circle cx="53" cy="30" r="1.5" fill={NAVY} opacity="0.5"/>
-      <circle cx="50" cy="36" r="2" fill={NAVY} opacity="0.6"/>
-      <circle cx="54" cy="42" r="1.5" fill={NAVY} opacity="0.4"/>
-      <line x1="29" y1="31" x2="29" y2="35" stroke={RED} strokeWidth="1.5" strokeLinecap="round"/>
-      <line x1="27" y1="33" x2="31" y2="33" stroke={RED} strokeWidth="1.5" strokeLinecap="round"/>
-      <line x1="27.5" y1="31.5" x2="30.5" y2="34.5" stroke={RED} strokeWidth="1" strokeLinecap="round"/>
-      <line x1="30.5" y1="31.5" x2="27.5" y2="34.5" stroke={RED} strokeWidth="1" strokeLinecap="round"/>
+      <circle cx="32" cy="32" r="28" stroke={c} strokeWidth="2" fill="none"/>
+      <rect x="20" y="26" width="18" height="10" rx="2" stroke={c} strokeWidth="2" fill={c} fillOpacity="0.15"/>
+      <rect x="38" y="29" width="8" height="4" rx="1" stroke={c} strokeWidth="1.5" fill="none"/>
+      <circle cx="50" cy="24" r="2" fill={c} opacity="0.6"/>
+      <circle cx="53" cy="30" r="1.5" fill={c} opacity="0.5"/>
+      <circle cx="50" cy="36" r="2" fill={c} opacity="0.6"/>
+      <circle cx="54" cy="42" r="1.5" fill={c} opacity="0.4"/>
+      <line x1="29" y1="31" x2="29" y2="35" stroke={c} strokeWidth="1.5" strokeLinecap="round"/>
+      <line x1="27" y1="33" x2="31" y2="33" stroke={c} strokeWidth="1.5" strokeLinecap="round"/>
+      <line x1="27.5" y1="31.5" x2="30.5" y2="34.5" stroke={c} strokeWidth="1" strokeLinecap="round"/>
+      <line x1="30.5" y1="31.5" x2="27.5" y2="34.5" stroke={c} strokeWidth="1" strokeLinecap="round"/>
     </svg>
   );
 }
@@ -187,47 +188,50 @@ export function IconTicks({ size = 48, className = "" }: IconProps) {
   );
 }
 
-export function IconCalculator({ size = 48, className = "" }: IconProps) {
+export function IconCalculator({ size = 48, className = "", color }: IconProps) {
+  const c = color || NAVY;
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width={size} height={size} fill="none" className={className}>
-      <circle cx="32" cy="32" r="28" stroke={NAVY} strokeWidth="2" fill="none"/>
-      <rect x="18" y="16" width="28" height="34" rx="3" stroke={NAVY} strokeWidth="2" fill={NAVY_LIGHT} fillOpacity="0.1"/>
-      <rect x="22" y="20" width="20" height="8" rx="1" stroke={NAVY} strokeWidth="1.5" fill={NAVY_LIGHT} fillOpacity="0.2"/>
-      <text x="38" y="27" textAnchor="end" fontFamily="monospace" fontSize="6" fill={NAVY} fontWeight="bold">1500</text>
-      <rect x="22" y="32" width="5" height="4" rx="1" fill={NAVY} opacity="0.3"/>
-      <rect x="29.5" y="32" width="5" height="4" rx="1" fill={NAVY} opacity="0.3"/>
-      <rect x="37" y="32" width="5" height="4" rx="1" fill={RED} opacity="0.7"/>
-      <rect x="22" y="38" width="5" height="4" rx="1" fill={NAVY} opacity="0.3"/>
-      <rect x="29.5" y="38" width="5" height="4" rx="1" fill={NAVY} opacity="0.3"/>
-      <rect x="37" y="38" width="5" height="4" rx="1" fill={NAVY} opacity="0.3"/>
-      <rect x="22" y="44" width="12.5" height="4" rx="1" fill={NAVY} opacity="0.3"/>
-      <rect x="37" y="44" width="5" height="4" rx="1" fill={RED} opacity="0.7"/>
+      <circle cx="32" cy="32" r="28" stroke={c} strokeWidth="2" fill="none"/>
+      <rect x="18" y="16" width="28" height="34" rx="3" stroke={c} strokeWidth="2" fill={c} fillOpacity="0.1"/>
+      <rect x="22" y="20" width="20" height="8" rx="1" stroke={c} strokeWidth="1.5" fill={c} fillOpacity="0.2"/>
+      <text x="38" y="27" textAnchor="end" fontFamily="monospace" fontSize="6" fill={c} fontWeight="bold">1500</text>
+      <rect x="22" y="32" width="5" height="4" rx="1" fill={c} opacity="0.3"/>
+      <rect x="29.5" y="32" width="5" height="4" rx="1" fill={c} opacity="0.3"/>
+      <rect x="37" y="32" width="5" height="4" rx="1" fill={c} opacity="0.7"/>
+      <rect x="22" y="38" width="5" height="4" rx="1" fill={c} opacity="0.3"/>
+      <rect x="29.5" y="38" width="5" height="4" rx="1" fill={c} opacity="0.3"/>
+      <rect x="37" y="38" width="5" height="4" rx="1" fill={c} opacity="0.3"/>
+      <rect x="22" y="44" width="12.5" height="4" rx="1" fill={c} opacity="0.3"/>
+      <rect x="37" y="44" width="5" height="4" rx="1" fill={c} opacity="0.7"/>
     </svg>
   );
 }
 
-export function IconSpecialist({ size = 48, className = "" }: IconProps) {
+export function IconSpecialist({ size = 48, className = "", color }: IconProps) {
+  const c = color || NAVY;
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width={size} height={size} fill="none" className={className}>
-      <circle cx="32" cy="32" r="28" stroke={NAVY} strokeWidth="2" fill="none"/>
-      <circle cx="32" cy="20" r="6" stroke={NAVY} strokeWidth="2" fill={NAVY_LIGHT} fillOpacity="0.2"/>
-      <path d="M22 38 L22 30 Q22 26 32 26 Q42 26 42 30 L42 38 Z" stroke={NAVY} strokeWidth="2" fill={NAVY_LIGHT} fillOpacity="0.15"/>
-      <rect x="28" y="22" width="8" height="5" rx="2" stroke={RED} strokeWidth="1.5" fill={RED} fillOpacity="0.2"/>
-      <line x1="42" y1="32" x2="50" y2="28" stroke={NAVY} strokeWidth="2" strokeLinecap="round"/>
-      <circle cx="51" cy="27" r="2" stroke={RED} strokeWidth="1.5" fill="none"/>
-      <line x1="27" y1="38" x2="25" y2="48" stroke={NAVY} strokeWidth="2" strokeLinecap="round"/>
-      <line x1="37" y1="38" x2="39" y2="48" stroke={NAVY} strokeWidth="2" strokeLinecap="round"/>
+      <circle cx="32" cy="32" r="28" stroke={c} strokeWidth="2" fill="none"/>
+      <circle cx="32" cy="20" r="6" stroke={c} strokeWidth="2" fill={c} fillOpacity="0.2"/>
+      <path d="M22 38 L22 30 Q22 26 32 26 Q42 26 42 30 L42 38 Z" stroke={c} strokeWidth="2" fill={c} fillOpacity="0.15"/>
+      <rect x="28" y="22" width="8" height="5" rx="2" stroke={c} strokeWidth="1.5" fill={c} fillOpacity="0.2"/>
+      <line x1="42" y1="32" x2="50" y2="28" stroke={c} strokeWidth="2" strokeLinecap="round"/>
+      <circle cx="51" cy="27" r="2" stroke={c} strokeWidth="1.5" fill="none"/>
+      <line x1="27" y1="38" x2="25" y2="48" stroke={c} strokeWidth="2" strokeLinecap="round"/>
+      <line x1="37" y1="38" x2="39" y2="48" stroke={c} strokeWidth="2" strokeLinecap="round"/>
     </svg>
   );
 }
 
-export function IconGuarantee({ size = 48, className = "" }: IconProps) {
+export function IconGuarantee({ size = 48, className = "", color }: IconProps) {
+  const c = color || NAVY;
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width={size} height={size} fill="none" className={className}>
-      <circle cx="32" cy="32" r="28" stroke={NAVY} strokeWidth="2" fill="none"/>
-      <path d="M32 14 L46 20 L46 34 Q46 44 32 50 Q18 44 18 34 L18 20 Z" stroke={NAVY} strokeWidth="2" fill={NAVY_LIGHT} fillOpacity="0.15"/>
-      <path d="M32 18 L43 23 L43 34 Q43 41 32 46 Q21 41 21 34 L21 23 Z" stroke={NAVY} strokeWidth="1" fill={NAVY_LIGHT} fillOpacity="0.1"/>
-      <path d="M24 32 L29 38 L40 26" stroke={RED} strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx="32" cy="32" r="28" stroke={c} strokeWidth="2" fill="none"/>
+      <path d="M32 14 L46 20 L46 34 Q46 44 32 50 Q18 44 18 34 L18 20 Z" stroke={c} strokeWidth="2" fill={c} fillOpacity="0.15"/>
+      <path d="M32 18 L43 23 L43 34 Q43 41 32 46 Q21 41 21 34 L21 23 Z" stroke={c} strokeWidth="1" fill={c} fillOpacity="0.1"/>
+      <path d="M24 32 L29 38 L40 26" stroke={c} strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
 }
