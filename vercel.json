@@ -1,9 +1,24 @@
 {
   "buildCommand": "pnpm build",
-  "devCommand": "pnpm dev",
   "installCommand": "pnpm install",
-  "framework": "other",
-  "outputDirectory": "dist",
+  "framework": null,
+  "outputDirectory": "dist/public",
+  "functions": {
+    "api/index.ts": {
+      "memory": 1024,
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index"
+    },
+    {
+      "source": "/((?!assets|favicon\.ico).*)",
+      "destination": "/index.html"
+    }
+  ],
   "env": [
     "DATABASE_URL",
     "JWT_SECRET",
