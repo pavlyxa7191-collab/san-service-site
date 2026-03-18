@@ -37,10 +37,10 @@ export default function StickyCallButton() {
   const [visible, setVisible] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
-  // Show after scrolling 300px
+  // Show after scrolling past the hero section (~600px)
   useEffect(() => {
     const handleScroll = () => {
-      setVisible(window.scrollY > 300);
+      setVisible(window.scrollY > 600);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
