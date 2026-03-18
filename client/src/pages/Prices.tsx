@@ -315,7 +315,7 @@ function ServiceCard({ s }: { s: typeof services[0] }) {
             <span style={{
               fontSize: "0.65rem", fontWeight: 800, letterSpacing: "0.08em",
               textTransform: "uppercase", background: RED, color: WHITE,
-              padding: "3px 8px", borderRadius: 6, flexShrink: 0,
+              padding: "3px 8px", borderRadius: 6, flexShrink: 0, whiteSpace: "nowrap",
             }}>
               {s.badge}
             </span>
@@ -413,6 +413,7 @@ export default function Prices() {
                 background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)",
                 borderRadius: 100, padding: "5px 14px",
                 fontSize: "0.78rem", fontWeight: 600, color: "rgba(255,255,255,0.75)",
+                whiteSpace: "nowrap",
               }}>
                 <CheckCircle size={12} style={{ color: RED }} />
                 {t}
@@ -476,7 +477,7 @@ export default function Prices() {
                     position: "absolute", top: 16, right: 16,
                     fontSize: "0.65rem", fontWeight: 800, letterSpacing: "0.08em",
                     textTransform: "uppercase", background: m.badgeColor, color: WHITE,
-                    padding: "3px 8px", borderRadius: 6,
+                    padding: "3px 8px", borderRadius: 6, whiteSpace: "nowrap",
                   }}>
                     {m.badge}
                   </span>
