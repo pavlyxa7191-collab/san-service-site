@@ -558,6 +558,15 @@ export default function ServicePage() {
 
   const serviceUrl = `https://sanservice-l8sjslkh.manus.space/services/${serviceSlug}${citySlug ? `/${citySlug}` : ''}`;
 
+  useEffect(() => {
+    const title = cityName
+      ? `${service.title} в ${cityName} — Цены, гарантия | Санитарная служба`
+      : `${service.title} в Москве — Цены, гарантия | Санитарная служба`;
+    document.title = title;
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute("content", `${service.subtitle} Гарантия ${service.guarantee}. Звоните 24/7: 8(495)148-58-06.`);
+  }, [serviceSlug, citySlug]);
+
   return (
     <div style={{ minHeight: "100vh", background: WHITE }}>
       <SchemaMarkup

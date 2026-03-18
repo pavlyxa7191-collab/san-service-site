@@ -99,6 +99,12 @@ export default function Home() {
   const [submitted, setSubmitted] = useState(false);
   const createLead = trpc.leads.create.useMutation();
 
+  useEffect(() => {
+    document.title = "Профессиональная санитарная служба — Дезинсекция и дезинфекция в Москве";
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute("content", "Профессиональная дезинсекция, дезинфекция и дератизация в Москве и МО. Уничтожение клопов, тараканов, грызунов. Гарантия 3 года. Работаем 24/7.");
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {

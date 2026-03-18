@@ -229,6 +229,12 @@ export default function CalculatorPage() {
 
   // Preselect service from URL param ?service=klopov (start from step 0, pest is pre-filled)
   useEffect(() => {
+    document.title = "Калькулятор стоимости — Дезинсекция и дезинфекция в Москве";
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute("content", "Рассчитайте стоимость дезинсекции или дезинфекции онлайн. Укажите тип объекта, площадь и вид вредителей — получите точную цену за 2 минуты.");
+  }, []);
+
+  useEffect(() => {
     const params = new URLSearchParams(search);
     const serviceParam = params.get("service");
     if (serviceParam && SERVICE_TO_PEST[serviceParam]) {

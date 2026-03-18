@@ -196,6 +196,15 @@ const articles = [
 // ─── ARTICLE PAGE ───────────────────────────────────────────────────────────────
 function ArticlePage({ slug }: { slug: string }) {
   const article = articles.find((a) => a.slug === slug);
+
+  useEffect(() => {
+    if (article) {
+      document.title = `${article.title} — Блог санитарной службы`;
+      const meta = document.querySelector('meta[name="description"]');
+      if (meta) meta.setAttribute("content", article.excerpt);
+    }
+  }, [article]);
+
   if (!article) return (
     <div style={{ minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
       <div style={{ textAlign: "center" }}>
@@ -406,6 +415,14 @@ function ArticlePage({ slug }: { slug: string }) {
 export default function Blog() {
   const params = useParams<{ slug?: string }>();
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!params.slug) {
+      document.title = "Блог — Советы по дезинсекции и дезинфекции";
+      const meta = document.querySelector('meta[name="description"]');
+      if (meta) meta.setAttribute("content", "Полезные статьи о борьбе с клопами, тараканами, грызунами и плесенью. Советы специалистов, инструкции по подготовке к обработке.");
+    }
+  }, [params.slug]);
 
   if (params.slug) {
     return <ArticlePage slug={params.slug} />;

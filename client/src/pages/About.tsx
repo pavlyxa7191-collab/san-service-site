@@ -62,6 +62,12 @@ export default function About() {
   const [hoveredTrust, setHoveredTrust] = useState<number | null>(null);
   const [hoveredCred, setHoveredCred] = useState<number | null>(null);
 
+  useEffect(() => {
+    document.title = "О компании — ЭкоЦентр Санитарная служба";
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute("content", "ЭкоЦентр — профессиональная санитарная служба с 2008 года. Более 12 000 выполненных заказов, гарантия до 3 лет, лицензия СЭС, сертифицированные препараты.");
+  }, []);
+
   const stats = [
     {
       icon: (
