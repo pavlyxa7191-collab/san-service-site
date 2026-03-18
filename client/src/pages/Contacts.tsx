@@ -199,7 +199,7 @@ export default function Contacts() {
       {/* Main content: Form + Trust */}
       <section style={{ padding: "80px 0", background: WHITE }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 400px", gap: 48, alignItems: "start" }}>
+          <div className="contacts-main-grid" style={{ display: "grid", gridTemplateColumns: "1fr 400px", gap: 48, alignItems: "start" }}>
 
             {/* Form */}
             <FadeIn>
@@ -248,7 +248,7 @@ export default function Contacts() {
                   </div>
                 ) : (
                   <div style={{ display: "flex", flexDirection: "column" as const, gap: 20 }}>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+                    <div className="contacts-form-name-phone" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
                       <div>
                         <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: NAVY, letterSpacing: "0.05em", textTransform: "uppercase" as const, marginBottom: 8 }}>
                           Ваше имя *

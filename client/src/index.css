@@ -839,9 +839,10 @@
 .hero-grid .form-field::placeholder { color: rgba(255,255,255,0.35) !important; }
 .hero-grid .form-field:focus { border-color: rgba(204,0,0,0.6) !important; box-shadow: none !important; }
 
-/* 1300px */
+/* 1300px — hide specialist image, keep text + form (2 cols) */
 @media (max-width: 1300px) {
-  .hero-grid { grid-template-columns: 1fr 320px 320px !important; }
+  .hero-grid { grid-template-columns: 1fr 340px !important; }
+  .hero-grid > div:nth-child(2) { display: none !important; }
 }
 
 /* 1024px: tablet landscape */
@@ -1029,5 +1030,60 @@
   .container {
     padding-left: 0.75rem !important;
     padding-right: 0.75rem !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ABOUT PAGE — RESPONSIVE GRIDS
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* about-hero-grid: 2 cols → 1 col on tablet/mobile */
+@media (max-width: 768px) {
+  .about-hero-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  /* Hide decorative SVG illustration on mobile */
+  .about-hero-grid > div:last-child svg {
+    max-height: 220px !important;
+  }
+  .about-steps-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-steps-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CONTACTS PAGE — RESPONSIVE GRIDS
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .contacts-main-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  .contacts-form-name-phone {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PRICES PAGE — RESPONSIVE GRIDS
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .prices-methods-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .prices-service-grid {
+    grid-template-columns: 1fr !important;
   }
 }
