@@ -45,6 +45,12 @@ export default function ExitIntentPopup() {
   }, []);
 
   useEffect(() => {
+    // If already shown this session — mark ref immediately so timer/events never fire
+    if (sessionStorage.getItem(STORAGE_KEY)) {
+      shownRef.current = true;
+      return;
+    }
+
     // Show after 30 seconds
     timerRef.current = setTimeout(triggerPopup, 30_000);
 
