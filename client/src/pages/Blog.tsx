@@ -255,7 +255,7 @@ function ArticlePage({ slug }: { slug: string }) {
 
       {/* Content */}
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "64px 24px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 60, alignItems: "start" }}>
+        <div className="blog-article-grid" style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 60, alignItems: "start" }}>
           {/* Article body */}
           <div>
             <div style={{ fontSize: 16, lineHeight: 1.75, color: "#374151" }}>
