@@ -172,8 +172,8 @@ export default function Home() {
               </div>
 
               {/* H1 */}
-              <h1 style={{ fontSize: "clamp(1.9rem, 5vw, 3.8rem)", fontWeight: 900, lineHeight: 1.08, letterSpacing: "-0.02em", color: WHITE, marginBottom: "1.25rem", wordBreak: "break-word" as const }}>
-                Профессиональная<br /><span style={{ color: RED }}>дезинсекция</span><br />и дезинфекция
+              <h1 style={{ fontSize: "clamp(1.4rem, 3.5vw, 3rem)", fontWeight: 900, lineHeight: 1.1, letterSpacing: "-0.02em", color: WHITE, marginBottom: "1.25rem" }}>
+                Профессиональная <span style={{ color: RED }}>дезинсекция</span> и дезинфекция
               </h1>
 
               {/* Subtitle */}
