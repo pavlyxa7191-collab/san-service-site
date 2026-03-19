@@ -85,6 +85,7 @@ export const appRouter = router({
 
         // 2. Push to amoCRM (non-blocking — failure doesn't break form submission)
         let amoCrmLeadId: number | null = null;
+        let amoCrmError: string | null = null;
         try {
           const amoResult = await createAmoCrmLead({
             name: input.name,
@@ -100,8 +101,10 @@ export const appRouter = router({
             message: input.message || null,
           });
           amoCrmLeadId = amoResult?.id || null;
-        } catch (err) {
-          console.error("[leads.create] amoCRM push failed (non-fatal):", err);
+          if (!amoCrmLeadId) amoCrmError = "lead created but ID is null";
+        } catch (err: any) {
+          amoCrmError = err?.message || String(err);
+          console.error("[leads.create] amoCRM push failed (non-fatal):", amoCrmError);
         }
 
         // 3. Notify owner
@@ -132,7 +135,7 @@ export const appRouter = router({
           console.warn("[leads.create] Notification failed (non-fatal):", notifyErr);
         }
 
-        return { success: true, amoCrmLeadId };
+        return { success: true, amoCrmLeadId, amoCrmError };
       }),
 
     // List all leads (admin only)
