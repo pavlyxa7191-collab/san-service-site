@@ -59,23 +59,29 @@ export const appRouter = router({
       )
       .mutation(async ({ input }) => {
         const db = await getDb();
-        if (!db) throw new Error("Database unavailable");
+        if (!db) throw new Error(`Database unavailable. DATABASE_URL set: ${!!process.env.DATABASE_URL}`);
 
         // 1. Save to local database
-        await db.insert(leads).values({
-          name: input.name,
-          phone: input.phone,
-          email: input.email || null,
-          service: input.service || null,
-          propertyType: input.propertyType || null,
-          area: input.area || null,
-          method: input.method || null,
-          source: input.source || "website",
-          priceMin: input.priceMin || null,
-          priceMax: input.priceMax || null,
-          message: input.message || null,
-          status: "new",
-        });
+        try {
+          await db.insert(leads).values({
+            name: input.name,
+            phone: input.phone,
+            email: input.email || null,
+            service: input.service || null,
+            propertyType: input.propertyType || null,
+            area: input.area || null,
+            method: input.method || null,
+            source: input.source || "website",
+            priceMin: input.priceMin || null,
+            priceMax: input.priceMax || null,
+            message: input.message || null,
+            status: "new",
+          });
+        } catch (dbErr: any) {
+          const cause = dbErr?.cause;
+          const causeMsg = cause?.message || cause?.detail || cause?.code || String(cause);
+          throw new Error(`DB_INSERT_ERROR: ${dbErr.message} | CAUSE: ${causeMsg} | DB_URL_SET: ${!!process.env.DATABASE_URL}`);
+        }
 
         // 2. Push to amoCRM (non-blocking — failure doesn't break form submission)
         let amoCrmLeadId: number | null = null;
