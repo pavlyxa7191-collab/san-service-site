@@ -1,11 +1,11 @@
 import "dotenv/config";
 import express from "express";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
-import { registerOAuthRoutes } from "../server/_core/oauth.js";
-import { registerChatRoutes } from "../server/_core/chat.js";
-import { registerAmoCrmOAuthRoutes } from "../server/amocrmOAuth.js";
-import { appRouter } from "../server/routers.js";
-import { createContext } from "../server/_core/context.js";
+import { registerOAuthRoutes } from "../server/_core/oauth";
+import { registerChatRoutes } from "../server/_core/chat";
+import { registerAmoCrmOAuthRoutes } from "../server/amocrmOAuth";
+import { appRouter } from "../server/routers";
+import { createContext } from "../server/_core/context";
 
 const app = express();
 
