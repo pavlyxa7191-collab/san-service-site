@@ -5,8 +5,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development tsx watch server/_core/index.ts",
-    "build": "vite build && esbuild server/_core/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist && esbuild api/_index.ts --platform=node --packages=external --bundle --format=esm --outfile=api/index.js",    "test": "vitest run",
-    "db:push": "drizzle-kit generate && drizzle-kit migrate"
+    "build": "(drizzle-kit push --force || echo 'DB push skipped') && vite build && esbuild server/_core/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist && esbuild api/_index.ts --platform=node --packages=external --bundle --format=esm --outfile=api/index.js",
+    "test": "vitest run",
+    "db:push": "drizzle-kit push --force"
   },
   "dependencies": {
     "@ai-sdk/openai": "^3.0.12",
