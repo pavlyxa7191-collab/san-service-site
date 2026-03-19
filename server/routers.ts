@@ -86,25 +86,32 @@ export const appRouter = router({
         // 2. Push to amoCRM (non-blocking — failure doesn't break form submission)
         let amoCrmLeadId: number | null = null;
         let amoCrmError: string | null = null;
-        try {
-          const amoResult = await createAmoCrmLead({
-            name: input.name,
-            phone: input.phone,
-            email: input.email || null,
-            service: input.service || null,
-            propertyType: input.propertyType || null,
-            area: input.area || null,
-            method: input.method || null,
-            source: input.source || null,
-            priceMin: input.priceMin || null,
-            priceMax: input.priceMax || null,
-            message: input.message || null,
-          });
-          amoCrmLeadId = amoResult?.id || null;
-          if (!amoCrmLeadId) amoCrmError = "lead created but ID is null";
-        } catch (err: any) {
-          amoCrmError = err?.message || String(err);
-          console.error("[leads.create] amoCRM push failed (non-fatal):", amoCrmError);
+        const amoConfigured = isAmoCrmConfigured();
+        const amoSubdomain = process.env.AMO_SUBDOMAIN || null;
+        const amoHasToken = !!process.env.AMO_ACCESS_TOKEN;
+        if (!amoConfigured) {
+          amoCrmError = `not_configured: subdomain=${amoSubdomain}, clientId=${!!process.env.AMO_CLIENT_ID}, clientSecret=${!!process.env.AMO_CLIENT_SECRET}`;
+        } else {
+          try {
+            const amoResult = await createAmoCrmLead({
+              name: input.name,
+              phone: input.phone,
+              email: input.email || null,
+              service: input.service || null,
+              propertyType: input.propertyType || null,
+              area: input.area || null,
+              method: input.method || null,
+              source: input.source || null,
+              priceMin: input.priceMin || null,
+              priceMax: input.priceMax || null,
+              message: input.message || null,
+            });
+            amoCrmLeadId = amoResult?.id || null;
+            if (!amoCrmLeadId) amoCrmError = `amoResult=${JSON.stringify(amoResult)}`;
+          } catch (err: any) {
+            amoCrmError = err?.message || String(err);
+            console.error("[leads.create] amoCRM push failed:", amoCrmError);
+          }
         }
 
         // 3. Notify owner
@@ -135,7 +142,7 @@ export const appRouter = router({
           console.warn("[leads.create] Notification failed (non-fatal):", notifyErr);
         }
 
-        return { success: true, amoCrmLeadId, amoCrmError };
+        return { success: true, amoCrmLeadId, amoCrmError, amoSubdomain, amoHasToken };
       }),
 
     // List all leads (admin only)
