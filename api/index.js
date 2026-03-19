@@ -889,6 +889,20 @@ app.get("/api/amocrm/oauth", async (req, res) => {
   }
 });
 
+// Database diagnostic endpoint
+app.get("/api/db-check", async (req, res) => {
+  try {
+    const db = await getDb();
+    if (!db) {
+      return res.json({ ok: false, error: "No DB connection", DATABASE_URL: !!process.env.DATABASE_URL });
+    }
+    const result = await db.execute("SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name");
+    return res.json({ ok: true, tables: result.rows || result, DATABASE_URL: !!process.env.DATABASE_URL });
+  } catch (err) {
+    return res.json({ ok: false, error: String(err), cause: err?.cause ? String(err.cause) : undefined, DATABASE_URL: !!process.env.DATABASE_URL });
+  }
+});
+
 // tRPC
 app.use(
   "/api/trpc",
