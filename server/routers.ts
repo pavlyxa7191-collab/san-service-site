@@ -111,7 +111,7 @@ export const appRouter = router({
           ? `${input.priceMin.toLocaleString()} – ${(input.priceMax || Math.round(input.priceMin * 1.2)).toLocaleString()} ₽`
           : "—";
 
-        await notifyOwner({
+        try { await notifyOwner({
           title: `🆕 Новая заявка от ${input.name}`,
           content: [
             `**Имя:** ${input.name}`,
@@ -128,7 +128,9 @@ export const appRouter = router({
           ]
             .filter(Boolean)
             .join("\n"),
-        });
+        }); } catch (notifyErr) {
+          console.warn("[leads.create] Notification failed (non-fatal):", notifyErr);
+        }
 
         return { success: true, amoCrmLeadId };
       }),
