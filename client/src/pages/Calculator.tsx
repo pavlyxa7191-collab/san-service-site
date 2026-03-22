@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useSearch } from "wouter";
 import { trpc } from "@/lib/trpc";
+import { applyPageSeo } from "@/lib/seo";
 import {
   ChevronLeft, ChevronRight, Check,
   Home, Building2, Warehouse, BedDouble, Building,
@@ -229,9 +230,11 @@ export default function CalculatorPage() {
 
   // Preselect service from URL param ?service=klopov (start from step 0, pest is pre-filled)
   useEffect(() => {
-    document.title = "Калькулятор стоимости — Дезинсекция и дезинфекция в Москве";
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "Рассчитайте стоимость дезинсекции или дезинфекции онлайн. Укажите тип объекта, площадь и вид вредителей — получите точную цену за 2 минуты.");
+    applyPageSeo({
+      title: "Калькулятор стоимости — Дезинсекция и дезинфекция в Москве",
+      description:
+        "Рассчитайте стоимость дезинсекции или дезинфекции онлайн. Укажите тип объекта, площадь и вид вредителей — получите точную цену за 2 минуты.",
+    });
   }, []);
 
   useEffect(() => {

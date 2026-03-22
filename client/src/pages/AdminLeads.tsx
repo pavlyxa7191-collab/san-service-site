@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { getLoginUrl } from "@/const";
 import { toast } from "sonner";
 import { useLocation } from "wouter";
+import { applyPageSeo } from "@/lib/seo";
 
 // ─── DESIGN TOKENS ────────────────────────────────────────────────────────────
 const NAVY = "#0d1f3c";
@@ -62,6 +63,14 @@ export default function AdminLeads() {
   const [showAmoSettings, setShowAmoSettings] = useState(false);
   const [manualCode, setManualCode] = useState("");
   const [showManualCode, setShowManualCode] = useState(false);
+
+  useEffect(() => {
+    applyPageSeo({
+      title: "Заявки — админ-панель Экоцентр",
+      description: "Управление заявками санитарной службы (закрытый раздел).",
+      robots: "noindex, nofollow",
+    });
+  }, []);
 
   const exchangeCode = trpc.leads.exchangeCode.useMutation({
     onSuccess: (data) => {

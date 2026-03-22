@@ -1,5 +1,7 @@
 import { Link, useParams } from "wouter";
 import SchemaMarkup from "@/components/SchemaMarkup";
+import { SITE_URL } from "@/siteConfig";
+import { applyPageSeo } from "@/lib/seo";
 import ReviewsCarousel from "@/components/ReviewsCarousel";
 import { useState, useEffect, useRef } from "react";
 import { trpc } from "@/lib/trpc";
@@ -8,6 +10,7 @@ import {
   IconBedbugs, IconCockroaches, IconRodents, IconTicks, IconMold,
   IconDeodorization, IconOzonation, IconOdor,
 } from "@/components/Icons";
+import { Phone } from "lucide-react";
 
 // ─── DESIGN TOKENS (unified with About/Blog/Contacts) ───────────────────────
 const NAVY     = "#0A0F1E";
@@ -557,16 +560,18 @@ export default function ServicePage() {
   const cityName = citySlug ? (CITY_NAMES[citySlug] || citySlug.charAt(0).toUpperCase() + citySlug.slice(1)) : null;
   const pageTitle = cityName ? `${service.title} в ${cityName}` : service.title;
 
-  const serviceUrl = `https://sanservice-l8sjslkh.manus.space/services/${serviceSlug}${citySlug ? `/${citySlug}` : ''}`;
+  const serviceUrl = `${SITE_URL}/services/${serviceSlug}${citySlug ? `/${citySlug}` : ""}`;
 
   useEffect(() => {
     const title = cityName
       ? `${service.title} в ${cityName} — Цены, гарантия | Санитарная служба`
       : `${service.title} в Москве — Цены, гарантия | Санитарная служба`;
-    document.title = title;
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", `${service.subtitle} Гарантия ${service.guarantee}. Звоните 24/7: 8(495)148-58-06.`);
-  }, [serviceSlug, citySlug]);
+    applyPageSeo({
+      title,
+      description: `${service.subtitle} Гарантия ${service.guarantee}. Звоните 24/7: 8(495)148-58-06.`,
+      ogTitle: title,
+    });
+  }, [serviceSlug, citySlug, service.subtitle, service.guarantee, service.title, cityName]);
 
   useEffect(() => {
     if (window.location.hash.replace(/^#/, "") !== "reviews") return;
@@ -647,7 +652,8 @@ export default function ServicePage() {
                   onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.1)"; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "transparent"; }}
                 >
-                  ☘ Позвонить
+                  <Phone size={18} strokeWidth={2.25} style={{ flexShrink: 0 }} aria-hidden />
+                  Позвонить
                 </a>
               </div>
             </div>
@@ -936,7 +942,7 @@ export default function ServicePage() {
       {/* ── STICKY MOBILE CTA ── */}
       <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: NAVY, padding: "0.75rem 1rem", display: "none", zIndex: 100, borderTop: `2px solid ${RED}` }} className="mobile-sticky-cta">
         <div style={{ display: "flex", gap: "0.625rem", maxWidth: 600, margin: "0 auto" }}>
-          <a href="tel:+74951485806" style={{ flex: 1, padding: "0.75rem", textAlign: "center", border: `1px solid rgba(255,255,255,0.25)`, color: WHITE, textDecoration: "none", fontWeight: 700, fontSize: "0.8rem", borderRadius: 3 }}>☎ Позвонить</a>
+          <a href="tel:+74951485806" style={{ flex: 1, minWidth: 0, padding: "0.75rem", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6, border: `1px solid rgba(255,255,255,0.25)`, color: WHITE, textDecoration: "none", fontWeight: 700, fontSize: "0.8rem", borderRadius: 3 }}><Phone size={16} strokeWidth={2.25} style={{ flexShrink: 0 }} aria-hidden />Позвонить</a>
           <a href="#order" style={{ flex: 1, padding: "0.75rem", textAlign: "center", background: RED, color: WHITE, textDecoration: "none", fontWeight: 800, fontSize: "0.8rem", borderRadius: 3 }}>Заказать →</a>
         </div>
       </div>

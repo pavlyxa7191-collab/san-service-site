@@ -7,23 +7,30 @@ const NAVY = "#0d1f3c";
 const NAVY_DARK = "#091729";
 const RED = "#CC0000";
 
-const navLinks = [
-  {
-    label: "Услуги",
-    href: "/services",
-    children: [
-      { label: "Уничтожение клопов", href: "/services/klopov" },
-      { label: "Уничтожение тараканов", href: "/services/tarakanov" },
-      { label: "Уничтожение грызунов", href: "/services/gryzunov" },
-      { label: "Уничтожение клещей", href: "/services/kleshhej" },
-      { label: "Удаление плесени", href: "/services/pleseni" },
-      { label: "Дезинфекция", href: "/services/dezinfektsii" },
-    ],
-  },
-  { label: "Цены", href: "/prices" },
-  { label: "О компании", href: "/about" },
-  { label: "Блог", href: "/blog" },
-  { label: "Контакты", href: "/contacts" },
+/** Единый порядок пунктов: десктоп и мобильное меню рендерятся из этого массива */
+const SERVICE_LINKS = [
+  { label: "Уничтожение клопов", href: "/services/klopov" },
+  { label: "Уничтожение тараканов", href: "/services/tarakanov" },
+  { label: "Уничтожение грызунов", href: "/services/gryzunov" },
+  { label: "Уничтожение клещей", href: "/services/kleshhej" },
+  { label: "Удаление плесени", href: "/services/pleseni" },
+  { label: "Дезинфекция", href: "/services/dezinfektsii" },
+  { label: "Борьба с запахами", href: "/services/zapahov" },
+] as const;
+
+type NavEntry =
+  | { kind: "dropdown"; id: string; label: string; children: readonly { label: string; href: string }[] }
+  | { kind: "link"; href: string; label: string }
+  | { kind: "anchor"; id: "reviews" | "certificates"; label: string; hash: "#reviews" | "#certificates" };
+
+const navEntries: NavEntry[] = [
+  { kind: "dropdown", id: "services", label: "Услуги", children: SERVICE_LINKS },
+  { kind: "link", href: "/prices", label: "Цены" },
+  { kind: "anchor", id: "reviews", label: "Отзывы", hash: "#reviews" },
+  { kind: "anchor", id: "certificates", label: "Сертификаты", hash: "#certificates" },
+  { kind: "link", href: "/about", label: "О компании" },
+  { kind: "link", href: "/blog", label: "Блог" },
+  { kind: "link", href: "/contacts", label: "Контакты" },
 ];
 
 export default function SiteHeader() {
@@ -82,9 +89,13 @@ export default function SiteHeader() {
     (e: MouseEvent<HTMLAnchorElement>) => {
       e.preventDefault();
       setMobileOpen(false);
-      scrollToBlock("certificates");
+      if (path === "/" || path.startsWith("/services/")) {
+        scrollToBlock("certificates");
+      } else {
+        window.location.assign("/#certificates");
+      }
     },
-    [scrollToBlock]
+    [path, scrollToBlock]
   );
 
   const anchorLinkStyle = (active: boolean): CSSProperties => ({
@@ -110,6 +121,7 @@ export default function SiteHeader() {
           display: flex;
           align-items: center;
           flex: 1;
+          flex-wrap: nowrap;
           overflow: visible;
           gap: 0;
           min-width: 0;
@@ -189,6 +201,8 @@ export default function SiteHeader() {
           flex: 1;
           padding: 0.75rem 0;
           overflow-y: auto;
+          display: flex;
+          flex-direction: column;
         }
         .mobile-nav-link {
           display: block;
@@ -322,11 +336,11 @@ export default function SiteHeader() {
 
           {/* Desktop nav — visible on ≥900px via CSS */}
           <nav className="site-nav-desktop">
-            {navLinks.map((link) =>
-              link.children ? (
+            {navEntries.map((entry, navIndex) =>
+              entry.kind === "dropdown" ? (
                 <div
-                  key={link.label}
-                  style={{ position: "relative" }}
+                  key={entry.id}
+                  style={{ position: "relative", order: navIndex }}
                   onMouseEnter={openServices}
                   onMouseLeave={closeServices}
                 >
@@ -350,7 +364,7 @@ export default function SiteHeader() {
                       whiteSpace: "nowrap",
                     }}
                   >
-                    {link.label}
+                    {entry.label}
                     <ChevronDown
                       size={13}
                       style={{
@@ -377,7 +391,7 @@ export default function SiteHeader() {
                       onMouseEnter={openServices}
                       onMouseLeave={closeServices}
                     >
-                      {link.children.map((child) => (
+                      {entry.children.map((child) => (
                         <Link
                           key={child.href}
                           href={child.href}
@@ -399,10 +413,10 @@ export default function SiteHeader() {
                     </div>
                   )}
                 </div>
-              ) : (
+              ) : entry.kind === "link" ? (
                 <Link
-                  key={link.href}
-                  href={link.href!}
+                  key={entry.href}
+                  href={entry.href}
                   className="nav-link-item"
                   style={{
                     display: "flex",
@@ -411,34 +425,29 @@ export default function SiteHeader() {
                     padding: "0 0.85rem",
                     fontSize: "0.82rem",
                     fontWeight: 600,
-                    color: location === link.href ? RED : "rgba(255,255,255,0.85)",
+                    color: location === entry.href ? RED : "rgba(255,255,255,0.85)",
                     letterSpacing: "0.02em",
                     textDecoration: "none",
                     transition: "all 0.15s",
                     whiteSpace: "nowrap",
-                    borderBottom: location === link.href ? `2px solid ${RED}` : "2px solid transparent",
+                    borderBottom: location === entry.href ? `2px solid ${RED}` : "2px solid transparent",
+                    order: navIndex,
                   }}
                 >
-                  {link.label}
+                  {entry.label}
                 </Link>
+              ) : (
+                <a
+                  key={entry.id}
+                  href={entry.hash}
+                  onClick={entry.id === "reviews" ? onReviewsNav : onCertificatesNav}
+                  className="nav-link-item"
+                  style={{ ...anchorLinkStyle(false), order: navIndex }}
+                >
+                  {entry.label}
+                </a>
               )
             )}
-            <a
-              href="#reviews"
-              onClick={onReviewsNav}
-              className="nav-link-item"
-              style={anchorLinkStyle(false)}
-            >
-              Отзывы
-            </a>
-            <a
-              href="#certificates"
-              onClick={onCertificatesNav}
-              className="nav-link-item"
-              style={anchorLinkStyle(false)}
-            >
-              Сертификаты
-            </a>
           </nav>
 
           {/* Right side */}
@@ -560,15 +569,15 @@ export default function SiteHeader() {
 
         {/* Nav links */}
         <nav className="mobile-menu-nav">
-          {navLinks.map((link) =>
-            link.children ? (
-              <div key={link.label}>
+          {navEntries.map((entry, navIndex) =>
+            entry.kind === "dropdown" ? (
+              <div key={entry.id} style={{ order: navIndex }}>
                 <button
                   className="mobile-services-toggle"
                   onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
                   aria-expanded={mobileServicesOpen}
                 >
-                  <span>{link.label}</span>
+                  <span>{entry.label}</span>
                   <ChevronDown
                     size={16}
                     style={{
@@ -580,7 +589,7 @@ export default function SiteHeader() {
                   />
                 </button>
                 <div className={`mobile-services-children${mobileServicesOpen ? " open" : ""}`}>
-                  {link.children.map((child) => (
+                  {entry.children.map((child) => (
                     <Link
                       key={child.href}
                       href={child.href}
@@ -595,23 +604,28 @@ export default function SiteHeader() {
                   ))}
                 </div>
               </div>
-            ) : (
+            ) : entry.kind === "link" ? (
               <Link
-                key={link.href}
-                href={link.href!}
-                className={`mobile-nav-link${location === link.href ? " active" : ""}`}
+                key={entry.href}
+                href={entry.href}
+                className={`mobile-nav-link${location === entry.href ? " active" : ""}`}
                 onClick={() => setMobileOpen(false)}
+                style={{ order: navIndex }}
               >
-                {link.label}
+                {entry.label}
               </Link>
+            ) : (
+              <a
+                key={entry.id}
+                href={entry.hash}
+                className="mobile-nav-link"
+                onClick={entry.id === "reviews" ? onReviewsNav : onCertificatesNav}
+                style={{ order: navIndex }}
+              >
+                {entry.label}
+              </a>
             )
           )}
-          <a href="#reviews" className="mobile-nav-link" onClick={onReviewsNav}>
-            Отзывы
-          </a>
-          <a href="#certificates" className="mobile-nav-link" onClick={onCertificatesNav}>
-            Сертификаты
-          </a>
         </nav>
 
         {/* Footer with phone + CTA */}

@@ -3,6 +3,8 @@
  * Supports: LocalBusiness, Service, FAQPage, BreadcrumbList
  */
 
+import { SITE_URL } from "@/siteConfig";
+
 interface LocalBusinessSchemaProps {
   type?: "local_business";
 }
@@ -21,9 +23,33 @@ interface BreadcrumbSchemaProps {
   items: Array<{ name: string; url: string }>;
 }
 
-type SchemaMarkupProps = LocalBusinessSchemaProps | ServiceSchemaProps | BreadcrumbSchemaProps;
+interface FaqSchemaProps {
+  type: "faq";
+  items: Array<{ q: string; a: string }>;
+}
 
-const SITE_URL = "https://sanservice-l8sjslkh.manus.space";
+interface WebsiteSchemaProps {
+  type: "website";
+}
+
+interface ArticleSchemaProps {
+  type: "article";
+  headline: string;
+  description: string;
+  url: string;
+  datePublished: string;
+  dateModified?: string;
+  image?: string;
+}
+
+type SchemaMarkupProps =
+  | LocalBusinessSchemaProps
+  | ServiceSchemaProps
+  | BreadcrumbSchemaProps
+  | FaqSchemaProps
+  | WebsiteSchemaProps
+  | ArticleSchemaProps;
+
 const PHONE = "+74951485806";
 const PHONE_CLEAN = "+74951485806";
 const ORG_NAME = "ЭкоЦентр — Санитарная служба";
@@ -43,8 +69,8 @@ export default function SchemaMarkup(props: SchemaMarkupProps) {
       url: SITE_URL,
       telephone: PHONE,
       priceRange: "от 1500 ₽",
-      image: `${SITE_URL}/specialist-hero.png`,
-      logo: `${SITE_URL}/favicon.ico`,
+      image: `${SITE_URL}/og-image.svg`,
+      logo: `${SITE_URL}/favicon.svg`,
       address: {
         "@type": "PostalAddress",
         addressLocality: "Москва",
@@ -78,6 +104,7 @@ export default function SchemaMarkup(props: SchemaMarkupProps) {
           { "@type": "Offer", itemOffered: { "@type": "Service", name: "Уничтожение клещей" } },
           { "@type": "Offer", itemOffered: { "@type": "Service", name: "Уничтожение плесени" } },
           { "@type": "Offer", itemOffered: { "@type": "Service", name: "Дезинфекция помещений" } },
+          { "@type": "Offer", itemOffered: { "@type": "Service", name: "Устранение запахов и озонация" } },
         ],
       },
       aggregateRating: {
@@ -155,6 +182,57 @@ export default function SchemaMarkup(props: SchemaMarkupProps) {
         name: item.name,
         item: item.url.startsWith("http") ? item.url : `${SITE_URL}${item.url}`,
       })),
+    };
+  } else if (props.type === "faq") {
+    schema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: props.items.map((item) => ({
+        "@type": "Question",
+        name: item.q,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: item.a,
+        },
+      })),
+    };
+  } else if (props.type === "website") {
+    schema = {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": `${SITE_URL}/#website`,
+      name: ORG_NAME,
+      url: SITE_URL,
+      inLanguage: "ru-RU",
+      publisher: { "@id": `${SITE_URL}/#organization` },
+    };
+  } else if (props.type === "article") {
+    schema = {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: props.headline,
+      description: props.description,
+      url: props.url,
+      datePublished: props.datePublished,
+      dateModified: props.dateModified ?? props.datePublished,
+      image: props.image ?? `${SITE_URL}/og-image.svg`,
+      author: {
+        "@type": "Organization",
+        name: ORG_NAME,
+        url: SITE_URL,
+      },
+      publisher: {
+        "@type": "Organization",
+        name: ORG_NAME,
+        logo: {
+          "@type": "ImageObject",
+          url: `${SITE_URL}/favicon.svg`,
+        },
+      },
+      mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": props.url,
+      },
     };
   }
 

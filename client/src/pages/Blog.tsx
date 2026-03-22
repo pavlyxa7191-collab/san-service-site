@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useParams } from "wouter";
-import { ArrowRight, Clock, Tag, ChevronRight } from "lucide-react";
+import { ArrowRight, Clock, Tag, ChevronRight, Phone } from "lucide-react";
+import SchemaMarkup from "@/components/SchemaMarkup";
+import { applyPageSeo } from "@/lib/seo";
+import { SITE_URL } from "@/siteConfig";
 
 // ─── DESIGN TOKENS (matching About.tsx) ────────────────────────────────────────
 const NAVY = "#0A0F1E";
@@ -43,6 +46,7 @@ const articles = [
     title: "Как избавиться от клопов: полное руководство",
     excerpt: "Постельные клопы — одна из самых неприятных проблем. Рассказываем, как их обнаружить, почему самостоятельные методы не работают и что делать для полного уничтожения.",
     date: "15 февраля 2025",
+    publishedISO: "2025-02-15",
     readTime: "7 мин",
     tag: "Клопы",
     color: "#dc2626",
@@ -89,6 +93,7 @@ const articles = [
     title: "Дезинфекция квартиры после COVID-19: нужна ли она?",
     excerpt: "Разбираемся, когда необходима профессиональная дезинфекция после коронавируса, какие методы эффективны и как правильно подготовить помещение.",
     date: "3 марта 2025",
+    publishedISO: "2025-03-03",
     readTime: "5 мин",
     tag: "Дезинфекция",
     color: "#0891b2",
@@ -129,6 +134,7 @@ const articles = [
     title: "Тараканы в квартире: причины появления и методы борьбы",
     excerpt: "Откуда берутся тараканы, почему они возвращаются после самостоятельной обработки и как навсегда избавиться от них с гарантией.",
     date: "20 января 2025",
+    publishedISO: "2025-01-20",
     readTime: "6 мин",
     tag: "Тараканы",
     color: "#d97706",
@@ -163,6 +169,7 @@ const articles = [
     title: "Дезинсекция офиса: как провести без остановки работы",
     excerpt: "Как организовать профессиональную обработку офиса от насекомых без простоя бизнеса. Требования СанПиН, сроки и стоимость.",
     date: "10 апреля 2025",
+    publishedISO: "2025-04-10",
     readTime: "4 мин",
     tag: "Коммерция",
     color: "#7c3aed",
@@ -198,11 +205,20 @@ function ArticlePage({ slug }: { slug: string }) {
   const article = articles.find((a) => a.slug === slug);
 
   useEffect(() => {
-    if (article) {
-      document.title = `${article.title} — Блог санитарной службы`;
-      const meta = document.querySelector('meta[name="description"]');
-      if (meta) meta.setAttribute("content", article.excerpt);
+    if (!article) {
+      applyPageSeo({
+        title: "Статья не найдена — Блог санитарной службы",
+        description: "Запрошенная страница блога не существует.",
+        robots: "noindex, nofollow",
+      });
+      return;
     }
+    applyPageSeo({
+      title: `${article.title} — Блог санитарной службы`,
+      description: article.excerpt,
+      ogTitle: article.title,
+      ogType: "article",
+    });
   }, [article]);
 
   if (!article) return (
@@ -216,11 +232,28 @@ function ArticlePage({ slug }: { slug: string }) {
 
   const paragraphs = article.content.trim().split("\n\n");
 
+  const articleUrl = `${SITE_URL}/blog/${article.slug}`;
+
   return (
-    <div style={{ background: WHITE }}>
+    <div className="blog-page-root" style={{ background: WHITE, overflowX: "clip", maxWidth: "100%" }}>
+      <SchemaMarkup
+        type="breadcrumb"
+        items={[
+          { name: "Главная", url: "/" },
+          { name: "Блог", url: "/blog" },
+          { name: article.title, url: `/blog/${article.slug}` },
+        ]}
+      />
+      <SchemaMarkup
+        type="article"
+        headline={article.title}
+        description={article.excerpt}
+        url={articleUrl}
+        datePublished={article.publishedISO}
+      />
       {/* Hero */}
       <section className="blog-hero" style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY2} 100%)`, padding: "80px 0 60px" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 clamp(16px, 4vw, 24px)" }}>
           {/* Breadcrumb */}
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 28, fontSize: 13, color: "rgba(255,255,255,0.5)" }}>
             <Link href="/" style={{ color: "rgba(255,255,255,0.5)", textDecoration: "none" }}>Главная</Link>
@@ -254,8 +287,8 @@ function ArticlePage({ slug }: { slug: string }) {
       </section>
 
       {/* Content */}
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "64px 24px" }}>
-        <div className="blog-article-grid" style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 60, alignItems: "start" }}>
+      <div className="blog-article-wrap" style={{ maxWidth: 1200, margin: "0 auto", padding: "64px clamp(16px, 4vw, 24px)", boxSizing: "border-box", width: "100%", minWidth: 0 }}>
+        <div className="blog-article-grid" style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 60, alignItems: "start", minWidth: 0 }}>
           {/* Article body */}
           <div>
             <div style={{ fontSize: 16, lineHeight: 1.75, color: "#374151" }}>
@@ -324,12 +357,13 @@ function ArticlePage({ slug }: { slug: string }) {
               <p style={{ fontSize: 14, color: "rgba(255,255,255,0.65)", margin: "0 0 24px", position: "relative" }}>
                 Оставьте заявку — специалист приедет в день обращения
               </p>
-              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" as const, position: "relative" }}>
+              <div className="blog-article-cta-btns" style={{ display: "flex", gap: 12, flexWrap: "wrap" as const, position: "relative" }}>
                 <Link href="/calculator" style={{
                   display: "inline-flex", alignItems: "center", gap: 8,
                   background: RED, color: WHITE, textDecoration: "none",
                   padding: "12px 24px", borderRadius: 10, fontWeight: 700, fontSize: 14,
                   letterSpacing: "0.02em",
+                  maxWidth: "100%", boxSizing: "border-box" as const,
                 }}>
                   Рассчитать стоимость <ArrowRight size={14} />
                 </Link>
@@ -338,7 +372,9 @@ function ArticlePage({ slug }: { slug: string }) {
                   background: "transparent", color: WHITE, textDecoration: "none",
                   padding: "12px 24px", borderRadius: 10, fontWeight: 700, fontSize: 14,
                   border: "1.5px solid rgba(255,255,255,0.3)",
+                  maxWidth: "100%", boxSizing: "border-box" as const,
                 }}>
+                  <Phone size={18} strokeWidth={2.25} style={{ flexShrink: 0 }} aria-hidden />
                   Позвонить
                 </a>
               </div>
@@ -392,6 +428,7 @@ function ArticlePage({ slug }: { slug: string }) {
       </div>
 
       <style>{`
+        .blog-page-root { overflow-x: clip; max-width: 100%; }
         @media (max-width: 900px) {
           .blog-article-grid { grid-template-columns: 1fr !important; }
           .blog-sidebar { position: static !important; }
@@ -399,9 +436,14 @@ function ArticlePage({ slug }: { slug: string }) {
         @media (max-width: 768px) {
           .blog-hero { padding: 3rem 0 2.5rem !important; }
         }
+        @media (max-width: 640px) {
+          .blog-article-cta-btns { flex-direction: column !important; align-items: stretch !important; }
+          .blog-article-cta-btns a, .blog-article-cta-btns a[href] { justify-content: center !important; width: 100% !important; }
+        }
         @media (max-width: 600px) {
-          .blog-cta-grid { grid-template-columns: 1fr !important; }
-          .blog-cta-btns { min-width: 0 !important; width: 100% !important; }
+          .blog-cta-grid { grid-template-columns: 1fr !important; padding: 28px 16px !important; gap: 20px !important; }
+          .blog-cta-btns { min-width: 0 !important; width: 100% !important; max-width: 100% !important; }
+          .blog-cta-btns a { width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; justify-content: center !important; white-space: normal !important; }
         }
         @media (max-width: 480px) {
           .blog-hero { padding: 2rem 0 !important; }
@@ -418,9 +460,11 @@ export default function Blog() {
 
   useEffect(() => {
     if (!params.slug) {
-      document.title = "Блог — Советы по дезинсекции и дезинфекции";
-      const meta = document.querySelector('meta[name="description"]');
-      if (meta) meta.setAttribute("content", "Полезные статьи о борьбе с клопами, тараканами, грызунами и плесенью. Советы специалистов, инструкции по подготовке к обработке.");
+      applyPageSeo({
+        title: "Блог — Советы по дезинсекции и дезинфекции",
+        description:
+          "Полезные статьи о борьбе с клопами, тараканами, грызунами и плесенью. Советы специалистов, инструкции по подготовке к обработке.",
+      });
     }
   }, [params.slug]);
 
@@ -429,10 +473,10 @@ export default function Blog() {
   }
 
   return (
-    <div style={{ background: WHITE }}>
+    <div className="blog-page-root" style={{ background: WHITE, overflowX: "clip", maxWidth: "100%" }}>
       {/* Hero */}
       <section className="blog-hero" style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY2} 100%)`, padding: "80px 0 60px" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 clamp(16px, 4vw, 24px)" }}>
           <FadeIn>
             <div style={{
               display: "inline-block", background: `${RED}22`, color: RED,
@@ -456,9 +500,9 @@ export default function Blog() {
       </section>
 
       {/* Articles grid */}
-      <section style={{ padding: "80px 0", background: LIGHT_BG }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 24 }}>
+      <section className="blog-list-section" style={{ padding: "80px 0", background: LIGHT_BG }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 clamp(16px, 4vw, 24px)", boxSizing: "border-box", width: "100%", minWidth: 0 }}>
+          <div className="blog-articles-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 280px), 1fr))", gap: 24, minWidth: 0 }}>
             {articles.map((article, i) => (
               <FadeIn key={article.slug} delay={i * 80}>
                 <Link href={`/blog/${article.slug}`} style={{ textDecoration: "none", display: "block", height: "100%" }}>
@@ -524,12 +568,13 @@ export default function Blog() {
 
       {/* CTA section */}
       <section style={{ padding: "80px 0", background: WHITE }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 24px" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 clamp(16px, 4vw, 24px)", boxSizing: "border-box", width: "100%", minWidth: 0 }}>
           <FadeIn>
             <div className="blog-cta-grid" style={{
               background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY2} 100%)`,
-              borderRadius: 24, padding: "60px 48px",
+              borderRadius: 24, padding: "clamp(28px, 6vw, 60px) clamp(18px, 5vw, 48px)",
               display: "grid", gridTemplateColumns: "1fr auto", gap: 40, alignItems: "center",
+              minWidth: 0, boxSizing: "border-box" as const, width: "100%",
             }}>
               <div>
                 <div style={{
@@ -546,21 +591,23 @@ export default function Blog() {
                   Специалист приедет в день обращения. Работаем 24/7.
                 </p>
               </div>
-              <div className="blog-cta-btns" style={{ display: "flex", flexDirection: "column" as const, gap: 12, minWidth: 200 }}>
+              <div className="blog-cta-btns" style={{ display: "flex", flexDirection: "column" as const, gap: 12, minWidth: 0, width: "100%", maxWidth: "100%" }}>
                 <Link href="/calculator" style={{
                   display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
                   background: RED, color: WHITE, textDecoration: "none",
                   padding: "14px 28px", borderRadius: 10, fontWeight: 700, fontSize: 14,
-                  whiteSpace: "nowrap" as const,
+                  whiteSpace: "nowrap" as const, boxSizing: "border-box" as const, maxWidth: "100%",
                 }}>
                   Рассчитать цену <ArrowRight size={14} />
                 </Link>
                 <a href="tel:+74951485806" style={{
-                  display: "inline-flex", alignItems: "center", justifyContent: "center",
+                  display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
                   background: "transparent", color: WHITE, textDecoration: "none",
                   padding: "14px 28px", borderRadius: 10, fontWeight: 700, fontSize: 14,
                   border: "1.5px solid rgba(255,255,255,0.25)", whiteSpace: "nowrap" as const,
+                  boxSizing: "border-box" as const, maxWidth: "100%",
                 }}>
+                  <Phone size={18} strokeWidth={2.25} style={{ flexShrink: 0 }} aria-hidden />
                   8(495)148-58-06
                 </a>
               </div>
@@ -568,6 +615,18 @@ export default function Blog() {
           </FadeIn>
         </div>
       </section>
+
+      <style>{`
+        .blog-page-root { overflow-x: clip; max-width: 100%; }
+        @media (max-width: 767px) {
+          .blog-cta-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
+          .blog-cta-btns { width: 100% !important; max-width: 100% !important; }
+          .blog-cta-btns a { width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; }
+        }
+        @media (max-width: 600px) {
+          .blog-list-section { padding: 48px 0 !important; }
+        }
+      `}</style>
     </div>
   );
 }

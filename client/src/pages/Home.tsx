@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "wouter";
 import SchemaMarkup from "@/components/SchemaMarkup";
+import { applyPageSeo } from "@/lib/seo";
 import ReviewsCarousel from "@/components/ReviewsCarousel";
 import { trpc } from "@/lib/trpc";
 import {
@@ -95,9 +96,11 @@ export default function Home() {
   const createLead = trpc.leads.create.useMutation();
 
   useEffect(() => {
-    document.title = "Профессиональная санитарная служба — Дезинсекция, дезинфекция и дератизация в Москве";
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "Профессиональная дезинсекция, дезинфекция и дератизация в Москве и МО. Уничтожение клопов, тараканов, грызунов. Гарантия 3 года. Работаем 24/7.");
+    applyPageSeo({
+      title: "Профессиональная санитарная служба — Дезинсекция, дезинфекция и дератизация в Москве",
+      description:
+        "Профессиональная дезинсекция, дезинфекция и дератизация в Москве и МО. Уничтожение клопов, тараканов, грызунов. Гарантия 3 года. Работаем 24/7.",
+    });
   }, []);
 
   useEffect(() => {
@@ -131,6 +134,8 @@ export default function Home() {
   return (
     <div style={{ fontFamily: "'Inter', 'Helvetica Neue', sans-serif", background: WHITE }}>
       <SchemaMarkup />
+      <SchemaMarkup type="website" />
+      <SchemaMarkup type="faq" items={faqs} />
 
       {/* ═══════════════════════════════════════════════════════════════════
           HERO — 3 columns: text | specialist | form

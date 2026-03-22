@@ -3,6 +3,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { Route, Switch, useLocation } from "wouter";
 import { useEffect } from "react";
+import { syncPublicUrlFromLocation } from "@/lib/seo";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
@@ -12,6 +13,7 @@ import Prices from "./pages/Prices";
 import About from "./pages/About";
 import Contacts from "./pages/Contacts";
 import Blog from "./pages/Blog";
+import ServicesIndex from "./pages/ServicesIndex";
 import SiteHeader from "./components/SiteHeader";
 import SiteFooter from "./components/SiteFooter";
 import AdminLeads from "./pages/AdminLeads";
@@ -27,10 +29,20 @@ function ScrollToTop() {
   return null;
 }
 
+/** SEO: canonical, og:url, Яндекс.Метрика hit при смене маршрута в SPA */
+function SpaSeoSync() {
+  const [location] = useLocation();
+  useEffect(() => {
+    syncPublicUrlFromLocation();
+  }, [location]);
+  return null;
+}
+
 function PublicRouter() {
   return (
     <div className="flex flex-col min-h-screen">
       <ScrollToTop />
+      <SpaSeoSync />
       <SiteHeader />
       <main className="flex-1">
         <Switch>
@@ -42,9 +54,9 @@ function PublicRouter() {
           <Route path="/blog" component={Blog} />
           <Route path="/blog/:slug" component={Blog} />
           {/* Service pages */}
-          <Route path="/services/:service" component={ServicePage} />
-          {/* Programmatic SEO: service + city */}
           <Route path="/services/:service/:city" component={ServicePage} />
+          <Route path="/services/:service" component={ServicePage} />
+          <Route path="/services" component={ServicesIndex} />
           <Route path="/404" component={NotFound} />
           <Route component={NotFound} />
         </Switch>

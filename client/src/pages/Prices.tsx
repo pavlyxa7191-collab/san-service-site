@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
+import { applyPageSeo } from "@/lib/seo";
 import { ArrowRight, CheckCircle, Phone, ChevronDown } from "lucide-react";
 
 // ── Design tokens ──────────────────────────────────────────────────────────────
@@ -379,9 +380,11 @@ function ServiceCard({ s }: { s: typeof services[0] }) {
 // ── Main Page ──────────────────────────────────────────────────────────────────
 export default function Prices() {
   useEffect(() => {
-    document.title = "Цены на дезинсекцию и дезинфекцию в Москве — Санитарная служба";
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "Актуальные цены на уничтожение клопов, тараканов, грызунов, плесени и дезинфекцию в Москве. От 1 500 ₽. Фиксированная стоимость в договоре.");
+    applyPageSeo({
+      title: "Цены на дезинсекцию и дезинфекцию в Москве — Санитарная служба",
+      description:
+        "Актуальные цены на уничтожение клопов, тараканов, грызунов, плесени и дезинфекцию в Москве. От 1 500 ₽. Фиксированная стоимость в договоре.",
+    });
   }, []);
 
   return (

@@ -3,6 +3,7 @@ import { Phone, Mail, MapPin, Clock, ArrowRight, CheckCircle, MessageCircle } fr
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
+import { applyPageSeo } from "@/lib/seo";
 
 // ─── DESIGN TOKENS (matching About.tsx) ────────────────────────────────────────
 const NAVY = "#0A0F1E";
@@ -100,9 +101,11 @@ export default function Contacts() {
   const [focusedField, setFocusedField] = useState<string | null>(null);
 
   useEffect(() => {
-    document.title = "Контакты — Санитарная служба Москва | 8(495)148-58-06";
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute("content", "Свяжитесь с нашей санитарной службой: телефон 8(495)148-58-06, WhatsApp, email. Адрес: Москва, ул. Профсоюзная, д. 56. Работаем 24/7.");
+    applyPageSeo({
+      title: "Контакты — Санитарная служба Москва | 8(495)148-58-06",
+      description:
+        "Свяжитесь с нашей санитарной службой: телефон 8(495)148-58-06, WhatsApp, email. Адрес: Москва, ул. Профсоюзная, д. 56. Работаем 24/7.",
+    });
   }, []);
 
   const createLead = trpc.leads.create.useMutation({

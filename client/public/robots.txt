@@ -1,0 +1,9 @@
+# Локальная копия для dev-сервера. В продакшене при `vite build` файл перезаписывается плагином (ses88.ru).
+User-agent: *
+Allow: /
+Disallow: /admin/
+
+User-agent: Yandex
+Allow: /
+
+Sitemap: https://ses88.ru/sitemap.xml

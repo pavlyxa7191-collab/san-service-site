@@ -3,7 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import fs from "node:fs";
 import path from "node:path";
-import { defineConfig, type Plugin, type ViteDevServer } from "vite";
+import { defineConfig, loadEnv, type Plugin, type ResolvedConfig, type ViteDevServer } from "vite";
 import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
 
 // =============================================================================
@@ -12,6 +12,100 @@ import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
 // =============================================================================
 
 const PROJECT_ROOT = import.meta.dirname;
+const ENV_DIR = PROJECT_ROOT;
+
+/** Домен по умолчанию — sitemap/robots всегда собираются без .env */
+const DEFAULT_SITE_ORIGIN = "https://ses88.ru";
+
+/** Пути для Яндекс.Вебмастера / sitemap (синхронизировать при добавлении страниц) */
+const SITEMAP_PATHS: string[] = [
+  "/",
+  "/calculator",
+  "/prices",
+  "/about",
+  "/contacts",
+  "/services",
+  "/blog",
+  ...[
+    "klopov",
+    "tarakanov",
+    "gryzunov",
+    "kleshhej",
+    "pleseni",
+    "dezinfektsii",
+    "zapahov",
+  ].map((s) => `/services/${s}`),
+  ...[
+    "kak-izbavitsya-ot-klopov",
+    "dezinfektsiya-posle-covid",
+    "kak-vyvesti-tarakanov",
+    "dezinsektsiya-ofisa",
+  ].map((s) => `/blog/${s}`),
+];
+
+function escapeHtmlAttr(value: string): string {
+  return value.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+}
+
+function vitePluginSeoYandex(): Plugin {
+  let config: ResolvedConfig | null = null;
+
+  return {
+    name: "vite-plugin-seo-yandex",
+    configResolved(resolved) {
+      config = resolved;
+    },
+    transformIndexHtml(html) {
+      const mode = config?.mode ?? "development";
+      const env = loadEnv(mode, ENV_DIR, "");
+      const verification = env.VITE_YANDEX_VERIFICATION?.trim();
+      if (!verification || html.includes("name=\"yandex-verification\"")) {
+        return html;
+      }
+      return html.replace(
+        "</head>",
+        `    <meta name="yandex-verification" content="${escapeHtmlAttr(verification)}" />\n  </head>`
+      );
+    },
+    closeBundle() {
+      if (!config || config.command !== "build") return;
+
+      const env = loadEnv(config.mode, ENV_DIR, "");
+      const base = env.VITE_SITE_URL?.trim().replace(/\/$/, "") || DEFAULT_SITE_ORIGIN;
+
+      const outDir = config.build.outDir;
+      const lastmod = new Date().toISOString().slice(0, 10);
+
+      const robots = [
+        "User-agent: *",
+        "Allow: /",
+        "Disallow: /admin/",
+        "",
+        "User-agent: Yandex",
+        "Allow: /",
+        "",
+        `Sitemap: ${base}/sitemap.xml`,
+        "",
+      ].join("\n");
+
+      const urlEntries = SITEMAP_PATHS.map((pathname) => {
+        const loc = `${base}${pathname === "/" ? "/" : pathname}`;
+        const esc = loc.replace(/&/g, "&amp;");
+        return `  <url>\n    <loc>${esc}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n  </url>`;
+      }).join("\n");
+
+      const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urlEntries}
+</urlset>
+`;
+
+      fs.writeFileSync(path.join(outDir, "robots.txt"), robots, "utf-8");
+      fs.writeFileSync(path.join(outDir, "sitemap.xml"), sitemap, "utf-8");
+      console.info(`[vite-plugin-seo-yandex] Записаны robots.txt и sitemap.xml → ${outDir}`);
+    },
+  };
+}
 const LOG_DIR = path.join(PROJECT_ROOT, ".manus-logs");
 const MAX_LOG_SIZE_BYTES = 1 * 1024 * 1024; // 1MB per log file
 const TRIM_TARGET_BYTES = Math.floor(MAX_LOG_SIZE_BYTES * 0.6); // Trim to 60% to avoid constant re-trimming
@@ -150,7 +244,14 @@ function vitePluginManusDebugCollector(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
+const plugins = [
+  react(),
+  tailwindcss(),
+  jsxLocPlugin(),
+  vitePluginManusRuntime(),
+  vitePluginManusDebugCollector(),
+  vitePluginSeoYandex(),
+];
 
 export default defineConfig({
   plugins,

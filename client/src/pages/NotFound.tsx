@@ -1,12 +1,17 @@
 import { useEffect } from "react";
 import { Link } from "wouter";
+import { applyPageSeo } from "@/lib/seo";
 
 const RED = "#D0021B";
 const NAVY = "#0A0F1E";
 
 export default function NotFound() {
   useEffect(() => {
-    document.title = "Страница не найдена — Санитарная служба";
+    applyPageSeo({
+      title: "Страница не найдена — Санитарная служба",
+      description: "Запрошенная страница не существует. Перейдите на главную или воспользуйтесь меню.",
+      robots: "noindex, nofollow",
+    });
   }, []);
 
   return (
