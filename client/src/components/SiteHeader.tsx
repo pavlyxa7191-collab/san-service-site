@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Phone, Menu, X, ChevronDown } from "lucide-react";
-import { useState, useRef, useEffect, type CSSProperties } from "react";
+import { useState, useRef, useEffect, useCallback, type CSSProperties, type MouseEvent } from "react";
 
 /* Design Tokens */
 const NAVY = "#0d1f3c";
@@ -58,9 +58,34 @@ export default function SiteHeader() {
   };
 
   const path = location.split("?")[0];
-  const reviewsHref =
-    path === "/" || path.startsWith("/services/") ? "#reviews" : "/#reviews";
-  const certificatesHref = "#certificates";
+
+  const scrollToBlock = useCallback((id: string) => {
+    window.requestAnimationFrame(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }, []);
+
+  const onReviewsNav = useCallback(
+    (e: MouseEvent<HTMLAnchorElement>) => {
+      e.preventDefault();
+      setMobileOpen(false);
+      if (path === "/" || path.startsWith("/services/")) {
+        scrollToBlock("reviews");
+      } else {
+        window.location.assign("/#reviews");
+      }
+    },
+    [path, scrollToBlock]
+  );
+
+  const onCertificatesNav = useCallback(
+    (e: MouseEvent<HTMLAnchorElement>) => {
+      e.preventDefault();
+      setMobileOpen(false);
+      scrollToBlock("certificates");
+    },
+    [scrollToBlock]
+  );
 
   const anchorLinkStyle = (active: boolean): CSSProperties => ({
     display: "flex",
@@ -398,12 +423,22 @@ export default function SiteHeader() {
                 </Link>
               )
             )}
-            <Link href={reviewsHref} className="nav-link-item" style={anchorLinkStyle(false)}>
+            <a
+              href="#reviews"
+              onClick={onReviewsNav}
+              className="nav-link-item"
+              style={anchorLinkStyle(false)}
+            >
               Отзывы
-            </Link>
-            <Link href={certificatesHref} className="nav-link-item" style={anchorLinkStyle(false)}>
+            </a>
+            <a
+              href="#certificates"
+              onClick={onCertificatesNav}
+              className="nav-link-item"
+              style={anchorLinkStyle(false)}
+            >
               Сертификаты
-            </Link>
+            </a>
           </nav>
 
           {/* Right side */}
@@ -571,20 +606,12 @@ export default function SiteHeader() {
               </Link>
             )
           )}
-          <Link
-            href={reviewsHref}
-            className="mobile-nav-link"
-            onClick={() => setMobileOpen(false)}
-          >
+          <a href="#reviews" className="mobile-nav-link" onClick={onReviewsNav}>
             Отзывы
-          </Link>
-          <Link
-            href={certificatesHref}
-            className="mobile-nav-link"
-            onClick={() => setMobileOpen(false)}
-          >
+          </a>
+          <a href="#certificates" className="mobile-nav-link" onClick={onCertificatesNav}>
             Сертификаты
-          </Link>
+          </a>
         </nav>
 
         {/* Footer with phone + CTA */}

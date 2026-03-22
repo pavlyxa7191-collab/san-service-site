@@ -905,7 +905,7 @@ export default function ServicePage() {
         </div>
       </div>
 
-      <ReviewsCarousel />
+      <ReviewsCarousel pageContext="service" />
 
       {/* ── RELATED SERVICES ── */}
       <section style={{ background: GRAY_BG, padding: "3rem 0", borderTop: `1px solid ${GRAY_BD}` }}>

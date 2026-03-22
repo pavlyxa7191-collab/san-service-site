@@ -95,7 +95,7 @@ export default function Home() {
   const createLead = trpc.leads.create.useMutation();
 
   useEffect(() => {
-    document.title = "Профессиональная санитарная служба — Дезинсекция и дезинфекция в Москве";
+    document.title = "Профессиональная санитарная служба — Дезинсекция, дезинфекция и дератизация в Москве";
     const meta = document.querySelector('meta[name="description"]');
     if (meta) meta.setAttribute("content", "Профессиональная дезинсекция, дезинфекция и дератизация в Москве и МО. Уничтожение клопов, тараканов, грызунов. Гарантия 3 года. Работаем 24/7.");
   }, []);
@@ -177,11 +177,13 @@ export default function Home() {
               </div>
 
               {/* H1 */}
-              <h1 style={{ fontSize: "clamp(1.4rem, 3.5vw, 3rem)", fontWeight: 900, lineHeight: 1.1, letterSpacing: "-0.02em", color: WHITE, marginBottom: "1.25rem" }}>
+              <h1 style={{ fontSize: "clamp(1.4rem, 3.5vw, 3rem)", fontWeight: 900, lineHeight: 1.15, letterSpacing: "-0.02em", color: WHITE, marginBottom: "1.25rem" }}>
                 Профессиональная{" "}
                 <span style={{ color: RED }}>дезинсекция</span>
-                {" "}и{" "}
+                {", "}
                 <span style={{ color: RED }}>дезинфекция</span>
+                {" "}и{" "}
+                <span style={{ color: RED }}>дератизация</span>
               </h1>
 
               {/* Subtitle */}

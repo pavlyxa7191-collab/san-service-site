@@ -104,9 +104,11 @@ function ReviewsGlassNext({ size = 48 }: { size?: number }) {
 
 type Props = {
   revealRef?: RefObject<HTMLDivElement | null>;
+  /** На главной — один заголовок; на странице услуги — явное название блока отзывов */
+  pageContext?: "home" | "service";
 };
 
-export default function ReviewsCarousel({ revealRef }: Props) {
+export default function ReviewsCarousel({ revealRef, pageContext = "home" }: Props) {
   const [lightbox, setLightbox] = useState<number | null>(null);
 
   const loopSlides = useMemo(
@@ -175,10 +177,15 @@ export default function ReviewsCarousel({ revealRef }: Props) {
       <section
         id="reviews"
         className="scroll-mt-[100px]"
+        aria-labelledby="reviews-heading"
         style={{ padding: "5rem 0", background: "#f8f9fc" }}
       >
         <div className="container">
-          <div ref={revealRef} className="reveal" style={{ marginBottom: "2rem" }}>
+          <div
+            ref={revealRef}
+            className={revealRef ? "reveal" : ""}
+            style={{ marginBottom: "2rem" }}
+          >
             <div
               style={{
                 display: "inline-flex",
@@ -201,6 +208,7 @@ export default function ReviewsCarousel({ revealRef }: Props) {
               </span>
             </div>
             <h2
+              id="reviews-heading"
               style={{
                 fontSize: "clamp(1.75rem, 3vw, 2.4rem)",
                 fontWeight: 900,
@@ -209,7 +217,9 @@ export default function ReviewsCarousel({ revealRef }: Props) {
                 margin: 0,
               }}
             >
-              Что говорят наши клиенты
+              {pageContext === "service"
+                ? "Отзывы клиентов"
+                : "Что говорят наши клиенты"}
             </h2>
             <p
               style={{
@@ -220,7 +230,9 @@ export default function ReviewsCarousel({ revealRef }: Props) {
                 lineHeight: 1.6,
               }}
             >
-              Реальные отзывы с площадки объявлений — листайте скриншоты, нажмите для увеличения.
+              {pageContext === "service"
+                ? "Реальные отзывы с площадки объявлений по этой и другим услугам — листайте скриншоты, нажмите для увеличения."
+                : "Реальные отзывы с площадки объявлений — листайте скриншоты, нажмите для увеличения."}
             </p>
           </div>
 
