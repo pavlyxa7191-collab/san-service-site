@@ -173,7 +173,10 @@ export default function Home() {
 
               {/* H1 */}
               <h1 style={{ fontSize: "clamp(1.4rem, 3.5vw, 3rem)", fontWeight: 900, lineHeight: 1.1, letterSpacing: "-0.02em", color: WHITE, marginBottom: "1.25rem" }}>
-                Профессиональная <span style={{ color: RED }}>дезинсекция</span> и дезинфекция
+                Профессиональная{" "}
+                <span style={{ color: RED }}>дезинсекция</span>
+                {" "}и{" "}
+                <span style={{ color: RED }}>дезинфекция</span>
               </h1>
 
               {/* Subtitle */}

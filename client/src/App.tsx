@@ -17,6 +17,7 @@ import SiteFooter from "./components/SiteFooter";
 import AdminLeads from "./pages/AdminLeads";
 import StickyCallButton from "./components/StickyCallButton";
 import ExitIntentPopup from "./components/ExitIntentPopup";
+import CertificatesCarousel from "./components/CertificatesCarousel";
 
 function ScrollToTop() {
   const [location] = useLocation();
@@ -48,6 +49,7 @@ function PublicRouter() {
           <Route component={NotFound} />
         </Switch>
       </main>
+      <CertificatesCarousel />
       <SiteFooter />
       <StickyCallButton />
       <ExitIntentPopup />

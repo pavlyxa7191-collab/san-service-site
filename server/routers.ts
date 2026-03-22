@@ -77,41 +77,30 @@ export const appRouter = router({
             message: input.message || null,
             status: "new",
           });
-        } catch (dbErr: any) {
-          const cause = dbErr?.cause;
-          const causeMsg = cause?.message || cause?.detail || cause?.code || String(cause);
-          throw new Error(`DB_INSERT_ERROR: ${dbErr.message} | CAUSE: ${causeMsg} | DB_URL_SET: ${!!process.env.DATABASE_URL}`);
+        } catch (dbErr) {
+          console.error("[leads.create] DB insert failed:", dbErr);
+          throw new Error("Не удалось сохранить заявку. Попробуйте позже или позвоните нам.");
         }
 
         // 2. Push to amoCRM (non-blocking — failure doesn't break form submission)
         let amoCrmLeadId: number | null = null;
-        let amoCrmError: string | null = null;
-        const amoConfigured = isAmoCrmConfigured();
-        const amoSubdomain = process.env.AMO_SUBDOMAIN || null;
-        const amoHasToken = !!process.env.AMO_ACCESS_TOKEN;
-        if (!amoConfigured) {
-          amoCrmError = `not_configured: subdomain=${amoSubdomain}, clientId=${!!process.env.AMO_CLIENT_ID}, clientSecret=${!!process.env.AMO_CLIENT_SECRET}`;
-        } else {
-          try {
-            const amoResult = await createAmoCrmLead({
-              name: input.name,
-              phone: input.phone,
-              email: input.email || null,
-              service: input.service || null,
-              propertyType: input.propertyType || null,
-              area: input.area || null,
-              method: input.method || null,
-              source: input.source || null,
-              priceMin: input.priceMin || null,
-              priceMax: input.priceMax || null,
-              message: input.message || null,
-            });
-            amoCrmLeadId = amoResult?.id || null;
-            if (!amoCrmLeadId) amoCrmError = `amoResult=${JSON.stringify(amoResult)}`;
-          } catch (err: any) {
-            amoCrmError = err?.message || String(err);
-            console.error("[leads.create] amoCRM push failed:", amoCrmError);
-          }
+        try {
+          const amoResult = await createAmoCrmLead({
+            name: input.name,
+            phone: input.phone,
+            email: input.email || null,
+            service: input.service || null,
+            propertyType: input.propertyType || null,
+            area: input.area || null,
+            method: input.method || null,
+            source: input.source || null,
+            priceMin: input.priceMin || null,
+            priceMax: input.priceMax || null,
+            message: input.message || null,
+          });
+          amoCrmLeadId = amoResult?.id || null;
+        } catch (err) {
+          console.error("[leads.create] amoCRM push failed (non-fatal):", err);
         }
 
         // 3. Notify owner
@@ -142,7 +131,7 @@ export const appRouter = router({
           console.warn("[leads.create] Notification failed (non-fatal):", notifyErr);
         }
 
-        return { success: true, amoCrmLeadId, amoCrmError, amoSubdomain, amoHasToken };
+        return { success: true, amoCrmLeadId };
       }),
 
     // List all leads (admin only)
