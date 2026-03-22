@@ -60,7 +60,9 @@ export default function CertificatesCarousel() {
       <section
         aria-labelledby="certificates-heading"
         style={{
-          background: "transparent",
+          /* Плавный переход от контента страницы к футеру; карточки сертификатов — без серой «коробки» */
+          background:
+            "linear-gradient(180deg, rgba(10,15,30,0.92) 0%, rgba(10,15,30,0.98) 55%, #0A0F1E 100%)",
           borderTop: "1px solid rgba(255,255,255,0.06)",
           padding: "clamp(2.5rem, 6vw, 4rem) 0",
         }}
