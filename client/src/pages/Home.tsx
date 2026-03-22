@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "wouter";
 import SchemaMarkup from "@/components/SchemaMarkup";
+import ReviewsCarousel from "@/components/ReviewsCarousel";
 import { trpc } from "@/lib/trpc";
 import {
   IconBedbugs, IconCockroaches, IconRodents, IconTicks, IconMold,
@@ -51,12 +52,6 @@ const steps = [
   { n: "03", title: "Договор и гарантия",  desc: "Заключаем официальный договор с гарантийными обязательствами." },
   { n: "04", title: "Обработка",           desc: "Профессиональная обработка сертифицированными препаратами." },
   { n: "05", title: "Контроль результата", desc: "Проверяем эффективность. Повторная обработка — бесплатно." },
-];
-
-const reviews = [
-  { name: "Анна К.",      date: "Февраль 2025",  text: "Обратились с проблемой клопов. Приехали в тот же день, сделали горячий туман. Через неделю ни одного клопа. Гарантия 3 года — это реально работает.", stars: 5, service: "Уничтожение клопов" },
-  { name: "Михаил Р.",    date: "Январь 2025",   text: "Тараканы в ресторане — кошмар. Ребята приехали ночью, обработали всё быстро и без запаха. Уже 4 месяца чисто. Рекомендую!", stars: 5, service: "Уничтожение тараканов" },
-  { name: "Светлана Д.",  date: "Декабрь 2024",  text: "Плесень в ванной и на кухне. Убрали полностью, дали гарантию 2 года. Специалист объяснил причины и как предотвратить повторное появление.", stars: 5, service: "Удаление плесени" },
 ];
 
 const faqs = [
@@ -617,47 +612,9 @@ export default function Home() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════════════
-          REVIEWS
+          REVIEWS (карусель — несколько карточек сразу)
       ═══════════════════════════════════════════════════════════════════ */}
-      <section style={{ padding: "5rem 0", background: "#f8f9fc" }}>
-        <div className="container">
-          <div ref={refReviews} className="reveal" style={{ marginBottom: "3rem" }}>
-            <SectionLabel text="Отзывы" />
-            <h2 style={{ fontSize: "clamp(1.75rem, 3vw, 2.4rem)", fontWeight: 900, color: NAVY_TEXT, letterSpacing: "-0.03em" }}>
-              Что говорят наши клиенты
-            </h2>
-          </div>
-          <div className="reviews-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "1.5rem" }}>
-            {reviews.map((r, i) => (
-              <div key={i} style={{
-                background: WHITE, border: "1px solid #e8ecf2", borderRadius: 12,
-                padding: "1.75rem", display: "flex", flexDirection: "column", gap: "1rem",
-                transition: "box-shadow 0.2s",
-              }}
-                onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,9,25,0.08)")}
-                onMouseLeave={e => (e.currentTarget.style.boxShadow = "none")}
-              >
-                <div style={{ display: "flex", gap: "0.2rem" }}>
-                  {Array.from({ length: r.stars }).map((_, j) => (
-                    <span key={j} style={{ color: RED, fontSize: "0.9rem" }}>★</span>
-                  ))}
-                </div>
-                <span style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: RED, background: "rgba(204,0,0,0.06)", padding: "0.2rem 0.6rem", borderRadius: 2, width: "fit-content" }}>{r.service}</span>
-                <p style={{ fontSize: "0.88rem", color: GRAY_TEXT, lineHeight: 1.7, margin: 0, flex: 1 }}>"{r.text}"</p>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", paddingTop: "0.75rem", borderTop: "1px solid #f0f4ff" }}>
-                  <div style={{ width: 36, height: 36, borderRadius: "50%", background: NAVY, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.85rem", fontWeight: 800, color: WHITE, flexShrink: 0 }}>
-                    {r.name[0]}
-                  </div>
-                  <div>
-                    <div style={{ fontSize: "0.85rem", fontWeight: 700, color: NAVY_TEXT }}>{r.name}</div>
-                    <div style={{ fontSize: "0.72rem", color: "#9ca3af" }}>{r.date}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ReviewsCarousel revealRef={refReviews} />
 
       {/* ═══════════════════════════════════════════════════════════════════
           GUARANTEES + CTA
