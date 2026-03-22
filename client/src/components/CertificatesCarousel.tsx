@@ -34,14 +34,81 @@ const CERTIFICATES = [
   },
 ] as const;
 
+type Cert = (typeof CERTIFICATES)[number];
+
 const LOOP_MULTIPLIER = 3;
 
-/** Общие стили красных стрелок карусели (внутри области, слева / справа) */
 const carouselArrowClass =
   "!flex !size-11 sm:!size-12 !rounded-full !border-2 !border-red-800 !shadow-lg " +
-  "!text-white !top-1/2 !-translate-y-1/2 !z-30 " +
+  "!text-white !top-1/2 !-translate-y-1/2 !bottom-auto !z-40 " +
   "hover:!brightness-110 active:!scale-95 disabled:!opacity-40 " +
   "[&_svg]:!size-6";
+
+function CertificateCard({
+  c,
+  index,
+  onOpen,
+}: {
+  c: Cert;
+  index: number;
+  onOpen: (i: number) => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={() => onOpen(index)}
+      className="cert-card group w-full text-left overflow-visible transition-opacity duration-200 hover:opacity-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0F1E] rounded-none"
+      style={{
+        cursor: "pointer",
+        background: "transparent",
+        border: "none",
+        padding: 0,
+        boxShadow: "none",
+      }}
+    >
+      <div
+        className="relative w-full overflow-visible bg-transparent"
+        style={{ aspectRatio: "3 / 4", maxHeight: 400 }}
+      >
+        <img
+          src={c.src}
+          alt={c.alt}
+          loading="lazy"
+          decoding="async"
+          className="w-full h-full object-contain object-center transition-transform duration-300 group-hover:scale-[1.02] drop-shadow-[0_12px_32px_rgba(0,0,0,0.45)]"
+          style={{
+            background: "transparent",
+            border: "none",
+            outline: "none",
+            boxShadow: "none",
+          }}
+        />
+      </div>
+      <div style={{ padding: "0.55rem 0 0.75rem" }}>
+        <span
+          style={{
+            fontSize: "0.7rem",
+            fontWeight: 700,
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+            color: RED,
+          }}
+        >
+          {c.title}
+        </span>
+        <div
+          style={{
+            marginTop: 3,
+            fontSize: "0.72rem",
+            color: "rgba(255,255,255,0.4)",
+          }}
+        >
+          Нажмите, чтобы открыть
+        </div>
+      </div>
+    </button>
+  );
+}
 
 export default function CertificatesCarousel() {
   const [lightbox, setLightbox] = useState<number | null>(null);
@@ -152,109 +219,60 @@ export default function CertificatesCarousel() {
             </p>
           </div>
 
-          {/* overflow-visible — стрелки не обрезаются; на lg — 3 карточки в ряд */}
-          <div
-            className="cert-carousel-wrap relative overflow-visible px-12 sm:px-14 md:px-16"
-            style={{ paddingBottom: "0.5rem" }}
-          >
-            <Carousel
-              opts={{
-                align: "start",
-                loop: true,
-                dragFree: false,
-                skipSnaps: false,
-                slidesToScroll: 1,
-              }}
-              className="relative w-full mx-auto"
-            >
-              <CarouselContent className="-ml-3 md:-ml-4">
-                {loopSlides.map((c) => (
-                  <CarouselItem
-                    key={c._key}
-                    className="pl-3 md:pl-4 basis-[88%] sm:basis-1/2 lg:basis-1/3"
-                  >
-                    <button
-                      type="button"
-                      onClick={() => openLightbox(c._index)}
-                      className="cert-card group w-full text-left overflow-visible transition-opacity duration-200 hover:opacity-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0F1E] rounded-none"
-                      style={{
-                        cursor: "pointer",
-                        background: "transparent",
-                        border: "none",
-                        padding: 0,
-                        boxShadow: "none",
-                      }}
-                    >
-                      <div
-                        className="relative w-full overflow-visible bg-transparent"
-                        style={{ aspectRatio: "3 / 4", maxHeight: 400 }}
-                      >
-                        <img
-                          src={c.src}
-                          alt={c.alt}
-                          loading="lazy"
-                          decoding="async"
-                          className="w-full h-full object-contain object-center transition-transform duration-300 group-hover:scale-[1.02] drop-shadow-[0_12px_32px_rgba(0,0,0,0.45)]"
-                          style={{
-                            background: "transparent",
-                            border: "none",
-                            outline: "none",
-                            boxShadow: "none",
-                          }}
-                        />
-                      </div>
-                      <div style={{ padding: "0.55rem 0 0.75rem" }}>
-                        <span
-                          style={{
-                            fontSize: "0.7rem",
-                            fontWeight: 700,
-                            letterSpacing: "0.06em",
-                            textTransform: "uppercase",
-                            color: RED,
-                          }}
-                        >
-                          {c.title}
-                        </span>
-                        <div
-                          style={{
-                            marginTop: 3,
-                            fontSize: "0.72rem",
-                            color: "rgba(255,255,255,0.4)",
-                          }}
-                        >
-                          Нажмите, чтобы открыть
-                        </div>
-                      </div>
-                    </button>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
+          {/* Ноутбук и шире: ровно 4 сертификата в ряд, без карусели */}
+          <div className="hidden lg:grid lg:grid-cols-4 lg:gap-4 xl:gap-5">
+            {CERTIFICATES.map((c, i) => (
+              <CertificateCard key={c.src} c={c} index={i} onOpen={openLightbox} />
+            ))}
+          </div>
 
-              <CarouselPrevious
-                variant="outline"
-                className={`${carouselArrowClass} !left-2 sm:!left-3 !bg-[#D0021B] !border-[#b00118] hover:!bg-[#b00118] hover:!border-[#9a0115]`}
-              />
-              <CarouselNext
-                variant="outline"
-                className={`${carouselArrowClass} !right-2 sm:!right-3 !bg-[#D0021B] !border-[#b00118] hover:!bg-[#b00118] hover:!border-[#9a0115]`}
-              />
-            </Carousel>
+          {/* Планшет и мобильные: карусель со стрелками слева и справа */}
+          <div className="relative lg:hidden">
+            <div className="px-12 sm:px-14">
+              <Carousel
+                opts={{
+                  align: "start",
+                  loop: true,
+                  dragFree: false,
+                  skipSnaps: false,
+                  slidesToScroll: 1,
+                }}
+                className="relative w-full"
+              >
+                <CarouselContent className="-ml-3">
+                  {loopSlides.map((c) => (
+                    <CarouselItem
+                      key={c._key}
+                      className="pl-3 basis-[88%] sm:basis-1/2"
+                    >
+                      <CertificateCard c={c} index={c._index} onOpen={openLightbox} />
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+
+                <CarouselPrevious
+                  variant="outline"
+                  className={`${carouselArrowClass} !left-0 !right-auto`}
+                  style={{ backgroundColor: "#D0021B", borderColor: "#b00118" }}
+                />
+                <CarouselNext
+                  variant="outline"
+                  className={`${carouselArrowClass} !right-0 !left-auto`}
+                  style={{ backgroundColor: "#D0021B", borderColor: "#b00118" }}
+                />
+              </Carousel>
+            </div>
 
             <p
-              className="sm:hidden text-center"
-              style={{
-                marginTop: "1rem",
-                fontSize: "0.75rem",
-                color: "rgba(255,255,255,0.35)",
-              }}
+              className="mt-3 text-center text-xs"
+              style={{ color: "rgba(255,255,255,0.35)" }}
             >
-              Свайпните влево / вправо
+              Листайте стрелками или свайпом
             </p>
           </div>
         </div>
       </section>
 
-      {/* Полноэкранный лайтбокс: полупрозрачный фон, без тёмной «колонки», без рамок у фото */}
       {lightbox !== null && (
         <div
           className="fixed inset-0 z-[100] flex min-h-[100dvh] w-full flex-col"
