@@ -155,6 +155,23 @@ export default function ReviewsCarousel({ revealRef }: Props) {
 
   return (
     <>
+      <style>{`
+        @media (max-width: 767.98px) {
+          .reviews-carousel-root [data-slot="carousel-content"] > div {
+            margin-left: 0 !important;
+            column-gap: 0 !important;
+          }
+          .reviews-carousel-root [data-slot="carousel-item"] {
+            flex: 0 0 100% !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            box-sizing: border-box !important;
+          }
+        }
+      `}</style>
       <section style={{ padding: "5rem 0", background: "#f8f9fc" }}>
         <div className="container">
           <div ref={revealRef} className="reveal" style={{ marginBottom: "2rem" }}>
@@ -211,31 +228,30 @@ export default function ReviewsCarousel({ revealRef }: Props) {
               skipSnaps: false,
               slidesToScroll: 1,
             }}
-            className="w-full"
+            className="reviews-carousel-root w-full"
           >
             <div className="flex w-full items-center gap-1.5 sm:gap-3">
               <ReviewsGlassPrev size={44} />
               <div className="min-w-0 flex-1">
-                <CarouselContent className="-ml-3">
+                <CarouselContent className="-ml-0 md:-ml-3">
                   {loopSlides.map((shot) => (
                     <CarouselItem
                       key={shot._key}
-                      className="pl-3 basis-full min-w-0 shrink-0 md:basis-[47%] lg:basis-[31%]"
+                      className="!pl-0 basis-full min-w-0 shrink-0 md:pl-3 md:basis-[47%] lg:basis-[31%]"
                     >
                       <button
                         type="button"
                         onClick={() => openLightbox(shot._index)}
-                        className="group w-full cursor-zoom-in overflow-hidden rounded-xl border border-[#e2e8f0] bg-white p-1.5 shadow-md transition-shadow hover:shadow-lg"
-                        style={{ boxShadow: "0 4px 24px rgba(15, 25, 35, 0.08)" }}
+                        className="group flex w-full cursor-zoom-in flex-col items-center justify-center border-0 bg-transparent p-0 shadow-none md:overflow-hidden md:rounded-xl md:border md:border-[#e2e8f0] md:bg-white md:p-1.5 md:shadow-md md:transition-shadow md:hover:shadow-lg"
                       >
                         <img
                           src={shot.src}
                           alt={shot.alt}
                           loading="lazy"
                           decoding="async"
-                          className="mx-auto block max-h-[min(480px,62vh)] w-full object-contain object-top md:max-h-[min(420px,52vh)]"
+                          className="mx-auto block w-full max-w-full object-contain object-center max-md:max-h-[min(68vh,620px)] md:max-h-[min(420px,52vh)]"
                         />
-                        <span className="mt-2 block text-center text-[0.7rem] font-medium text-[#94a3b8] group-hover:text-[#64748b]">
+                        <span className="mt-2 hidden text-center text-[0.7rem] font-medium text-[#94a3b8] group-hover:text-[#64748b] md:block">
                           Нажмите, чтобы открыть
                         </span>
                       </button>
@@ -247,11 +263,8 @@ export default function ReviewsCarousel({ revealRef }: Props) {
             </div>
           </Carousel>
 
-          <p className="mt-4 text-center text-xs md:hidden" style={{ color: "#9ca3af" }}>
-            На телефоне — по одному скриншоту, листайте свайпом или стрелками
-          </p>
-          <p className="mt-4 hidden text-center text-xs md:block" style={{ color: "#9ca3af" }}>
-            Листайте стрелками или свайпом · на планшете и ПК видно несколько отзывов сразу
+          <p className="mt-4 hidden text-center text-xs text-[#9ca3af] md:block">
+            Листайте стрелками или свайпом
           </p>
         </div>
       </section>

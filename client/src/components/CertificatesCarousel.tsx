@@ -118,16 +118,24 @@ function CertificateCard({
   c,
   index,
   onOpen,
+  variant = "grid",
 }: {
   c: Cert;
   index: number;
   onOpen: (i: number) => void;
+  /** В узкой карусели — только картинка по центру, целиком в экране */
+  variant?: "grid" | "carousel";
 }) {
+  const isCarousel = variant === "carousel";
+
   return (
     <button
       type="button"
       onClick={() => onOpen(index)}
-      className="cert-card group w-full text-left overflow-visible transition-opacity duration-200 hover:opacity-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0F1E] rounded-none"
+      aria-label={isCarousel ? `Открыть: ${c.title}` : undefined}
+      className={`cert-card group w-full overflow-visible transition-opacity duration-200 hover:opacity-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0F1E] rounded-none ${
+        isCarousel ? "text-center" : "text-left"
+      }`}
       style={{
         cursor: "pointer",
         background: "transparent",
@@ -137,15 +145,25 @@ function CertificateCard({
       }}
     >
       <div
-        className="relative w-full overflow-visible bg-transparent"
-        style={{ aspectRatio: "3 / 4", maxHeight: 400 }}
+        className={`relative w-full bg-transparent ${isCarousel ? "flex min-h-[220px] items-center justify-center py-1" : "overflow-visible"}`}
+        style={
+          isCarousel
+            ? {
+                maxHeight: "min(68vh, 520px)",
+              }
+            : { aspectRatio: "3 / 4", maxHeight: 400 }
+        }
       >
         <img
           src={c.src}
           alt={c.alt}
           loading="lazy"
           decoding="async"
-          className="w-full h-full object-contain object-center transition-transform duration-300 group-hover:scale-[1.02] drop-shadow-[0_12px_32px_rgba(0,0,0,0.45)]"
+          className={`object-contain object-center transition-transform duration-300 drop-shadow-[0_12px_32px_rgba(0,0,0,0.45)] ${
+            isCarousel
+              ? "max-h-[min(68vh,520px)] w-full max-w-full"
+              : "h-full w-full group-hover:scale-[1.02]"
+          }`}
           style={{
             background: "transparent",
             border: "none",
@@ -154,28 +172,30 @@ function CertificateCard({
           }}
         />
       </div>
-      <div style={{ padding: "0.55rem 0 0.75rem" }}>
-        <span
-          style={{
-            fontSize: "0.7rem",
-            fontWeight: 700,
-            letterSpacing: "0.06em",
-            textTransform: "uppercase",
-            color: RED,
-          }}
-        >
-          {c.title}
-        </span>
-        <div
-          style={{
-            marginTop: 3,
-            fontSize: "0.72rem",
-            color: "rgba(255,255,255,0.4)",
-          }}
-        >
-          Нажмите, чтобы открыть
+      {!isCarousel ? (
+        <div style={{ padding: "0.55rem 0 0.75rem" }}>
+          <span
+            style={{
+              fontSize: "0.7rem",
+              fontWeight: 700,
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              color: RED,
+            }}
+          >
+            {c.title}
+          </span>
+          <div
+            style={{
+              marginTop: 3,
+              fontSize: "0.72rem",
+              color: "rgba(255,255,255,0.4)",
+            }}
+          >
+            Нажмите, чтобы открыть
+          </div>
         </div>
-      </div>
+      ) : null}
     </button>
   );
 }
@@ -248,6 +268,20 @@ export default function CertificatesCarousel() {
           }
           .certificates-carousel-only {
             display: block !important;
+          }
+          /* Ровно 100% ширины вьюпорта Embla — без «края» соседнего слайда */
+          .certificates-carousel-only [data-slot="carousel-content"] > div {
+            margin-left: 0 !important;
+            column-gap: 0 !important;
+          }
+          .certificates-carousel-only [data-slot="carousel-item"] {
+            flex: 0 0 100% !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            box-sizing: border-box !important;
           }
         }
       `}</style>
@@ -332,13 +366,18 @@ export default function CertificatesCarousel() {
               <div className="flex w-full items-center gap-1.5 sm:gap-3">
                 <CertCarouselGlassPrev size={44} />
                 <div className="min-w-0 flex-1">
-                  <CarouselContent className="-ml-3">
+                  <CarouselContent className="-ml-0">
                     {loopSlides.map((c) => (
                       <CarouselItem
                         key={c._key}
-                        className="pl-3 basis-full min-w-0 shrink-0"
+                        className="basis-full !pl-0 min-w-0 shrink-0"
                       >
-                        <CertificateCard c={c} index={c._index} onOpen={openLightbox} />
+                        <CertificateCard
+                          c={c}
+                          index={c._index}
+                          onOpen={openLightbox}
+                          variant="carousel"
+                        />
                       </CarouselItem>
                     ))}
                   </CarouselContent>
@@ -346,13 +385,6 @@ export default function CertificatesCarousel() {
                 <CertCarouselGlassNext size={44} />
               </div>
             </Carousel>
-
-            <p
-              className="mt-3 text-center text-xs"
-              style={{ color: "rgba(255,255,255,0.35)" }}
-            >
-              На телефоне — по одному сертификату, листайте свайпом или стрелками
-            </p>
           </div>
         </div>
       </section>
