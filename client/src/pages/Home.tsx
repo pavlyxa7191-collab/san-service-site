@@ -1,10 +1,16 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { Link } from "wouter";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import { applyPageSeo } from "@/lib/seo";
 import ReviewsCarousel from "@/components/ReviewsCarousel";
 import { trpc } from "@/lib/trpc";
-import { formatRuPhoneInput, isCompleteRuPhone } from "@/lib/phone";
+import {
+  formatRuPhoneInput,
+  isCompleteRuPhone,
+  RU_PHONE_PLACEHOLDER,
+  nationalDigitsBeforeCursor,
+  caretFromNationalCount,
+} from "@/lib/phone";
 import {
   IconBedbugs, IconCockroaches, IconRodents, IconTicks, IconMold,
   IconDeodorization, IconColdFog, IconHotFog, IconSpray, IconOzonation,
@@ -92,8 +98,10 @@ function SectionLabel({ text }: { text: string }) {
 // ─── MAIN COMPONENT ──────────────────────────────────────────────────────────
 export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [formData, setFormData] = useState({ name: "", phone: "+7 (", service: "" });
+  const [formData, setFormData] = useState({ name: "", phone: "", service: "" });
   const [phoneError, setPhoneError] = useState("");
+  const phoneInputRef = useRef<HTMLInputElement>(null);
+  const phoneCaretNat = useRef<number | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const createLead = trpc.leads.create.useMutation();
 
@@ -114,6 +122,16 @@ export default function Home() {
     }, 100);
     return () => window.clearTimeout(t);
   }, []);
+
+  useLayoutEffect(() => {
+    const el = phoneInputRef.current;
+    const n = phoneCaretNat.current;
+    if (el && n !== null) {
+      const pos = caretFromNationalCount(formData.phone, n);
+      el.setSelectionRange(pos, pos);
+    }
+    phoneCaretNat.current = null;
+  }, [formData.phone]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -329,15 +347,19 @@ export default function Home() {
                     />
                     <div>
                       <input
+                        ref={phoneInputRef}
                         className="form-field"
                         type="tel"
                         inputMode="tel"
                         autoComplete="tel"
-                        placeholder="+7 (___) ___-__-__"
+                        placeholder={RU_PHONE_PLACEHOLDER}
                         value={formData.phone}
                         onChange={e => {
+                          const el = e.target;
+                          const sel = el.selectionStart ?? el.value.length;
+                          phoneCaretNat.current = nationalDigitsBeforeCursor(el.value, sel);
                           setPhoneError("");
-                          setFormData(p => ({ ...p, phone: formatRuPhoneInput(e.target.value) }));
+                          setFormData(p => ({ ...p, phone: formatRuPhoneInput(el.value) }));
                         }}
                         aria-invalid={!!phoneError}
                         style={phoneError ? { boxShadow: `inset 0 0 0 1px ${RED}` } : undefined}

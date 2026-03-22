@@ -1,7 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { Link, useSearch } from "wouter";
 import { trpc } from "@/lib/trpc";
-import { formatRuPhoneInput, isCompleteRuPhone } from "@/lib/phone";
+import {
+  formatRuPhoneInput,
+  isCompleteRuPhone,
+  RU_PHONE_PLACEHOLDER,
+  nationalDigitsBeforeCursor,
+  caretFromNationalCount,
+} from "@/lib/phone";
 import { applyPageSeo } from "@/lib/seo";
 import {
   ChevronLeft, ChevronRight, Check,
@@ -235,7 +241,9 @@ export default function CalculatorPage() {
   }, [search]);
   const [contactWays, setContactWays] = useState<string[]>([]);
   const [name, setName] = useState("");
-  const [phone, setPhone] = useState("+7 (");
+  const [phone, setPhone] = useState("");
+  const phoneRef = useRef<HTMLInputElement>(null);
+  const phoneCaretNat = useRef<number | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
 
@@ -250,8 +258,22 @@ export default function CalculatorPage() {
   }
 
   function handlePhone(e: React.ChangeEvent<HTMLInputElement>) {
-    setPhone(formatRuPhoneInput(e.target.value));
+    const el = e.target;
+    const sel = el.selectionStart ?? el.value.length;
+    phoneCaretNat.current = nationalDigitsBeforeCursor(el.value, sel);
+    setPhone(formatRuPhoneInput(el.value));
+    setErrors(prev => ({ ...prev, phone: undefined }));
   }
+
+  useLayoutEffect(() => {
+    const el = phoneRef.current;
+    const n = phoneCaretNat.current;
+    if (el && n !== null) {
+      const pos = caretFromNationalCount(phone, n);
+      el.setSelectionRange(pos, pos);
+    }
+    phoneCaretNat.current = null;
+  }, [phone]);
 
   function validate() {
     const e: { name?: string; phone?: string } = {};
@@ -536,8 +558,11 @@ export default function CalculatorPage() {
                       Телефон *
                     </label>
                     <input
+                      ref={phoneRef}
                       type="tel"
-                      placeholder="+7 (___) ___-__-__"
+                      inputMode="tel"
+                      autoComplete="tel"
+                      placeholder={RU_PHONE_PLACEHOLDER}
                       value={phone}
                       onChange={handlePhone}
                       style={{
