@@ -4,6 +4,7 @@ import SchemaMarkup from "@/components/SchemaMarkup";
 import { applyPageSeo } from "@/lib/seo";
 import ReviewsCarousel from "@/components/ReviewsCarousel";
 import { trpc } from "@/lib/trpc";
+import { formatRuPhoneInput, isCompleteRuPhone } from "@/lib/phone";
 import {
   IconBedbugs, IconCockroaches, IconRodents, IconTicks, IconMold,
   IconDeodorization, IconColdFog, IconHotFog, IconSpray, IconOzonation,
@@ -91,7 +92,8 @@ function SectionLabel({ text }: { text: string }) {
 // ─── MAIN COMPONENT ──────────────────────────────────────────────────────────
 export default function Home() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [formData, setFormData] = useState({ name: "", phone: "", service: "" });
+  const [formData, setFormData] = useState({ name: "", phone: "+7 (", service: "" });
+  const [phoneError, setPhoneError] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const createLead = trpc.leads.create.useMutation();
 
@@ -115,6 +117,11 @@ export default function Home() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isCompleteRuPhone(formData.phone)) {
+      setPhoneError("Введите полный номер телефона");
+      return;
+    }
+    setPhoneError("");
     try {
       await createLead.mutateAsync({ ...formData, source: "hero_form" });
       setSubmitted(true);
@@ -320,14 +327,25 @@ export default function Home() {
                       onChange={e => setFormData(p => ({ ...p, name: e.target.value }))}
                       required
                     />
-                    <input
-                      className="form-field"
-                      type="tel"
-                      placeholder="+7 (___) ___-__-__"
-                      value={formData.phone}
-                      onChange={e => setFormData(p => ({ ...p, phone: e.target.value }))}
-                      required
-                    />
+                    <div>
+                      <input
+                        className="form-field"
+                        type="tel"
+                        inputMode="tel"
+                        autoComplete="tel"
+                        placeholder="+7 (___) ___-__-__"
+                        value={formData.phone}
+                        onChange={e => {
+                          setPhoneError("");
+                          setFormData(p => ({ ...p, phone: formatRuPhoneInput(e.target.value) }));
+                        }}
+                        aria-invalid={!!phoneError}
+                        style={phoneError ? { boxShadow: `inset 0 0 0 1px ${RED}` } : undefined}
+                      />
+                      {phoneError ? (
+                        <p style={{ fontSize: 12, color: RED, margin: "6px 0 0" }}>{phoneError}</p>
+                      ) : null}
+                    </div>
                     <select
                       className="form-field"
                       value={formData.service}

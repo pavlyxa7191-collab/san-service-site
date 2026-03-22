@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useSearch } from "wouter";
 import { trpc } from "@/lib/trpc";
+import { formatRuPhoneInput, isCompleteRuPhone } from "@/lib/phone";
 import { applyPageSeo } from "@/lib/seo";
 import {
   ChevronLeft, ChevronRight, Check,
@@ -195,20 +196,6 @@ function CheckboxCard({
   );
 }
 
-// ─── PHONE MASK ───────────────────────────────────────────────────────────────
-function formatPhone(raw: string): string {
-  let v = raw.replace(/\D/g, "");
-  if (v.startsWith("8")) v = "7" + v.slice(1);
-  if (v.startsWith("7")) v = v.slice(1);
-  v = v.slice(0, 10);
-  let f = "+7 (";
-  if (v.length > 0) f += v.slice(0, 3);
-  if (v.length >= 3) f += ") " + v.slice(3, 6);
-  if (v.length >= 6) f += "-" + v.slice(6, 8);
-  if (v.length >= 8) f += "-" + v.slice(8, 10);
-  return f;
-}
-
 // Service slug → pestType id mapping
 const SERVICE_TO_PEST: Record<string, string> = {
   klopov: "klopov",
@@ -263,14 +250,13 @@ export default function CalculatorPage() {
   }
 
   function handlePhone(e: React.ChangeEvent<HTMLInputElement>) {
-    setPhone(formatPhone(e.target.value));
+    setPhone(formatRuPhoneInput(e.target.value));
   }
 
   function validate() {
     const e: { name?: string; phone?: string } = {};
     if (!name.trim()) e.name = "Введите имя";
-    const digits = phone.replace(/\D/g, "");
-    if (digits.length < 11) e.phone = "Введите полный номер телефона";
+    if (!isCompleteRuPhone(phone)) e.phone = "Введите полный номер телефона";
     setErrors(e);
     return Object.keys(e).length === 0;
   }
