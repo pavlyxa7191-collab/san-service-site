@@ -132,7 +132,7 @@ function CertificateCard({
     <button
       type="button"
       onClick={() => onOpen(index)}
-      aria-label={isCarousel ? `Открыть: ${c.title}` : undefined}
+      aria-label={c.alt}
       className={`cert-card group w-full overflow-visible transition-opacity duration-200 hover:opacity-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0F1E] rounded-none ${
         isCarousel ? "text-center" : "text-left"
       }`}
@@ -172,30 +172,6 @@ function CertificateCard({
           }}
         />
       </div>
-      {!isCarousel ? (
-        <div style={{ padding: "0.55rem 0 0.75rem" }}>
-          <span
-            style={{
-              fontSize: "0.7rem",
-              fontWeight: 700,
-              letterSpacing: "0.06em",
-              textTransform: "uppercase",
-              color: RED,
-            }}
-          >
-            {c.title}
-          </span>
-          <div
-            style={{
-              marginTop: 3,
-              fontSize: "0.72rem",
-              color: "rgba(255,255,255,0.4)",
-            }}
-          >
-            Нажмите, чтобы открыть
-          </div>
-        </div>
-      ) : null}
     </button>
   );
 }
@@ -286,6 +262,8 @@ export default function CertificatesCarousel() {
         }
       `}</style>
       <section
+        id="certificates"
+        className="scroll-mt-[100px]"
         aria-labelledby="certificates-heading"
         style={{
           background:

@@ -100,6 +100,16 @@ export default function Home() {
     if (meta) meta.setAttribute("content", "Профессиональная дезинсекция, дезинфекция и дератизация в Москве и МО. Уничтожение клопов, тараканов, грызунов. Гарантия 3 года. Работаем 24/7.");
   }, []);
 
+  useEffect(() => {
+    const hash = window.location.hash.replace(/^#/, "");
+    if (hash !== "reviews" && hash !== "certificates") return;
+    const id = hash === "reviews" ? "reviews" : "certificates";
+    const t = window.setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+    return () => window.clearTimeout(t);
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {

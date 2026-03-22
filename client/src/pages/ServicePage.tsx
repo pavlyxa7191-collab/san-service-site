@@ -1,5 +1,6 @@
 import { Link, useParams } from "wouter";
 import SchemaMarkup from "@/components/SchemaMarkup";
+import ReviewsCarousel from "@/components/ReviewsCarousel";
 import { useState, useEffect, useRef } from "react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
@@ -567,6 +568,14 @@ export default function ServicePage() {
     if (meta) meta.setAttribute("content", `${service.subtitle} Гарантия ${service.guarantee}. Звоните 24/7: 8(495)148-58-06.`);
   }, [serviceSlug, citySlug]);
 
+  useEffect(() => {
+    if (window.location.hash.replace(/^#/, "") !== "reviews") return;
+    const t = window.setTimeout(() => {
+      document.getElementById("reviews")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 150);
+    return () => window.clearTimeout(t);
+  }, [serviceSlug, citySlug]);
+
   return (
     <div style={{ minHeight: "100vh", background: WHITE }}>
       <SchemaMarkup
@@ -895,6 +904,8 @@ export default function ServicePage() {
           </div>
         </div>
       </div>
+
+      <ReviewsCarousel />
 
       {/* ── RELATED SERVICES ── */}
       <section style={{ background: GRAY_BG, padding: "3rem 0", borderTop: `1px solid ${GRAY_BD}` }}>

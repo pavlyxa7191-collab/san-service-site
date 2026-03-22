@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { Phone, Menu, X, ChevronDown } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, type CSSProperties } from "react";
 
 /* Design Tokens */
 const NAVY = "#0d1f3c";
@@ -56,6 +56,26 @@ export default function SiteHeader() {
   const closeServices = () => {
     closeTimer.current = setTimeout(() => setServicesOpen(false), 150);
   };
+
+  const path = location.split("?")[0];
+  const reviewsHref =
+    path === "/" || path.startsWith("/services/") ? "#reviews" : "/#reviews";
+  const certificatesHref = "#certificates";
+
+  const anchorLinkStyle = (active: boolean): CSSProperties => ({
+    display: "flex",
+    alignItems: "center",
+    height: "64px",
+    padding: "0 0.85rem",
+    fontSize: "0.82rem",
+    fontWeight: 600,
+    color: active ? RED : "rgba(255,255,255,0.85)",
+    letterSpacing: "0.02em",
+    textDecoration: "none",
+    transition: "all 0.15s",
+    whiteSpace: "nowrap",
+    borderBottom: active ? `2px solid ${RED}` : "2px solid transparent",
+  });
 
   return (
     <>
@@ -378,6 +398,12 @@ export default function SiteHeader() {
                 </Link>
               )
             )}
+            <Link href={reviewsHref} className="nav-link-item" style={anchorLinkStyle(false)}>
+              Отзывы
+            </Link>
+            <Link href={certificatesHref} className="nav-link-item" style={anchorLinkStyle(false)}>
+              Сертификаты
+            </Link>
           </nav>
 
           {/* Right side */}
@@ -545,6 +571,20 @@ export default function SiteHeader() {
               </Link>
             )
           )}
+          <Link
+            href={reviewsHref}
+            className="mobile-nav-link"
+            onClick={() => setMobileOpen(false)}
+          >
+            Отзывы
+          </Link>
+          <Link
+            href={certificatesHref}
+            className="mobile-nav-link"
+            onClick={() => setMobileOpen(false)}
+          >
+            Сертификаты
+          </Link>
         </nav>
 
         {/* Footer with phone + CTA */}

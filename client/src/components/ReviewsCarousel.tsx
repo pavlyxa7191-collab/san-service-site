@@ -172,7 +172,11 @@ export default function ReviewsCarousel({ revealRef }: Props) {
           }
         }
       `}</style>
-      <section style={{ padding: "5rem 0", background: "#f8f9fc" }}>
+      <section
+        id="reviews"
+        className="scroll-mt-[100px]"
+        style={{ padding: "5rem 0", background: "#f8f9fc" }}
+      >
         <div className="container">
           <div ref={revealRef} className="reveal" style={{ marginBottom: "2rem" }}>
             <div
