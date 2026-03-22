@@ -213,14 +213,14 @@ export default function ReviewsCarousel({ revealRef }: Props) {
             }}
             className="w-full"
           >
-            <div className="flex w-full items-center gap-2 sm:gap-3">
-              <ReviewsGlassPrev size={48} />
+            <div className="flex w-full items-center gap-1.5 sm:gap-3">
+              <ReviewsGlassPrev size={44} />
               <div className="min-w-0 flex-1">
                 <CarouselContent className="-ml-3">
                   {loopSlides.map((shot) => (
                     <CarouselItem
                       key={shot._key}
-                      className="pl-3 basis-[82%] min-[480px]:basis-[45%] lg:basis-[30%]"
+                      className="pl-3 basis-full min-w-0 shrink-0 md:basis-[47%] lg:basis-[31%]"
                     >
                       <button
                         type="button"
@@ -233,7 +233,7 @@ export default function ReviewsCarousel({ revealRef }: Props) {
                           alt={shot.alt}
                           loading="lazy"
                           decoding="async"
-                          className="mx-auto block max-h-[min(420px,52vh)] w-full object-contain object-top"
+                          className="mx-auto block max-h-[min(480px,62vh)] w-full object-contain object-top md:max-h-[min(420px,52vh)]"
                         />
                         <span className="mt-2 block text-center text-[0.7rem] font-medium text-[#94a3b8] group-hover:text-[#64748b]">
                           Нажмите, чтобы открыть
@@ -243,12 +243,15 @@ export default function ReviewsCarousel({ revealRef }: Props) {
                   ))}
                 </CarouselContent>
               </div>
-              <ReviewsGlassNext size={48} />
+              <ReviewsGlassNext size={44} />
             </div>
           </Carousel>
 
-          <p className="mt-4 text-center text-xs" style={{ color: "#9ca3af" }}>
-            Листайте стрелками или свайпом · видно сразу несколько скриншотов
+          <p className="mt-4 text-center text-xs md:hidden" style={{ color: "#9ca3af" }}>
+            На телефоне — по одному скриншоту, листайте свайпом или стрелками
+          </p>
+          <p className="mt-4 hidden text-center text-xs md:block" style={{ color: "#9ca3af" }}>
+            Листайте стрелками или свайпом · на планшете и ПК видно несколько отзывов сразу
           </p>
         </div>
       </section>

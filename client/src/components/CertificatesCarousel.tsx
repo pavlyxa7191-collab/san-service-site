@@ -329,21 +329,21 @@ export default function CertificatesCarousel() {
               }}
               className="w-full"
             >
-              <div className="flex w-full items-center gap-2 sm:gap-3">
-                <CertCarouselGlassPrev size={48} />
+              <div className="flex w-full items-center gap-1.5 sm:gap-3">
+                <CertCarouselGlassPrev size={44} />
                 <div className="min-w-0 flex-1">
                   <CarouselContent className="-ml-3">
                     {loopSlides.map((c) => (
                       <CarouselItem
                         key={c._key}
-                        className="pl-3 basis-[88%] sm:basis-[60%]"
+                        className="pl-3 basis-full min-w-0 shrink-0"
                       >
                         <CertificateCard c={c} index={c._index} onOpen={openLightbox} />
                       </CarouselItem>
                     ))}
                   </CarouselContent>
                 </div>
-                <CertCarouselGlassNext size={48} />
+                <CertCarouselGlassNext size={44} />
               </div>
             </Carousel>
 
@@ -351,7 +351,7 @@ export default function CertificatesCarousel() {
               className="mt-3 text-center text-xs"
               style={{ color: "rgba(255,255,255,0.35)" }}
             >
-              Листайте стрелками или свайпом
+              На телефоне — по одному сертификату, листайте свайпом или стрелками
             </p>
           </div>
         </div>
