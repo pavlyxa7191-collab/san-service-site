@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -6,12 +6,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 const RED = "#D0021B";
 const WHITE = "#ffffff";
@@ -39,7 +34,6 @@ const CERTIFICATES = [
   },
 ] as const;
 
-/** Дублируем слайды для плавного бесконечного листания Embla (loop) */
 const LOOP_MULTIPLIER = 3;
 
 export default function CertificatesCarousel() {
@@ -47,20 +41,54 @@ export default function CertificatesCarousel() {
 
   const loopSlides = useMemo(
     () =>
-      Array.from({ length: LOOP_MULTIPLIER }, () => [...CERTIFICATES]).flat().map((c, i) => ({
-        ...c,
-        _key: `${c.src}-${i}`,
-        _index: i % CERTIFICATES.length,
-      })),
+      Array.from({ length: LOOP_MULTIPLIER }, () => [...CERTIFICATES])
+        .flat()
+        .map((c, i) => ({
+          ...c,
+          _key: `${c.src}-${i}`,
+          _index: i % CERTIFICATES.length,
+        })),
     []
   );
+
+  const openLightbox = useCallback((index: number) => {
+    setLightbox(index);
+  }, []);
+
+  const closeLightbox = useCallback(() => setLightbox(null), []);
+
+  const nextInLightbox = useCallback(() => {
+    setLightbox((prev) =>
+      prev === null ? null : (prev + 1) % CERTIFICATES.length
+    );
+  }, []);
+
+  const prevInLightbox = useCallback(() => {
+    setLightbox((prev) =>
+      prev === null ? null : (prev - 1 + CERTIFICATES.length) % CERTIFICATES.length
+    );
+  }, []);
+
+  useEffect(() => {
+    if (lightbox === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowRight") nextInLightbox();
+      if (e.key === "ArrowLeft") prevInLightbox();
+    };
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [lightbox, closeLightbox, nextInLightbox, prevInLightbox]);
 
   return (
     <>
       <section
         aria-labelledby="certificates-heading"
         style={{
-          /* Плавный переход от контента страницы к футеру; карточки сертификатов — без серой «коробки» */
           background:
             "linear-gradient(180deg, rgba(10,15,30,0.92) 0%, rgba(10,15,30,0.98) 55%, #0A0F1E 100%)",
           borderTop: "1px solid rgba(255,255,255,0.06)",
@@ -127,6 +155,7 @@ export default function CertificatesCarousel() {
                 loop: true,
                 dragFree: false,
                 skipSnaps: false,
+                slidesToScroll: 1,
               }}
               className="w-full mx-auto"
             >
@@ -138,12 +167,17 @@ export default function CertificatesCarousel() {
                   >
                     <button
                       type="button"
-                      onClick={() => setLightbox(c._index)}
-                      className="cert-card group w-full text-left rounded-xl overflow-hidden border border-white/12 bg-transparent backdrop-blur-[2px] transition-all duration-200 hover:border-red-500/45 hover:bg-white/[0.03] focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0F1E]"
-                      style={{ cursor: "pointer" }}
+                      onClick={() => openLightbox(c._index)}
+                      className="cert-card group w-full text-left rounded-lg overflow-visible transition-opacity duration-200 hover:opacity-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500/80 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0F1E]"
+                      style={{
+                        cursor: "pointer",
+                        background: "transparent",
+                        border: "none",
+                        padding: 0,
+                      }}
                     >
                       <div
-                        className="relative w-full overflow-hidden bg-transparent"
+                        className="relative w-full overflow-visible bg-transparent"
                         style={{ aspectRatio: "3 / 4", maxHeight: 400 }}
                       >
                         <img
@@ -151,10 +185,11 @@ export default function CertificatesCarousel() {
                           alt={c.alt}
                           loading="lazy"
                           decoding="async"
-                          className="w-full h-full object-contain object-center p-1 sm:p-2 transition-transform duration-300 group-hover:scale-[1.02] drop-shadow-[0_8px_24px_rgba(0,0,0,0.35)]"
+                          className="w-full h-full object-contain object-center transition-transform duration-300 group-hover:scale-[1.02] drop-shadow-[0_12px_32px_rgba(0,0,0,0.45)]"
+                          style={{ background: "transparent" }}
                         />
                       </div>
-                      <div style={{ padding: "0.55rem 0.65rem 0.75rem" }}>
+                      <div style={{ padding: "0.55rem 0 0.75rem" }}>
                         <span
                           style={{
                             fontSize: "0.7rem",
@@ -173,7 +208,7 @@ export default function CertificatesCarousel() {
                             color: "rgba(255,255,255,0.4)",
                           }}
                         >
-                          Нажмите, чтобы увеличить
+                          Нажмите, чтобы открыть
                         </div>
                       </div>
                     </button>
@@ -182,11 +217,11 @@ export default function CertificatesCarousel() {
               </CarouselContent>
 
               <CarouselPrevious
-                className="flex size-10 sm:size-11 rounded-full border border-white/30 bg-[#0A0F1E]/40 text-white shadow-[0_4px_20px_rgba(0,0,0,0.35)] backdrop-blur-md hover:bg-white/10 hover:text-white hover:border-white/45 disabled:opacity-40 left-0 sm:left-1 md:left-2 z-20"
+                className="flex size-10 sm:size-11 rounded-full border border-white/35 bg-[#0A0F1E]/55 text-white shadow-lg backdrop-blur-sm hover:bg-white/15 hover:text-white hover:border-white/50 disabled:opacity-35 left-0 sm:left-1 md:left-2 z-20"
                 variant="outline"
               />
               <CarouselNext
-                className="flex size-10 sm:size-11 rounded-full border border-white/30 bg-[#0A0F1E]/40 text-white shadow-[0_4px_20px_rgba(0,0,0,0.35)] backdrop-blur-md hover:bg-white/10 hover:text-white hover:border-white/45 disabled:opacity-40 right-0 sm:right-1 md:right-2 z-20"
+                className="flex size-10 sm:size-11 rounded-full border border-white/35 bg-[#0A0F1E]/55 text-white shadow-lg backdrop-blur-sm hover:bg-white/15 hover:text-white hover:border-white/50 disabled:opacity-35 right-0 sm:right-1 md:right-2 z-20"
                 variant="outline"
               />
             </Carousel>
@@ -199,33 +234,107 @@ export default function CertificatesCarousel() {
                 color: "rgba(255,255,255,0.35)",
               }}
             >
-              Свайпните влево / вправо — карусель листается по кругу
+              Свайпните влево / вправо
             </p>
           </div>
         </div>
       </section>
 
-      <Dialog open={lightbox !== null} onOpenChange={(o) => !o && setLightbox(null)}>
-        <DialogContent className="max-w-[min(96vw,900px)] max-h-[92vh] overflow-y-auto border-white/10 bg-[#0d1528]/95 backdrop-blur-sm p-3 sm:p-6">
-          {lightbox !== null && (
-            <>
-              <DialogTitle className="text-white text-base sm:text-lg font-bold pr-8">
-                {CERTIFICATES[lightbox].alt}
-              </DialogTitle>
-              <DialogDescription className="sr-only">
-                Увеличенное изображение сертификата для просмотра деталей документа.
-              </DialogDescription>
-              <div className="mt-3 rounded-lg overflow-hidden bg-white/95">
+      {/* Лайтбокс без белых рамок: клик по фону или по фото — закрыть; стрелки — листать */}
+      {lightbox !== null && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8"
+          style={{ background: "rgba(0,0,0,0.82)" }}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="lightbox-title"
+          onClick={closeLightbox}
+        >
+          <div
+            className="relative flex max-h-[92vh] w-full max-w-[min(96vw,920px)] flex-col items-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={closeLightbox}
+              className="absolute -top-1 right-0 z-30 flex size-10 items-center justify-center rounded-full border border-white/30 bg-black/50 text-white transition hover:bg-white/20 sm:-right-2 sm:top-0"
+              aria-label="Закрыть"
+            >
+              <X className="size-5" />
+            </button>
+
+            <h3
+              id="lightbox-title"
+              className="mb-3 max-w-full pr-10 text-left text-sm font-bold text-white sm:text-base"
+            >
+              {CERTIFICATES[lightbox].alt}
+            </h3>
+
+            <div className="relative flex w-full items-center justify-center gap-2 sm:gap-4">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  prevInLightbox();
+                }}
+                className="hidden shrink-0 sm:flex size-11 items-center justify-center rounded-full border border-white/35 bg-white/10 text-white transition hover:bg-white/20 md:size-12"
+                aria-label="Предыдущий сертификат"
+              >
+                <ChevronLeft className="size-6" />
+              </button>
+
+              <button
+                type="button"
+                onClick={closeLightbox}
+                className="max-h-[min(78vh,1100px)] w-full cursor-zoom-out bg-transparent p-0"
+                aria-label="Закрыть просмотр (повторный клик)"
+              >
                 <img
                   src={CERTIFICATES[lightbox].src}
-                  alt={CERTIFICATES[lightbox].alt}
-                  className="w-full h-auto object-contain max-h-[min(78vh,1200px)]"
+                  alt=""
+                  className="mx-auto h-auto max-h-[min(78vh,1100px)] w-full object-contain"
+                  style={{ background: "transparent" }}
                 />
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
+              </button>
+
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  nextInLightbox();
+                }}
+                className="hidden shrink-0 sm:flex size-11 items-center justify-center rounded-full border border-white/35 bg-white/10 text-white transition hover:bg-white/20 md:size-12"
+                aria-label="Следующий сертификат"
+              >
+                <ChevronRight className="size-6" />
+              </button>
+            </div>
+
+            <p className="mt-3 text-center text-xs text-white/50">
+              Клик по затемнению или по снимку — закрыть · стрелки на клавиатуре ← →
+            </p>
+
+            <div className="mt-4 flex justify-center gap-3 sm:hidden">
+              <button
+                type="button"
+                onClick={prevInLightbox}
+                className="flex size-10 items-center justify-center rounded-full border border-white/35 bg-white/10 text-white"
+                aria-label="Назад"
+              >
+                <ChevronLeft className="size-5" />
+              </button>
+              <button
+                type="button"
+                onClick={nextInLightbox}
+                className="flex size-10 items-center justify-center rounded-full border border-white/35 bg-white/10 text-white"
+                aria-label="Вперёд"
+              >
+                <ChevronRight className="size-5" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
