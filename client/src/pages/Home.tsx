@@ -287,7 +287,7 @@ export default function Home() {
                 loading="eager"
                 style={{
                   position: "absolute",
-                  bottom: 0,
+                  bottom: 36,
                   left: "54%",
                   transform: "translateX(-50%)",
                   width: "auto",
