@@ -287,11 +287,11 @@ export default function Home() {
                 loading="eager"
                 style={{
                   position: "absolute",
-                  bottom: 36,
-                  left: "calc(54% - 56px)",
+                  bottom: 0,
+                  left: "calc(54% - 20px)",
                   transform: "translateX(-50%)",
                   width: "auto",
-                  height: 580,
+                  height: 620,
                   maxHeight: "none",
                   objectFit: "contain",
                   objectPosition: "center bottom",
