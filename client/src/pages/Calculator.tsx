@@ -352,9 +352,9 @@ export default function CalculatorPage() {
               <div style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.65rem", letterSpacing: "0.08em", textTransform: "uppercase" as const }}>Санитарная служба</div>
             </div>
           </Link>
-          <a href="tel:+74951485806" style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: WHITE, textDecoration: "none", fontSize: "0.85rem", fontWeight: 600 }}>
+          <a href="tel:+74951452169" style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: WHITE, textDecoration: "none", fontSize: "0.85rem", fontWeight: 600 }}>
             <Phone size={15} color={RED} />
-            8(495)148-58-06
+            8(495)145-21-69
           </a>
         </div>
       </div>

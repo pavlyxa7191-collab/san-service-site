@@ -29,14 +29,14 @@ export default function SiteFooter() {
               Санитарная служба
             </div>
             <a
-              href="tel:+74951485806"
+              href="tel:+74951452169"
               style={{
                 color: WHITE, textDecoration: "none",
                 fontSize: 15, fontWeight: 600,
                 display: "inline-flex", alignItems: "center", gap: 6,
               }}
             >
-              <span style={{ color: RED }}>☎</span> 8(495)148-58-06
+              <span style={{ color: RED }}>☎</span> 8(495)145-21-69
             </a>
           </div>
 

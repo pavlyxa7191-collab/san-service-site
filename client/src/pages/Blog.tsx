@@ -367,7 +367,7 @@ function ArticlePage({ slug }: { slug: string }) {
                 }}>
                   Рассчитать стоимость <ArrowRight size={14} />
                 </Link>
-                <a href="tel:+74951485806" style={{
+                <a href="tel:+74951452169" style={{
                   display: "inline-flex", alignItems: "center", gap: 8,
                   background: "transparent", color: WHITE, textDecoration: "none",
                   padding: "12px 24px", borderRadius: 10, fontWeight: 700, fontSize: 14,
@@ -418,8 +418,8 @@ function ArticlePage({ slug }: { slug: string }) {
               <div style={{ fontSize: 11, fontWeight: 700, color: `${RED}`, letterSpacing: "0.1em", textTransform: "uppercase" as const, marginBottom: 12 }}>
                 Позвонить
               </div>
-              <a href="tel:+74951485806" style={{ fontSize: 22, fontWeight: 900, color: WHITE, textDecoration: "none", display: "block", marginBottom: 6 }}>
-                8(495)148-58-06
+              <a href="tel:+74951452169" style={{ fontSize: 22, fontWeight: 900, color: WHITE, textDecoration: "none", display: "block", marginBottom: 6 }}>
+                8(495)145-21-69
               </a>
               <p style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", margin: 0 }}>Работаем 24/7</p>
             </div>
@@ -600,7 +600,7 @@ export default function Blog() {
                 }}>
                   Рассчитать цену <ArrowRight size={14} />
                 </Link>
-                <a href="tel:+74951485806" style={{
+                <a href="tel:+74951452169" style={{
                   display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
                   background: "transparent", color: WHITE, textDecoration: "none",
                   padding: "14px 28px", borderRadius: 10, fontWeight: 700, fontSize: 14,
@@ -608,7 +608,7 @@ export default function Blog() {
                   boxSizing: "border-box" as const, maxWidth: "100%",
                 }}>
                   <Phone size={18} strokeWidth={2.25} style={{ flexShrink: 0 }} aria-hidden />
-                  8(495)148-58-06
+                  8(495)145-21-69
                 </a>
               </div>
             </div>

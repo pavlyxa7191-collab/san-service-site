@@ -50,8 +50,8 @@ type SchemaMarkupProps =
   | WebsiteSchemaProps
   | ArticleSchemaProps;
 
-const PHONE = "+74951485806";
-const PHONE_CLEAN = "+74951485806";
+const PHONE = "+74951452169";
+const PHONE_CLEAN = "+74951452169";
 const ORG_NAME = "ЭкоЦентр — Санитарная служба";
 const ORG_DESCRIPTION =
   "Профессиональная дезинсекция, дезинфекция и дератизация в Москве и Московской области. Уничтожение клопов, тараканов, грызунов, клещей, плесени. Гарантия до 3 лет.";

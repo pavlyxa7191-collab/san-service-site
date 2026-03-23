@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 const PHONE = "84951485806";
-const PHONE_DISPLAY = "8(495)148-58-06";
+const PHONE_DISPLAY = "8(495)145-21-69";
 const WHATSAPP_NUMBER = "79099030699";
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
 const TELEGRAM_URL = `https://t.me/dezmasters`;

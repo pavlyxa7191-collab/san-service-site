@@ -44,9 +44,9 @@ const contactCards = [
   {
     icon: <Phone size={22} color={RED} />,
     label: "Телефон",
-    value: "8(495)148-58-06",
+    value: "8(495)145-21-69",
     sub: "Работаем 24/7",
-    href: "tel:+74951485806",
+    href: "tel:+74951452169",
     isLink: true,
   },
   {
@@ -54,7 +54,7 @@ const contactCards = [
     label: "WhatsApp",
     value: "Написать в WhatsApp",
     sub: "Ответим за 5 минут",
-    href: "https://wa.me/74951485806",
+    href: "https://wa.me/74951452169",
     isLink: true,
   },
   {
@@ -102,9 +102,9 @@ export default function Contacts() {
 
   useEffect(() => {
     applyPageSeo({
-      title: "Контакты — Санитарная служба Москва | 8(495)148-58-06",
+      title: "Контакты — Санитарная служба Москва | 8(495)145-21-69",
       description:
-        "Свяжитесь с нашей санитарной службой: телефон 8(495)148-58-06, WhatsApp, email. Адрес: Москва, ул. Профсоюзная, д. 56. Работаем 24/7.",
+        "Свяжитесь с нашей санитарной службой: телефон 8(495)145-21-69, WhatsApp, email. Адрес: Москва, ул. Профсоюзная, д. 56. Работаем 24/7.",
     });
   }, []);
 
@@ -247,12 +247,12 @@ export default function Contacts() {
                     <p style={{ fontSize: 15, color: GRAY, margin: "0 0 28px" }}>
                       Наш специалист перезвонит вам в течение 15 минут.
                     </p>
-                    <a href="tel:+74951485806" style={{
+                    <a href="tel:+74951452169" style={{
                       display: "inline-flex", alignItems: "center", gap: 8,
                       background: RED, color: WHITE, textDecoration: "none",
                       padding: "12px 28px", borderRadius: 10, fontWeight: 700, fontSize: 14,
                     }}>
-                      <Phone size={14} /> 8(495)148-58-06
+                      <Phone size={14} /> 8(495)145-21-69
                     </a>
                   </div>
                 ) : (
@@ -357,19 +357,19 @@ export default function Contacts() {
                   <div style={{ fontSize: 11, fontWeight: 700, color: RED, letterSpacing: "0.1em", textTransform: "uppercase" as const, marginBottom: 12 }}>
                     Быстрый звонок
                   </div>
-                  <a href="tel:+74951485806" style={{ fontSize: 26, fontWeight: 900, color: WHITE, textDecoration: "none", display: "block", marginBottom: 6, letterSpacing: "-0.02em" }}>
-                    8(495)148-58-06
+                  <a href="tel:+74951452169" style={{ fontSize: 26, fontWeight: 900, color: WHITE, textDecoration: "none", display: "block", marginBottom: 6, letterSpacing: "-0.02em" }}>
+                    8(495)145-21-69
                   </a>
                   <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", margin: "0 0 24px" }}>Работаем 24/7</p>
                   <div style={{ display: "flex", gap: 10 }}>
-                    <a href="tel:+74951485806" style={{
+                    <a href="tel:+74951452169" style={{
                       flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
                       background: RED, color: WHITE, textDecoration: "none",
                       padding: "11px 16px", borderRadius: 8, fontWeight: 700, fontSize: 13,
                     }}>
                       <Phone size={13} /> Позвонить
                     </a>
-                    <a href="https://wa.me/74951485806" style={{
+                    <a href="https://wa.me/74951452169" style={{
                       flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
                       background: "rgba(255,255,255,0.1)", color: WHITE, textDecoration: "none",
                       padding: "11px 16px", borderRadius: 8, fontWeight: 700, fontSize: 13,

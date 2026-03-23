@@ -234,7 +234,7 @@ export function ServiceHero({ title, subtitle, trustBar, onCta }: {
             <a href="#form" onClick={onCta} className="btn-red btn-pulse" style={{ borderRadius: 8, textTransform: "none" as const, fontSize: 15, padding: "14px 28px" }}>
               Рассчитать цену
             </a>
-            <a href="tel:+74951485806" className="btn-outline-white" style={{ borderRadius: 8, textTransform: "none" as const, fontSize: 15, padding: "14px 28px" }}>
+            <a href="tel:+74951452169" className="btn-outline-white" style={{ borderRadius: 8, textTransform: "none" as const, fontSize: 15, padding: "14px 28px" }}>
               ☎ Позвонить
             </a>
           </div>

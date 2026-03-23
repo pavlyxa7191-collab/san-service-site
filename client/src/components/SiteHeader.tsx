@@ -453,7 +453,7 @@ export default function SiteHeader() {
           {/* Right side */}
           <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexShrink: 0, marginLeft: "auto" }}>
             <a
-              href="tel:+74951485806"
+              href="tel:+74951452169"
               className="site-phone-link"
               style={{
                 fontSize: "0.82rem",
@@ -464,7 +464,7 @@ export default function SiteHeader() {
               }}
             >
               <Phone size={14} style={{ color: RED }} />
-              8(495)148-58-06
+              8(495)145-21-69
             </a>
             <Link
               href="/calculator"
@@ -631,7 +631,7 @@ export default function SiteHeader() {
         {/* Footer with phone + CTA */}
         <div className="mobile-menu-footer">
           <a
-            href="tel:+74951485806"
+            href="tel:+74951452169"
             style={{
               display: "flex",
               alignItems: "center",
@@ -644,7 +644,7 @@ export default function SiteHeader() {
             }}
           >
             <Phone size={18} style={{ color: RED, flexShrink: 0 }} />
-            8(495)148-58-06
+            8(495)145-21-69
           </a>
           <Link
             href="/calculator"

@@ -597,7 +597,7 @@ export default function Prices() {
               Калькулятор <ArrowRight size={15} />
             </Link>
             <a
-              href="tel:+74951485806"
+              href="tel:+74951452169"
               style={{
                 display: "inline-flex", alignItems: "center", gap: 8,
                 padding: "0.875rem 1.75rem",
