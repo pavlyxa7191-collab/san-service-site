@@ -84,7 +84,7 @@ function vitePluginSeoYandex(): Plugin {
         "User-agent: Yandex",
         "Allow: /",
         "",
-        `Sitemap: ${base}/sitemap.xml`,
+        "Sitemap: https://www.ses88.ru/sitemap.xml",
         "",
       ].join("\n");
 
