@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link } from "wouter";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import { applyPageSeo } from "@/lib/seo";
+import CertificatesCarousel from "@/components/CertificatesCarousel";
 
 const NAVY = "#0A0F1E";
 const RED = "#D0021B";
@@ -82,6 +83,7 @@ export default function ServicesIndex() {
           </div>
         </div>
       </section>
+      <CertificatesCarousel />
     </div>
   );
 }

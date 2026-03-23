@@ -3,6 +3,7 @@ import SchemaMarkup from "@/components/SchemaMarkup";
 import { SITE_URL } from "@/siteConfig";
 import { applyPageSeo } from "@/lib/seo";
 import ReviewsCarousel from "@/components/ReviewsCarousel";
+import CertificatesCarousel from "@/components/CertificatesCarousel";
 import { useState, useEffect, useRef } from "react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
@@ -912,6 +913,7 @@ export default function ServicePage() {
       </div>
 
       <ReviewsCarousel pageContext="service" />
+      <CertificatesCarousel />
 
       {/* ── STICKY MOBILE CTA ── */}
       <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: NAVY, padding: "0.75rem 1rem", display: "none", zIndex: 100, borderTop: `2px solid ${RED}` }} className="mobile-sticky-cta">
