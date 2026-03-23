@@ -913,6 +913,14 @@ export default function ServicePage() {
 
       <ReviewsCarousel pageContext="service" />
 
+      {/* ── STICKY MOBILE CTA ── */}
+      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: NAVY, padding: "0.75rem 1rem", display: "none", zIndex: 100, borderTop: `2px solid ${RED}` }} className="mobile-sticky-cta">
+        <div style={{ display: "flex", gap: "0.625rem", maxWidth: 600, margin: "0 auto" }}>
+          <a href="tel:+74951452169" style={{ flex: 1, minWidth: 0, padding: "0.75rem", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6, border: `1px solid rgba(255,255,255,0.25)`, color: WHITE, textDecoration: "none", fontWeight: 700, fontSize: "0.8rem", borderRadius: 3 }}><Phone size={16} strokeWidth={2.25} style={{ flexShrink: 0 }} aria-hidden />Позвонить</a>
+          <a href="#order" style={{ flex: 1, padding: "0.75rem", textAlign: "center", background: RED, color: WHITE, textDecoration: "none", fontWeight: 800, fontSize: "0.8rem", borderRadius: 3 }}>Заказать →</a>
+        </div>
+      </div>
+
       {/* ── RELATED SERVICES ── */}
       <section style={{ background: GRAY_BG, padding: "3rem 0", borderTop: `1px solid ${GRAY_BD}` }}>
         <div className="container">
@@ -938,14 +946,6 @@ export default function ServicePage() {
           </div>
         </div>
       </section>
-
-      {/* ── STICKY MOBILE CTA ── */}
-      <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: NAVY, padding: "0.75rem 1rem", display: "none", zIndex: 100, borderTop: `2px solid ${RED}` }} className="mobile-sticky-cta">
-        <div style={{ display: "flex", gap: "0.625rem", maxWidth: 600, margin: "0 auto" }}>
-          <a href="tel:+74951452169" style={{ flex: 1, minWidth: 0, padding: "0.75rem", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6, border: `1px solid rgba(255,255,255,0.25)`, color: WHITE, textDecoration: "none", fontWeight: 700, fontSize: "0.8rem", borderRadius: 3 }}><Phone size={16} strokeWidth={2.25} style={{ flexShrink: 0 }} aria-hidden />Позвонить</a>
-          <a href="#order" style={{ flex: 1, padding: "0.75rem", textAlign: "center", background: RED, color: WHITE, textDecoration: "none", fontWeight: 800, fontSize: "0.8rem", borderRadius: 3 }}>Заказать →</a>
-        </div>
-      </div>
     </div>
   );
 }
