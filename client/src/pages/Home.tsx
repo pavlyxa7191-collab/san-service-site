@@ -3,6 +3,7 @@ import { Link } from "wouter";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import { applyPageSeo } from "@/lib/seo";
 import ReviewsCarousel from "@/components/ReviewsCarousel";
+import CertificatesCarousel from "@/components/CertificatesCarousel";
 import { trpc } from "@/lib/trpc";
 import {
   formatRuPhoneInput,
@@ -623,6 +624,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <CertificatesCarousel />
 
       {/* ═══════════════════════════════════════════════════════════════════
           ADVANTAGES — 4 columns on dark bg
