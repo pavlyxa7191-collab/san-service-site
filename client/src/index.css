@@ -842,7 +842,6 @@
 /* 1024px: tablet landscape */
 @media (max-width: 1024px) {
   .hero-grid { grid-template-columns: 1fr 360px !important; }
-  .hero-grid > div:nth-child(2) { display: none !important; }
   .services-grid { grid-template-columns: repeat(2, 1fr) !important; }
   .services-grid-new { grid-template-columns: repeat(2, 1fr) !important; }
   .methods-grid { grid-template-columns: repeat(2, 1fr) !important; }

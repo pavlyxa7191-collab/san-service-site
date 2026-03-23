@@ -189,7 +189,7 @@ export default function Home() {
           {/* 3-column grid */}
           <div className="hero-grid" style={{
             display: "grid",
-            gridTemplateColumns: "1fr 350px 320px",
+            gridTemplateColumns: "1fr 320px",
             gap: "0",
             alignItems: "stretch",
             width: "100%",
@@ -249,9 +249,8 @@ export default function Home() {
                 </a>
               </div>
 
-               {/* Stats + mobile photo in parallel (photo visible only on mobile via CSS) */}
+              {/* Stats */}
               <div className="hero-bottom-row" style={{ display: "flex", alignItems: "center", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "1.75rem", gap: "0" }}>
-                {/* Stats */}
                 <div className="hero-stats" style={{ display: "flex", gap: "0", flex: 1 }}>
                   {[
                     { n: "15+",     label: "лет на рынке" },
@@ -270,46 +269,7 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
-                {/* Mobile master photo — shown only on mobile, to the right of stats */}
-                <div className="hero-mobile-master" style={{ display: "none" }}>
-                  <img
-                    src="/specialist-mobile.png"
-                    alt="Специалист по дезинфекции"
-                    style={{ width: "100%", height: "auto", objectFit: "contain", objectPosition: "center top", display: "block" }}
-                  />
-                </div>
               </div>
-            </div>
-
-            {/* -- COL 2: Specialist PNG -- */}
-            <div className="hero-img-col" style={{ position: "relative", overflow: "visible", marginRight: 0, minHeight: 520 }}>
-              {/* Glow under specialist */}
-              <div style={{
-                position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)",
-                width: "80%", height: "20%",
-                background: "radial-gradient(ellipse at bottom, rgba(204,0,0,0.5) 0%, transparent 70%)",
-                pointerEvents: "none",
-                zIndex: 2,
-              }} />
-              <img
-                src="/specialist-hero.png"
-                alt="Специалист по дезинфекции"
-                loading="eager"
-                style={{
-                  position: "absolute",
-                  bottom: 0,
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  width: "auto",
-                  height: 520,
-                  maxHeight: "none",
-                  objectFit: "contain",
-                  objectPosition: "center bottom",
-                  filter: "drop-shadow(0 0 0 transparent)",
-                  zIndex: 3,
-                  pointerEvents: "none",
-                }}
-              />
             </div>
 
             {/* -- COL 3: Lead Form -- */}
