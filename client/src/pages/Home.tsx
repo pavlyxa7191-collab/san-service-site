@@ -288,10 +288,10 @@ export default function Home() {
                 style={{
                   position: "absolute",
                   bottom: 0,
-                  left: "50%",
+                  left: "54%",
                   transform: "translateX(-50%)",
                   width: "auto",
-                  height: 520,
+                  height: 580,
                   maxHeight: "none",
                   objectFit: "contain",
                   objectPosition: "center bottom",
