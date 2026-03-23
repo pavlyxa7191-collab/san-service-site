@@ -189,7 +189,7 @@ export default function Home() {
           {/* 3-column grid */}
           <div className="hero-grid" style={{
             display: "grid",
-            gridTemplateColumns: "1fr 320px",
+            gridTemplateColumns: "1fr 350px 320px",
             gap: "0",
             alignItems: "stretch",
             width: "100%",
@@ -270,6 +270,35 @@ export default function Home() {
                   ))}
                 </div>
               </div>
+            </div>
+
+            {/* -- COL 2: Specialist PNG -- */}
+            <div className="hero-img-col" style={{ position: "relative", overflow: "visible", marginRight: 0, minHeight: 520 }}>
+              <div style={{
+                position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)",
+                width: "80%", height: "20%",
+                background: "radial-gradient(ellipse at bottom, rgba(204,0,0,0.5) 0%, transparent 70%)",
+                pointerEvents: "none",
+                zIndex: 2,
+              }} />
+              <img
+                src="/specialist-hero.png"
+                alt="Специалист по дезинфекции"
+                loading="eager"
+                style={{
+                  position: "absolute",
+                  bottom: 0,
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  width: "auto",
+                  height: 520,
+                  maxHeight: "none",
+                  objectFit: "contain",
+                  objectPosition: "center bottom",
+                  zIndex: 3,
+                  pointerEvents: "none",
+                }}
+              />
             </div>
 
             {/* -- COL 3: Lead Form -- */}
