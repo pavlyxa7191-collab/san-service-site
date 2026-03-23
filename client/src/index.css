@@ -839,13 +839,6 @@
 .hero-grid .form-field::placeholder { color: rgba(255,255,255,0.35) !important; }
 .hero-grid .form-field:focus { border-color: rgba(204,0,0,0.6) !important; box-shadow: none !important; }
 
-/* ≤1500px — hide specialist image, keep text + form (2 cols).
-   Covers all laptops including 1440px. 3-col specialist only on 2K+ monitors. */
-@media (max-width: 1500px) {
-  .hero-grid { grid-template-columns: 1fr 340px !important; }
-  .hero-grid > div:nth-child(2) { display: none !important; }
-}
-
 /* 1024px: tablet landscape */
 @media (max-width: 1024px) {
   .hero-grid { grid-template-columns: 1fr 360px !important; }

@@ -196,7 +196,7 @@ export default function Home() {
             maxWidth: "100%",
             paddingTop: "2rem",
             paddingBottom: "0",
-            overflow: "hidden",
+            overflow: "visible",
           }}>
 
             {/* -- COL 1: Text -- */}
@@ -282,7 +282,7 @@ export default function Home() {
             </div>
 
             {/* -- COL 2: Specialist PNG -- */}
-            <div className="hero-img-col" style={{ position: "relative", overflow: "visible", marginRight: "138px", minHeight: 520 }}>
+            <div className="hero-img-col" style={{ position: "relative", overflow: "visible", marginRight: 0, minHeight: 520 }}>
               {/* Glow under specialist */}
               <div style={{
                 position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)",
