@@ -27,7 +27,6 @@ const RED       = "#D0021B";
 const RED_DARK  = "#a80015";
 const WHITE     = "#ffffff";
 const GRAY_TEXT = "#6b7280";
-const SPECIALIST_IMAGE_URL = "https://private-us-east-1.manuscdn.com/user_upload_by_module/session_file/310519663313765274/GYbcCeYKAKjIWOOv.png?Expires=1804426519&Signature=Nzmptx3v99XLD9EK8EBGlk5Mi6IFOmQzv5JhydT4qxkPUUwpu9-YBbIQI6fKX9ZWii9SZA~XVh8FCqpT~911EcnixsPe57~73u8i1OpcKndX5JYROpDsl93CGN73TQFF3-86e2f39dHwFHJzdp~IC6PUBNjGD2oSeci0sU4np50SRV3U991qxJGIvAsEJps0VqmgZ~TfhMBcrohv9xveOZ-~xgxIR~lKg2GG3ofMSnlMnLFK7w8rQKFtyTyZ9Qv2HoptsKRWl397Mf1VYv-zrVbdHkeDbnvrb1HW~eai4vF5CTVfjFJ1sfwy82g7J-Ylp40yClEGWE5TEXkkZIPszQ__&Key-Pair-Id=K2HSFNDJXOU9YS";
 
 // ─── DATA ─────────────────────────────────────────────────────────────────────
 const services = [
@@ -274,7 +273,7 @@ export default function Home() {
                 {/* Mobile master photo — shown only on mobile, to the right of stats */}
                 <div className="hero-mobile-master" style={{ display: "none" }}>
                   <img
-                    src={SPECIALIST_IMAGE_URL}
+                    src="/specialist-mobile.png"
                     alt="Специалист по дезинфекции"
                     style={{ width: "100%", height: "auto", objectFit: "contain", objectPosition: "center top", display: "block" }}
                   />
@@ -293,7 +292,7 @@ export default function Home() {
                 zIndex: 2,
               }} />
               <img
-                src={SPECIALIST_IMAGE_URL}
+                src="/specialist-hero.png"
                 alt="Специалист по дезинфекции"
                 loading="eager"
                 style={{
