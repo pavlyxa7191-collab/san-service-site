@@ -288,7 +288,7 @@ export default function Home() {
                 style={{
                   position: "absolute",
                   bottom: 0,
-                  left: "calc(54% - 20px)",
+                  left: "calc(54% - 64px)",
                   transform: "translateX(-50%)",
                   width: "auto",
                   height: 620,
