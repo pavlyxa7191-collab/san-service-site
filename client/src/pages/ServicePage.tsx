@@ -613,6 +613,26 @@ export default function ServicePage() {
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${RED} 0%, rgba(204,0,0,0.3) 60%, transparent 100%)` }} />
         {/* Animated pest overlays */}
         <PestOverlay slug={serviceSlug} />
+        {/* Specialist image in center hero zone */}
+        <img
+          className="service-specialist-hero"
+          src="/specialist-hero.png"
+          alt=""
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: "52%",
+            transform: "translateX(-50%)",
+            height: 330,
+            width: "auto",
+            objectFit: "contain",
+            objectPosition: "center bottom",
+            pointerEvents: "none",
+            zIndex: 0,
+            filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.35))",
+          }}
+        />
 
         <div className="container service-hero-container" style={{ position: "relative", zIndex: 1, paddingTop: "4rem", paddingBottom: "3rem", animation: "fadeInUp 0.7s ease both" }}>
           {/* Breadcrumbs */}
@@ -735,6 +755,10 @@ export default function ServicePage() {
         }
         @media (max-width: 768px) {
           .pest-overlay-img { display: none !important; }
+          .service-specialist-hero { display: none !important; }
+        }
+        @media (max-width: 1200px) {
+          .service-specialist-hero { display: none !important; }
         }
         @media (max-width: 900px) {
           .service-layout { grid-template-columns: 1fr !important; }
