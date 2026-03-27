@@ -670,23 +670,32 @@ export default function ServicePage() {
           />
         )}
         {serviceSlug === "pleseni" && (
-          <img
-            className="service-specialist-hero"
-            src="/specialist-pleseni.png"
-            alt="Специалист по удалению плесени"
+          <div
             style={{
               position: "absolute",
               bottom: 0,
               left: "55%",
               transform: "translateX(-50%)",
-              height: "100%",
-              width: "auto",
-              objectFit: "contain",
-              objectPosition: "center bottom",
+              height: "65%",
+              overflow: "hidden",
               pointerEvents: "none",
               zIndex: 5,
             }}
-          />
+          >
+            <img
+              className="service-specialist-hero"
+              src="/specialist-pleseni.png"
+              alt="Специалист по удалению плесени"
+              style={{
+                height: "auto",
+                width: "auto",
+                maxHeight: "160%",
+                objectFit: "contain",
+                objectPosition: "center top",
+                display: "block",
+              }}
+            />
+          </div>
         )}
 
         <div className="container service-hero-container" style={{ position: "relative", zIndex: 6, paddingTop: "4rem", paddingBottom: "3rem", animation: "fadeInUp 0.7s ease both" }}>
