@@ -548,6 +548,7 @@ export default function ServicePage() {
   const serviceSlug = params.service;
   const citySlug = params.city;
   const service = SERVICES[serviceSlug];
+  const isTickService = serviceSlug === "kleshhej";
 
   if (!service) {
     return (
@@ -613,26 +614,29 @@ export default function ServicePage() {
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${RED} 0%, rgba(204,0,0,0.3) 60%, transparent 100%)` }} />
         {/* Animated pest overlays */}
         <PestOverlay slug={serviceSlug} />
-        {/* Specialist image in center hero zone */}
-        <img
-          className="service-specialist-hero"
-          src="/specialist-hero.png"
-          alt=""
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            bottom: 0,
-            left: "52%",
-            transform: "translateX(-50%)",
-            height: 330,
-            width: "auto",
-            objectFit: "contain",
-            objectPosition: "center bottom",
-            pointerEvents: "none",
-            zIndex: 0,
-            filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.35))",
-          }}
-        />
+        {/* Specialist image for ticks service: centered in free hero zone */}
+        {isTickService ? (
+          <img
+            className="service-specialist-hero"
+            src="/specialist-kleshhej.png"
+            alt=""
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: "48%",
+              transform: "translateX(-50%)",
+              height: 390,
+              width: "auto",
+              objectFit: "contain",
+              objectPosition: "center bottom",
+              clipPath: "inset(0 0 17% 0)",
+              pointerEvents: "none",
+              zIndex: 0,
+              filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.35))",
+            }}
+          />
+        ) : null}
 
         <div className="container service-hero-container" style={{ position: "relative", zIndex: 1, paddingTop: "4rem", paddingBottom: "3rem", animation: "fadeInUp 0.7s ease both" }}>
           {/* Breadcrumbs */}
