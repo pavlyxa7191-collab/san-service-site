@@ -620,15 +620,14 @@ export default function ServicePage() {
             style={{
               position: "absolute",
               bottom: 0,
-              left: "50%",
+              left: "55%",
               transform: "translateX(-50%)",
               height: "100%",
               width: "auto",
               objectFit: "contain",
               objectPosition: "center bottom",
               pointerEvents: "none",
-              zIndex: 1,
-              mixBlendMode: "lighten",
+              zIndex: 5,
             }}
           />
         )}
