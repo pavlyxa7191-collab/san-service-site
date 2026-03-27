@@ -612,6 +612,26 @@ export default function ServicePage() {
         <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${RED} 0%, rgba(204,0,0,0.3) 60%, transparent 100%)` }} />
         {/* Animated pest overlays */}
         <PestOverlay slug={serviceSlug} />
+        {serviceSlug === "kleshhej" && (
+          <img
+            className="service-specialist-hero"
+            src="/specialist-kleshhej.png"
+            alt="Специалист по обработке от клещей"
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: "50%",
+              transform: "translateX(-50%)",
+              height: "100%",
+              width: "auto",
+              objectFit: "contain",
+              objectPosition: "center bottom",
+              pointerEvents: "none",
+              zIndex: 1,
+              mixBlendMode: "lighten",
+            }}
+          />
+        )}
 
         <div className="container service-hero-container" style={{ position: "relative", zIndex: 3, paddingTop: "4rem", paddingBottom: "3rem", animation: "fadeInUp 0.7s ease both" }}>
           {/* Breadcrumbs */}
