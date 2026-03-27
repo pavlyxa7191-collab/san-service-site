@@ -684,7 +684,7 @@ export default function ServicePage() {
           >
             <img
               className="service-specialist-hero"
-              src="/specialist-pleseni.png"
+              src="/specialist-pleseni-v2.png"
               alt="Специалист по удалению плесени"
               style={{
                 height: "auto",
