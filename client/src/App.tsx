@@ -43,7 +43,7 @@ function PublicRouter() {
       <ScrollToTop />
       <SpaSeoSync />
       <SiteHeader />
-      <main className="flex-1">
+      <main className="flex-1" style={{ paddingTop: 84 }}>
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/calculator" component={Calculator} />

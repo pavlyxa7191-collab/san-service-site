@@ -624,16 +624,17 @@ export default function ServicePage() {
             style={{
               position: "absolute",
               bottom: 0,
-              left: "48%",
+              left: "50%",
               transform: "translateX(-50%)",
-              height: 390,
+              height: 470,
               width: "auto",
               objectFit: "contain",
               objectPosition: "center bottom",
-              clipPath: "inset(0 0 17% 0)",
+              clipPath: "inset(0 8% 18% 18%)",
               pointerEvents: "none",
               zIndex: 0,
-              filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.35))",
+              mixBlendMode: "screen",
+              filter: "drop-shadow(0 10px 26px rgba(0,0,0,0.35))",
             }}
           />
         ) : null}
