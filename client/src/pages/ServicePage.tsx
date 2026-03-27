@@ -615,7 +615,7 @@ export default function ServicePage() {
         {serviceSlug === "kleshhej" && (
           <img
             className="service-specialist-hero"
-            src="/specialist-kleshhej.png"
+            src="/specialist-kleshhej-v2.png"
             alt="Специалист по обработке от клещей"
             style={{
               position: "absolute",
