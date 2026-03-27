@@ -634,7 +634,7 @@ export default function ServicePage() {
         {serviceSlug === "klopov" && (
           <img
             className="service-specialist-hero"
-            src="/specialist-klopov.png"
+            src="/specialist-klopov-v2.png"
             alt="Специалист по уничтожению клопов"
             style={{
               position: "absolute",
