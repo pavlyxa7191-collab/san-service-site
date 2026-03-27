@@ -628,6 +628,8 @@ export default function ServicePage() {
               objectPosition: "center bottom",
               pointerEvents: "none",
               zIndex: 5,
+              mixBlendMode: "lighten",
+              filter: "brightness(1.15) contrast(1.15)",
             }}
           />
         )}
