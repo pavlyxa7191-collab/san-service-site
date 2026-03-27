@@ -670,7 +670,7 @@ export default function ServicePage() {
           />
         )}
 
-        <div className="container service-hero-container" style={{ position: "relative", zIndex: 3, paddingTop: "4rem", paddingBottom: "3rem", animation: "fadeInUp 0.7s ease both" }}>
+        <div className="container service-hero-container" style={{ position: "relative", zIndex: 6, paddingTop: "4rem", paddingBottom: "3rem", animation: "fadeInUp 0.7s ease both" }}>
           {/* Breadcrumbs */}
           <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: "1.5rem", fontSize: "0.78rem", flexWrap: "wrap" }}>
             <Link href="/" style={{ color: "rgba(255,255,255,0.45)", textDecoration: "none" }}>Главная</Link>
