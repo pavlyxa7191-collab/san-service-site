@@ -604,7 +604,7 @@ export default function ServicePage() {
       />
 
       {/* ── HERO ── */}
-      <section style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_MID} 60%, #0D2B5E 100%)`, position: "relative", overflow: "hidden", minHeight: 430 }}>
+      <section style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_MID} 60%, #0D2B5E 100%)`, position: "relative", overflow: "hidden", minHeight: 430, isolation: "isolate" }}>
         {/* Decorative grid lines */}
         <div style={{ position: "absolute", inset: 0, backgroundImage: `linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)`, backgroundSize: "60px 60px", pointerEvents: "none" }} />
         {/* Decorative circles */}
@@ -623,17 +623,16 @@ export default function ServicePage() {
             aria-hidden="true"
             style={{
               position: "absolute",
-              bottom: -120,
-              left: "53%",
+              bottom: 0,
+              left: "50%",
               transform: "translateX(-50%)",
-              height: 620,
+              height: 430,
               width: "auto",
               objectFit: "contain",
               objectPosition: "center bottom",
-              clipPath: "inset(0 0 30% 0)",
               pointerEvents: "none",
-              zIndex: 5,
-              mixBlendMode: "normal",
+              zIndex: 2,
+              mixBlendMode: "screen",
               borderRadius: 0,
               filter: "none",
             }}
