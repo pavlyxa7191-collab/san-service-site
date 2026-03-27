@@ -626,15 +626,16 @@ export default function ServicePage() {
               bottom: 0,
               left: "50%",
               transform: "translateX(-50%)",
-              height: 430,
+              height: 560,
               width: "auto",
               objectFit: "contain",
               objectPosition: "center bottom",
+              clipPath: "inset(0 0 28% 0)",
               pointerEvents: "none",
               zIndex: 2,
               mixBlendMode: "screen",
               borderRadius: 0,
-              filter: "none",
+              filter: "brightness(1.4) contrast(1.5)",
             }}
           />
         ) : null}
