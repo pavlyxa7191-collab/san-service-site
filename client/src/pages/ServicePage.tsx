@@ -604,7 +604,7 @@ export default function ServicePage() {
       />
 
       {/* ── HERO ── */}
-      <section style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_MID} 60%, #0D2B5E 100%)`, position: "relative", overflow: "hidden" }}>
+      <section style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_MID} 60%, #0D2B5E 100%)`, position: "relative", overflow: "hidden", minHeight: 360 }}>
         {/* Decorative grid lines */}
         <div style={{ position: "absolute", inset: 0, backgroundImage: `linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)`, backgroundSize: "60px 60px", pointerEvents: "none" }} />
         {/* Decorative circles */}
@@ -624,22 +624,21 @@ export default function ServicePage() {
             style={{
               position: "absolute",
               bottom: 0,
-              left: "50%",
+              left: "51%",
               transform: "translateX(-50%)",
-              height: 470,
+              height: 540,
               width: "auto",
               objectFit: "contain",
               objectPosition: "center bottom",
-              clipPath: "inset(0 8% 18% 18%)",
+              clipPath: "inset(0 0 28% 0)",
               pointerEvents: "none",
-              zIndex: 0,
-              mixBlendMode: "screen",
-              filter: "drop-shadow(0 10px 26px rgba(0,0,0,0.35))",
+              zIndex: 2,
+              filter: "none",
             }}
           />
         ) : null}
 
-        <div className="container service-hero-container" style={{ position: "relative", zIndex: 1, paddingTop: "4rem", paddingBottom: "3rem", animation: "fadeInUp 0.7s ease both" }}>
+        <div className="container service-hero-container" style={{ position: "relative", zIndex: 3, paddingTop: "4rem", paddingBottom: "3rem", animation: "fadeInUp 0.7s ease both" }}>
           {/* Breadcrumbs */}
           <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: "1.5rem", fontSize: "0.78rem", flexWrap: "wrap" }}>
             <Link href="/" style={{ color: "rgba(255,255,255,0.45)", textDecoration: "none" }}>Главная</Link>
