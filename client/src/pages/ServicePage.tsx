@@ -623,18 +623,19 @@ export default function ServicePage() {
             aria-hidden="true"
             style={{
               position: "absolute",
-              bottom: 0,
+              bottom: -8,
               left: "53%",
               transform: "translateX(-50%)",
-              height: 500,
+              height: 520,
               width: "auto",
               objectFit: "contain",
               objectPosition: "center bottom",
-              clipPath: "inset(0 0 28% 0)",
+              clipPath: "inset(0 0 30% 0)",
               pointerEvents: "none",
-              zIndex: 2,
-              mixBlendMode: "screen",
-              filter: "contrast(1.03)",
+              zIndex: 5,
+              mixBlendMode: "lighten",
+              borderRadius: 12,
+              filter: "none",
             }}
           />
         ) : null}
