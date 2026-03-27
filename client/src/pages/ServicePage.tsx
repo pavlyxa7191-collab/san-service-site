@@ -676,7 +676,7 @@ export default function ServicePage() {
               bottom: 0,
               left: "55%",
               transform: "translateX(-50%)",
-              height: "65%",
+              height: "82%",
               overflow: "hidden",
               pointerEvents: "none",
               zIndex: 5,
@@ -689,7 +689,7 @@ export default function ServicePage() {
               style={{
                 height: "auto",
                 width: "auto",
-                maxHeight: "160%",
+                maxHeight: "130%",
                 objectFit: "contain",
                 objectPosition: "center top",
                 display: "block",
