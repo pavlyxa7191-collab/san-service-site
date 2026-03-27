@@ -658,7 +658,7 @@ export default function ServicePage() {
             style={{
               position: "absolute",
               bottom: 0,
-              left: "55%",
+              left: "60%",
               transform: "translateX(-50%)",
               height: "100%",
               width: "auto",
