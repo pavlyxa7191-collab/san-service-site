@@ -726,6 +726,25 @@ export default function ServicePage() {
             }}
           />
         )}
+        {serviceSlug === "zapahov" && (
+          <img
+            className="service-specialist-hero"
+            src="/specialist-zapahov.png"
+            alt="Специалист по удалению запахов"
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: "55%",
+              transform: "translateX(-50%)",
+              height: "100%",
+              width: "auto",
+              objectFit: "contain",
+              objectPosition: "center bottom",
+              pointerEvents: "none",
+              zIndex: 5,
+            }}
+          />
+        )}
 
         <div className="container service-hero-container" style={{ position: "relative", zIndex: 6, paddingTop: "4rem", paddingBottom: "3rem", animation: "fadeInUp 0.7s ease both" }}>
           {/* Breadcrumbs */}
