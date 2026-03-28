@@ -866,6 +866,13 @@
   .steps-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 1.5rem !important; }
   .advantages-grid { grid-template-columns: repeat(2, 1fr) !important; }
   .reviews-grid { grid-template-columns: 1fr !important; }
+  .service-specialist-hero {
+    height: 55% !important;
+    left: auto !important;
+    right: -10px !important;
+    transform: none !important;
+    opacity: 0.45;
+  }
 }
 
 /* 480px: mobile */
