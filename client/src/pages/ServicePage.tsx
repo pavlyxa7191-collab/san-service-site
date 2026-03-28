@@ -669,6 +669,25 @@ export default function ServicePage() {
             }}
           />
         )}
+        {serviceSlug === "pleseni" && (
+          <img
+            className="service-specialist-hero"
+            src="/specialist-pleseni-v6.png"
+            alt="Специалист по удалению плесени"
+            style={{
+              position: "absolute",
+              bottom: 0,
+              left: "55%",
+              transform: "translateX(-50%)",
+              height: "100%",
+              width: "auto",
+              objectFit: "contain",
+              objectPosition: "center bottom",
+              pointerEvents: "none",
+              zIndex: 5,
+            }}
+          />
+        )}
         {serviceSlug === "gryzunov" && (
           <img
             className="service-specialist-hero"
