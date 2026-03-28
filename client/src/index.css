@@ -871,7 +871,9 @@
     left: auto !important;
     right: -10px !important;
     transform: none !important;
-    opacity: 0.45;
+    opacity: 0.35;
+    z-index: 7 !important;
+    pointer-events: none !important;
   }
 }
 
