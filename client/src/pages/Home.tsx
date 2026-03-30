@@ -422,6 +422,29 @@ export default function Home() {
       </div>
 
       {/* ═══════════════════════════════════════════════════════════════════
+          YANDEX RATING
+      ═══════════════════════════════════════════════════════════════════ */}
+      <a href="/#reviews" style={{ textDecoration: "none", display: "block", background: WHITE, borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
+        <div className="container" style={{ padding: "1rem 0", display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.625rem" }}>
+            <div style={{ width: 36, height: 36, borderRadius: "50%", background: "#FC3F1D", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <span style={{ color: "#fff", fontWeight: 900, fontSize: "1.25rem", lineHeight: 1 }}>Я</span>
+            </div>
+            <div style={{ display: "flex", gap: 2 }}>
+              {[1,2,3,4,5].map(i => (
+                <svg key={i} width="22" height="22" viewBox="0 0 24 24" fill="#FABD02">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01L12 2z"/>
+                </svg>
+              ))}
+            </div>
+          </div>
+          <span style={{ fontSize: "clamp(0.8rem, 2vw, 0.95rem)", fontWeight: 600, color: NAVY_TEXT, letterSpacing: "-0.01em" }}>
+            Рейтинг организации в Яндексе — <strong>5.0</strong>
+          </span>
+        </div>
+      </a>
+
+      {/* ═══════════════════════════════════════════════════════════════════
           SERVICES — unified block with method chips
       ═══════════════════════════════════════════════════════════════════ */}
       <section style={{ padding: "5rem 0", background: WHITE }}>
