@@ -779,7 +779,7 @@ export default function ServicePage() {
                 >
                   Рассчитать цену
                 </Link>
-                <a
+                <span className="phoneAllostat"><a
                   href="tel:+74951452169"
                   style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.875rem 1.75rem", background: "transparent", color: WHITE, textDecoration: "none", fontWeight: 700, fontSize: "0.85rem", border: "1px solid rgba(255,255,255,0.35)", borderRadius: 8, transition: "background 0.2s" }}
                   onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,255,255,0.1)"; }}
@@ -787,7 +787,7 @@ export default function ServicePage() {
                 >
                   <Phone size={18} strokeWidth={2.25} style={{ flexShrink: 0 }} aria-hidden />
                   Позвонить
-                </a>
+                </a></span>
               </div>
             </div>
             {/* Pest image or icon with prohibition circle */}
@@ -1052,7 +1052,7 @@ export default function ServicePage() {
           {/* Phone */}
           <div style={{ background: GRAY_BG, borderRadius: 12, padding: "1.125rem", textAlign: "center", marginBottom: "0.875rem", border: `1px solid ${GRAY_BD}` }}>
             <div style={{ fontSize: "0.65rem", color: "#9CA3AF", marginBottom: "0.375rem", letterSpacing: "0.1em", textTransform: "uppercase" }}>Звонок бесплатный</div>
-            <a href="tel:+74951452169" style={{ display: "block", fontSize: "1.15rem", fontWeight: 800, color: NAVY, textDecoration: "none", marginBottom: "0.2rem" }}>8(495)145-21-69</a>
+            <span className="phoneAllostat"><a href="tel:+74951452169" style={{ display: "block", fontSize: "1.15rem", fontWeight: 800, color: NAVY, textDecoration: "none", marginBottom: "0.2rem" }}>8(495)145-21-69</a></span>
             <div style={{ fontSize: "0.72rem", color: "#9CA3AF" }}>Ежедневно 8:00–22:00</div>
           </div>
 
@@ -1075,7 +1075,7 @@ export default function ServicePage() {
       {/* ── STICKY MOBILE CTA ── */}
       <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: NAVY, padding: "0.75rem 1rem", display: "none", zIndex: 100, borderTop: `2px solid ${RED}` }} className="mobile-sticky-cta">
         <div style={{ display: "flex", gap: "0.625rem", maxWidth: 600, margin: "0 auto" }}>
-          <a href="tel:+74951452169" style={{ flex: 1, minWidth: 0, padding: "0.75rem", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6, border: `1px solid rgba(255,255,255,0.25)`, color: WHITE, textDecoration: "none", fontWeight: 700, fontSize: "0.8rem", borderRadius: 3 }}><Phone size={16} strokeWidth={2.25} style={{ flexShrink: 0 }} aria-hidden />Позвонить</a>
+          <span className="phoneAllostat"><a href="tel:+74951452169" style={{ flex: 1, minWidth: 0, padding: "0.75rem", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6, border: `1px solid rgba(255,255,255,0.25)`, color: WHITE, textDecoration: "none", fontWeight: 700, fontSize: "0.8rem", borderRadius: 3 }}><Phone size={16} strokeWidth={2.25} style={{ flexShrink: 0 }} aria-hidden />Позвонить</a></span>
           <a href="#order" style={{ flex: 1, padding: "0.75rem", textAlign: "center", background: RED, color: WHITE, textDecoration: "none", fontWeight: 800, fontSize: "0.8rem", borderRadius: 3 }}>Заказать →</a>
         </div>
       </div>

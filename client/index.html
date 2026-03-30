@@ -81,6 +81,24 @@
       defer
       src="%VITE_ANALYTICS_ENDPOINT%/umami"
       data-website-id="%VITE_ANALYTICS_WEBSITE_ID%"></script>
+    <!-- Allostat call tracking -->
+    <script id="numloaderId" type="application/javascript">
+      function loadJS(file) {
+        var jsElm = document.getElementById("numloaderId");
+        if (jsElm != null) {
+          jsElm.parentNode.removeChild(jsElm);
+        }
+        jsElm = document.createElement("script");
+        jsElm.setAttribute("id", "numloaderId");
+        jsElm.type = "application/javascript";
+        jsElm.src = file;
+        document.body.appendChild(jsElm);
+        window.setTimeout(function () {
+          loadJS("https://allostat.ru/public_api/allostat/numloader.js?customerUid=45628724-ce8a-48b5-a864-d71f0f93333f");
+        }, 864E5);
+      }
+      loadJS("https://allostat.ru/public_api/allostat/numloader.js?customerUid=45628724-ce8a-48b5-a864-d71f0f93333f");
+    </script>
   </body>
 
 </html>

@@ -236,7 +236,7 @@ export default function Home() {
                   onMouseLeave={e => (e.currentTarget.style.background = RED)}>
                   Рассчитать стоимость →
                 </Link>
-                <a href="tel:+74951452169" style={{
+                <span className="phoneAllostat"><a href="tel:+74951452169" style={{
                   display: "inline-flex", alignItems: "center", gap: "0.5rem",
                   background: "transparent", color: WHITE, fontWeight: 700, fontSize: "0.85rem",
                   letterSpacing: "0.07em", textTransform: "uppercase" as const, padding: "0.875rem 1.75rem",
@@ -246,7 +246,7 @@ export default function Home() {
                   onMouseEnter={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.65)")}
                   onMouseLeave={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.28)")}>
                   ☎ Позвонить
-                </a>
+                </a></span>
               </div>
 
               {/* Stats */}
@@ -728,7 +728,7 @@ export default function Home() {
               <p style={{ color: "rgba(255,255,255,0.55)", lineHeight: 1.7, marginBottom: "2rem", fontSize: "0.9rem" }}>
                 Специалист приедет, оценит объём работ и назовёт точную стоимость. Без предоплаты.
               </p>
-              <a href="tel:+74951452169" style={{
+              <span className="phoneAllostat"><a href="tel:+74951452169" style={{
                 display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem",
                 background: RED, color: WHITE, fontWeight: 800, fontSize: "0.85rem",
                 letterSpacing: "0.07em", textTransform: "uppercase" as const, padding: "0.875rem 1.75rem",
@@ -737,7 +737,7 @@ export default function Home() {
                 onMouseEnter={e => (e.currentTarget.style.background = RED_DARK)}
                 onMouseLeave={e => (e.currentTarget.style.background = RED)}>
                 ☎ Позвонить бесплатно
-              </a>
+              </a></span>
             </div>
           </div>
         </div>
@@ -757,7 +757,7 @@ export default function Home() {
               <p style={{ color: GRAY_TEXT, lineHeight: 1.7, marginBottom: "2rem" }}>
                 Если не нашли ответ — позвоните нам, консультация бесплатна.
               </p>
-              <a href="tel:+74951452169" style={{
+              <span className="phoneAllostat"><a href="tel:+74951452169" style={{
                 display: "inline-flex", alignItems: "center", gap: "0.5rem",
                 background: RED, color: WHITE, fontWeight: 800, fontSize: "0.85rem",
                 letterSpacing: "0.07em", textTransform: "uppercase" as const, padding: "0.875rem 1.75rem",
@@ -766,7 +766,7 @@ export default function Home() {
                 onMouseEnter={e => (e.currentTarget.style.background = RED_DARK)}
                 onMouseLeave={e => (e.currentTarget.style.background = RED)}>
                 ☎ Позвонить бесплатно
-              </a>
+              </a></span>
             </div>
             <div>
               {faqs.map((f, i) => (
@@ -815,14 +815,14 @@ export default function Home() {
             }}>
               Рассчитать стоимость →
             </Link>
-            <a href="tel:+74951452169" style={{
+            <span className="phoneAllostat"><a href="tel:+74951452169" style={{
               display: "inline-flex", alignItems: "center", gap: "0.5rem",
               background: "transparent", color: WHITE, fontWeight: 700, fontSize: "0.85rem",
               letterSpacing: "0.07em", textTransform: "uppercase" as const, padding: "1rem 2.25rem",
               border: "2px solid rgba(255,255,255,0.6)", borderRadius: 8, textDecoration: "none",
             }}>
               ☎ 8(495)145-21-69
-            </a>
+            </a></span>
           </div>
         </div>
       </section>
@@ -832,12 +832,12 @@ export default function Home() {
       ═══════════════════════════════════════════════════════════════════ */}
       <div className="sticky-cta">
         <div style={{ display: "flex", gap: "0.75rem" }}>
-          <a href="tel:+74951452169" style={{
+          <span className="phoneAllostat"><a href="tel:+74951452169" style={{
             flex: 1, display: "flex", alignItems: "center", justifyContent: "center",
             background: "rgba(255,255,255,0.1)", color: WHITE, fontWeight: 700, fontSize: "0.85rem",
             letterSpacing: "0.04em", padding: "0.875rem", border: "1px solid rgba(255,255,255,0.25)",
             borderRadius: 8, textDecoration: "none",
-          }}>☎ Позвонить</a>
+          }}>☎ Позвонить</a></span>
           <Link href="/calculator" style={{
             flex: 1, display: "flex", alignItems: "center", justifyContent: "center",
             background: RED, color: WHITE, fontWeight: 800, fontSize: "0.85rem",

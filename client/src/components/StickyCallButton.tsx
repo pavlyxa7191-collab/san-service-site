@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const PHONE = "84951485806";
+const PHONE = "84951452169";
 const PHONE_DISPLAY = "8(495)145-21-69";
 const WHATSAPP_NUMBER = "79099030699";
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
@@ -106,7 +106,7 @@ export default function StickyCallButton() {
             <div style={{ color: "#718096", fontSize: "0.72rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 10 }}>
               Связаться с нами
             </div>
-            <a
+            <span className="phoneAllostat"><a
               href={`tel:+7${PHONE.slice(1)}`}
               style={{
                 display: "flex",
@@ -124,7 +124,7 @@ export default function StickyCallButton() {
             >
               <PhoneIcon size={18} />
               {PHONE_DISPLAY}
-            </a>
+            </a></span>
             <a
               href={WHATSAPP_URL}
               target="_blank"

@@ -28,7 +28,7 @@ export default function SiteFooter() {
             <div style={{ color: "rgba(255,255,255,0.45)", fontSize: 13, marginBottom: 16 }}>
               Санитарная служба
             </div>
-            <a
+            <span className="phoneAllostat"><a
               href="tel:+74951452169"
               style={{
                 color: WHITE, textDecoration: "none",
@@ -37,7 +37,7 @@ export default function SiteFooter() {
               }}
             >
               <span style={{ color: RED }}>☎</span> 8(495)145-21-69
-            </a>
+            </a></span>
           </div>
 
           {/* Column 2: Requisites */}

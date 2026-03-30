@@ -186,12 +186,12 @@ export default function Contacts() {
                         {card.label}
                       </div>
                       {card.isLink && card.href ? (
-                        <a href={card.href} style={{ fontSize: 15, fontWeight: 700, color: NAVY, textDecoration: "none", display: "block", marginBottom: 4 }}
+                        <span className={card.href.startsWith("tel:") ? "phoneAllostat" : ""}><a href={card.href} style={{ fontSize: 15, fontWeight: 700, color: NAVY, textDecoration: "none", display: "block", marginBottom: 4 }}
                           onMouseEnter={(e) => (e.currentTarget as HTMLElement).style.color = RED}
                           onMouseLeave={(e) => (e.currentTarget as HTMLElement).style.color = NAVY}
                         >
                           {card.value}
-                        </a>
+                        </a></span>
                       ) : (
                         <div style={{ fontSize: 15, fontWeight: 700, color: NAVY, marginBottom: 4 }}>{card.value}</div>
                       )}
@@ -247,13 +247,13 @@ export default function Contacts() {
                     <p style={{ fontSize: 15, color: GRAY, margin: "0 0 28px" }}>
                       Наш специалист перезвонит вам в течение 15 минут.
                     </p>
-                    <a href="tel:+74951452169" style={{
+                    <span className="phoneAllostat"><a href="tel:+74951452169" style={{
                       display: "inline-flex", alignItems: "center", gap: 8,
                       background: RED, color: WHITE, textDecoration: "none",
                       padding: "12px 28px", borderRadius: 10, fontWeight: 700, fontSize: 14,
                     }}>
                       <Phone size={14} /> 8(495)145-21-69
-                    </a>
+                    </a></span>
                   </div>
                 ) : (
                   <div style={{ display: "flex", flexDirection: "column" as const, gap: 20 }}>
