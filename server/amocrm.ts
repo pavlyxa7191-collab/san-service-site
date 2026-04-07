@@ -23,7 +23,8 @@ interface AmoTokens {
 }
 
 interface AmoContact {
-  name: string;
+  /** В API v4 для контакта в complex используется first_name (не name). */
+  first_name: string;
   custom_fields_values?: Array<{
     field_code: string;
     values: Array<{ value: string; enum_code?: string }>;
@@ -370,7 +371,7 @@ export async function createAmoCrmLead(input: AmoLeadInput): Promise<{ id: numbe
       _embedded: {
         contacts: [
           {
-            name: input.name,
+            first_name: input.name,
             custom_fields_values: contactFields,
           },
         ],
