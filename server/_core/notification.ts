@@ -68,18 +68,12 @@ export async function notifyOwner(
 ): Promise<boolean> {
   const { title, content } = validatePayload(payload);
 
-  if (!ENV.forgeApiUrl) {
-    throw new TRPCError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Notification service URL is not configured.",
-    });
-  }
-
-  if (!ENV.forgeApiKey) {
-    throw new TRPCError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Notification service API key is not configured.",
-    });
+  if (!ENV.forgeApiUrl || !ENV.forgeApiKey) {
+    // Опциональная интеграция (Manus): без ключей заявка в БД/CRM не должна ломаться
+    console.warn(
+      "[Notification] Skipped: BUILT_IN_FORGE_API_URL / BUILT_IN_FORGE_API_KEY not set"
+    );
+    return false;
   }
 
   const endpoint = buildEndpointUrl(ENV.forgeApiUrl);
