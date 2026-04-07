@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { trpc } from "@/lib/trpc";
-import { TRPCClientError } from "@trpc/client";
 import { reachGoal } from "@/lib/metrika";
 import { toast } from "sonner";
 
@@ -35,7 +34,7 @@ export default function ExitIntentPopup() {
     },
     onError: (err) => {
       const msg =
-        err instanceof TRPCClientError ? err.message : "Позвоните нам напрямую.";
+        err instanceof Error ? err.message : "Позвоните нам напрямую.";
       toast.error(`Ошибка отправки. ${msg}`);
     },
   });

@@ -1,6 +1,5 @@
 import { getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
-import { TRPCClientError } from "@trpc/client";
 import { useCallback, useEffect, useMemo } from "react";
 
 type UseAuthOptions = {
@@ -30,8 +29,10 @@ export function useAuth(options?: UseAuthOptions) {
       await logoutMutation.mutateAsync();
     } catch (error: unknown) {
       if (
-        error instanceof TRPCClientError &&
-        error.data?.code === "UNAUTHORIZED"
+        typeof error === "object" &&
+        error !== null &&
+        "data" in error &&
+        (error as { data?: { code?: string } }).data?.code === "UNAUTHORIZED"
       ) {
         return;
       }
