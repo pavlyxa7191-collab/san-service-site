@@ -7,8 +7,12 @@ declare global {
 }
 
 export function reachGoal(goal: string, params?: Record<string, unknown>) {
-  if (typeof window !== "undefined" && typeof window.ym === "function") {
-    window.ym(YANDEX_METRIKA_ID, "reachGoal", goal, params);
+  try {
+    if (typeof window !== "undefined" && typeof window.ym === "function") {
+      window.ym(YANDEX_METRIKA_ID, "reachGoal", goal, params);
+    }
+  } catch {
+    // Цели Метрики не должны помечать tRPC-мутацию как failed (onError после успешного ответа API).
   }
 }
 

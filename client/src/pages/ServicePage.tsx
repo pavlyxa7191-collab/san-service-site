@@ -15,6 +15,7 @@ import {
   nationalDigitsBeforeCursor,
   caretFromNationalCount,
 } from "@/lib/phone";
+import { getTrpcMutationErrorMessage } from "@/lib/trpcErrorMessage";
 import {
   IconBedbugs, IconCockroaches, IconRodents, IconTicks, IconMold,
   IconDeodorization, IconOzonation, IconOdor,
@@ -513,8 +514,11 @@ function LeadForm({ serviceSlug }: { serviceSlug: string }) {
       setSubmitted(true);
       toast.success("Заявка принята! Перезвоним в течение 15 минут.");
     },
-    onError: () => {
-      toast.error("Ошибка отправки. Позвоните нам напрямую.");
+    onError: (err) => {
+      const m = getTrpcMutationErrorMessage(err);
+      toast.error(
+        m ? `Ошибка отправки. ${m}` : "Ошибка отправки. Позвоните нам напрямую."
+      );
     },
   });
 
