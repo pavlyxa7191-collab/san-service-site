@@ -10,6 +10,8 @@ import {
   caretFromNationalCount,
 } from "@/lib/phone";
 import { applyPageSeo } from "@/lib/seo";
+import { toast } from "sonner";
+import { getTrpcMutationErrorMessage } from "@/lib/trpcErrorMessage";
 import {
   ChevronLeft, ChevronRight, Check,
   Home, Building2, Warehouse, BedDouble, Building,
@@ -249,7 +251,14 @@ export default function CalculatorPage() {
   const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
 
   const submitLead = trpc.leads.create.useMutation({
-    onSuccess: () => { reachGoal("lead_calculator"); setSubmitted(true); },
+    onSuccess: () => {
+      setSubmitted(true);
+      reachGoal("lead_calculator");
+    },
+    onError: (err) => {
+      const m = getTrpcMutationErrorMessage(err);
+      toast.error(m ? `Не удалось отправить заявку: ${m}` : "Не удалось отправить заявку. Позвоните нам или попробуйте позже.");
+    },
   });
 
   function toggleContactWay(id: string) {
@@ -293,7 +302,7 @@ export default function CalculatorPage() {
     submitLead.mutate({
       name,
       phone,
-      service: pestTypes.find(p => p.id === pest)?.label,
+      service: pest || undefined,
       propertyType: property,
       area: areaRanges.find(a => a.id === area)?.label,
       method: selectedWays || undefined,
@@ -601,6 +610,7 @@ export default function CalculatorPage() {
             {/* Back button */}
             {step > 0 && (
               <button
+                type="button"
                 className="btn-back"
                 onClick={() => setStep(step - 1)}
                 style={{
@@ -627,6 +637,7 @@ export default function CalculatorPage() {
             {/* Next / Submit */}
             {step < 4 ? (
               <button
+                type="button"
                 onClick={() => { if (canNext) { reachGoal(`calc_step_${step + 1}`); setStep(step + 1); } }}
                 disabled={!canNext}
                 style={{
@@ -647,6 +658,7 @@ export default function CalculatorPage() {
               </button>
             ) : (
               <button
+                type="button"
                 onClick={handleSubmit}
                 disabled={submitLead.isPending}
                 style={{
