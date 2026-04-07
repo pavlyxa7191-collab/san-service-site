@@ -189,8 +189,9 @@ export const appRouter = router({
       // Use mode=popup so amoCRM does a real redirect to our callback URL
       // (post_message sends code via window.postMessage which we can't intercept server-side)
       const redirectUri = process.env.AMO_REDIRECT_URI || "";
-      const oauthUrl = subdomain && clientId
-        ? `https://${subdomain}.amocrm.ru/oauth?client_id=${clientId}&state=admin&mode=popup&redirect_uri=${encodeURIComponent(redirectUri)}`
+      // Официально: https://www.amocrm.ru/oauth?client_id=... (не поддомен.amocrm.ru/oauth)
+      const oauthUrl = clientId && redirectUri
+        ? `https://www.amocrm.ru/oauth?client_id=${encodeURIComponent(clientId)}&state=admin&mode=popup&redirect_uri=${encodeURIComponent(redirectUri)}`
         : null;
 
       return {
