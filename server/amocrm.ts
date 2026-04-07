@@ -121,6 +121,32 @@ async function loadTokensFromDb(): Promise<boolean> {
 }
 
 /**
+ * When AMO_ACCESS_TOKEN is set in env but AMO_REFRESH_TOKEN is not, pair it with
+ * the refresh token from OAuth stored in DB — otherwise 401 recovery fails.
+ */
+async function ensureRefreshTokenFromDb(): Promise<void> {
+  if (cachedRefreshToken) return;
+  const cfg = getConfig();
+  if (!cfg.subdomain) return;
+  try {
+    const db = await getDb();
+    if (!db) return;
+    const rows = await db
+      .select({ refreshToken: amocrmTokens.refreshToken })
+      .from(amocrmTokens)
+      .where(eq(amocrmTokens.subdomain, cfg.subdomain))
+      .orderBy(desc(amocrmTokens.updatedAt))
+      .limit(1);
+    if (rows[0]?.refreshToken) {
+      cachedRefreshToken = rows[0].refreshToken;
+      console.log("[amoCRM] Loaded refresh token from DB (env access token without refresh)");
+    }
+  } catch (err) {
+    console.warn("[amoCRM] ensureRefreshTokenFromDb:", err);
+  }
+}
+
+/**
  * Save tokens to DB.
  */
 async function saveTokensToDb(tokens: AmoTokens): Promise<void> {
@@ -248,6 +274,7 @@ async function getAccessToken(): Promise<string> {
   if (envAccessToken) {
     cachedAccessToken = envAccessToken;
     if (envRefreshToken) cachedRefreshToken = envRefreshToken;
+    await ensureRefreshTokenFromDb();
     tokenExpiresAt = Date.now() + 86400 * 1000; // assume 24h
     return envAccessToken;
   }

@@ -93,7 +93,7 @@ describe("amoCRM module", () => {
 
       const body = JSON.parse(options.body);
       expect(body[0].name).toContain("Уничтожение клопов");
-      expect(body[0]._embedded.contacts[0].name).toBe("Иван Иванов");
+      expect(body[0]._embedded.contacts[0].first_name).toBe("Иван Иванов");
     });
 
     it("returns null (non-fatal) when API returns error", async () => {
