@@ -4,10 +4,17 @@ import { SITE_URL } from "@/siteConfig";
 import { applyPageSeo } from "@/lib/seo";
 import ReviewsCarousel from "@/components/ReviewsCarousel";
 import CertificatesCarousel from "@/components/CertificatesCarousel";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { reachGoal } from "@/lib/metrika";
 import { toast } from "sonner";
+import {
+  formatRuPhoneInput,
+  isCompleteRuPhone,
+  RU_PHONE_PLACEHOLDER,
+  nationalDigitsBeforeCursor,
+  caretFromNationalCount,
+} from "@/lib/phone";
 import {
   IconBedbugs, IconCockroaches, IconRodents, IconTicks, IconMold,
   IconDeodorization, IconOzonation, IconOdor,
@@ -493,10 +500,13 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 }
 
 // ─── LEAD FORM ────────────────────────────────────────────────────────────────
-function LeadForm({ serviceTitle, serviceSlug }: { serviceTitle: string; serviceSlug: string }) {
+function LeadForm({ serviceSlug }: { serviceSlug: string }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const phoneInputRef = useRef<HTMLInputElement>(null);
+  const phoneCaretNat = useRef<number | null>(null);
   const createLead = trpc.leads.create.useMutation({
     onSuccess: () => {
       reachGoal(`lead_${serviceSlug}`);
@@ -507,10 +517,34 @@ function LeadForm({ serviceTitle, serviceSlug }: { serviceTitle: string; service
       toast.error("Ошибка отправки. Позвоните нам напрямую.");
     },
   });
+
+  useLayoutEffect(() => {
+    const el = phoneInputRef.current;
+    const n = phoneCaretNat.current;
+    if (el && n !== null) {
+      const pos = caretFromNationalCount(phone, n);
+      el.setSelectionRange(pos, pos);
+    }
+    phoneCaretNat.current = null;
+  }, [phone]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!phone.trim()) return;
-    createLead.mutate({ name: name.trim() || "Не указано", phone: phone.trim(), service: serviceTitle, source: "service-page" });
+    if (!name.trim()) {
+      toast.error("Укажите имя");
+      return;
+    }
+    if (!isCompleteRuPhone(phone)) {
+      setPhoneError("Введите полный номер телефона");
+      return;
+    }
+    setPhoneError("");
+    createLead.mutate({
+      name: name.trim(),
+      phone,
+      service: serviceSlug,
+      source: "service-page",
+    });
   };
   if (submitted) {
     return (
@@ -528,8 +562,32 @@ function LeadForm({ serviceTitle, serviceSlug }: { serviceTitle: string; service
   };
   return (
     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.625rem" }}>
-      <input style={inputStyle} type="text" placeholder="Ваше имя" value={name} onChange={e => setName(e.target.value)} />
-      <input style={inputStyle} type="tel" placeholder="+7 (___) ___-__-__ *" value={phone} onChange={e => setPhone(e.target.value)} required />
+      <input style={inputStyle} type="text" placeholder="Ваше имя *" value={name} onChange={e => setName(e.target.value)} />
+      <div>
+        <input
+          ref={phoneInputRef}
+          style={{
+            ...inputStyle,
+            ...(phoneError ? { boxShadow: `inset 0 0 0 1px ${RED}` } : {}),
+          }}
+          type="tel"
+          inputMode="tel"
+          autoComplete="tel"
+          placeholder={`${RU_PHONE_PLACEHOLDER} *`}
+          value={phone}
+          onChange={(e) => {
+            const el = e.target;
+            const sel = el.selectionStart ?? el.value.length;
+            phoneCaretNat.current = nationalDigitsBeforeCursor(el.value, sel);
+            setPhoneError("");
+            setPhone(formatRuPhoneInput(el.value));
+          }}
+          aria-invalid={!!phoneError}
+        />
+        {phoneError ? (
+          <p style={{ fontSize: 12, color: RED, margin: "6px 0 0", opacity: 0.95 }}>{phoneError}</p>
+        ) : null}
+      </div>
       <button
         type="submit"
         disabled={createLead.isPending}
@@ -1048,7 +1106,7 @@ export default function ServicePage() {
             <div style={{ fontSize: "1.375rem", fontWeight: 900, color: WHITE, marginBottom: "1.125rem", letterSpacing: "-0.03em" }}>
               от {service.priceFrom.toLocaleString("ru-RU")} ₽
             </div>
-            <LeadForm serviceTitle={service.title} serviceSlug={serviceSlug} />
+            <LeadForm serviceSlug={serviceSlug} />
           </div>
 
           {/* Phone */}

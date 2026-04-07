@@ -1,30 +1,39 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useLayoutEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { reachGoal } from "@/lib/metrika";
 import { toast } from "sonner";
+import {
+  formatRuPhoneInput,
+  isCompleteRuPhone,
+  RU_PHONE_PLACEHOLDER,
+  nationalDigitsBeforeCursor,
+  caretFromNationalCount,
+} from "@/lib/phone";
 
 const NAVY = "#0d1f3c";
 const RED = "#CC0000";
 const STORAGE_KEY = "exit_popup_shown";
 
-function applyPhoneMask(value: string): string {
-  const digits = value.replace(/\D/g, "").slice(0, 11);
-  if (!digits) return "";
-  let result = "+7";
-  if (digits.length > 1) result += " (" + digits.slice(1, 4);
-  if (digits.length >= 4) result += ") " + digits.slice(4, 7);
-  if (digits.length >= 7) result += "-" + digits.slice(7, 9);
-  if (digits.length >= 9) result += "-" + digits.slice(9, 11);
-  return result;
-}
-
 export default function ExitIntentPopup() {
   const [show, setShow] = useState(false);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const shownRef = useRef(false);
+  const phoneInputRef = useRef<HTMLInputElement>(null);
+  const phoneCaretNat = useRef<number | null>(null);
+
+  useLayoutEffect(() => {
+    const el = phoneInputRef.current;
+    const n = phoneCaretNat.current;
+    if (el && n !== null) {
+      const pos = caretFromNationalCount(phone, n);
+      el.setSelectionRange(pos, pos);
+    }
+    phoneCaretNat.current = null;
+  }, [phone]);
 
   const createLead = trpc.leads.create.useMutation({
     onSuccess: () => {
@@ -75,10 +84,15 @@ export default function ExitIntentPopup() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || phone.replace(/\D/g, "").length < 11) {
-      toast.error("Заполните имя и телефон");
+    if (!name.trim()) {
+      toast.error("Укажите имя");
       return;
     }
+    if (!isCompleteRuPhone(phone)) {
+      setPhoneError("Введите полный номер телефона");
+      return;
+    }
+    setPhoneError("");
     createLead.mutate({
       name: name.trim(),
       phone,
@@ -198,23 +212,45 @@ export default function ExitIntentPopup() {
                     onFocus={(e) => { e.target.style.borderColor = NAVY; }}
                     onBlur={(e) => { e.target.style.borderColor = "#e2e8f0"; }}
                   />
-                  <input
-                    type="tel"
-                    placeholder="+7 (___) ___-__-__"
-                    value={phone}
-                    onChange={(e) => setPhone(applyPhoneMask(e.target.value))}
-                    style={{
-                      border: "1.5px solid #e2e8f0",
-                      borderRadius: 10,
-                      padding: "12px 16px",
-                      fontSize: "0.95rem",
-                      color: NAVY,
-                      outline: "none",
-                      transition: "border-color 0.15s",
-                    }}
-                    onFocus={(e) => { e.target.style.borderColor = NAVY; }}
-                    onBlur={(e) => { e.target.style.borderColor = "#e2e8f0"; }}
-                  />
+                  <div>
+                    <input
+                      ref={phoneInputRef}
+                      type="tel"
+                      inputMode="tel"
+                      autoComplete="tel"
+                      placeholder={RU_PHONE_PLACEHOLDER}
+                      value={phone}
+                      onChange={(e) => {
+                        const el = e.target;
+                        const sel = el.selectionStart ?? el.value.length;
+                        phoneCaretNat.current = nationalDigitsBeforeCursor(el.value, sel);
+                        setPhoneError("");
+                        setPhone(formatRuPhoneInput(el.value));
+                      }}
+                      aria-invalid={!!phoneError}
+                      style={{
+                        width: "100%",
+                        boxSizing: "border-box",
+                        border: phoneError ? `1.5px solid ${RED}` : "1.5px solid #e2e8f0",
+                        boxShadow: phoneError ? `inset 0 0 0 1px ${RED}` : undefined,
+                        borderRadius: 10,
+                        padding: "12px 16px",
+                        fontSize: "0.95rem",
+                        color: NAVY,
+                        outline: "none",
+                        transition: "border-color 0.15s",
+                      }}
+                      onFocus={(e) => {
+                        if (!phoneError) e.target.style.borderColor = NAVY;
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.borderColor = phoneError ? RED : "#e2e8f0";
+                      }}
+                    />
+                    {phoneError ? (
+                      <p style={{ fontSize: 12, color: RED, margin: "6px 0 0" }}>{phoneError}</p>
+                    ) : null}
+                  </div>
                   <button
                     type="submit"
                     disabled={createLead.isPending}

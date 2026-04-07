@@ -1,10 +1,17 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { Phone, Mail, MapPin, Clock, ArrowRight, CheckCircle, MessageCircle } from "lucide-react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { reachGoal } from "@/lib/metrika";
 import { toast } from "sonner";
 import { applyPageSeo } from "@/lib/seo";
+import {
+  formatRuPhoneInput,
+  isCompleteRuPhone,
+  RU_PHONE_PLACEHOLDER,
+  nationalDigitsBeforeCursor,
+  caretFromNationalCount,
+} from "@/lib/phone";
 
 // ─── DESIGN TOKENS (matching About.tsx) ────────────────────────────────────────
 const NAVY = "#0A0F1E";
@@ -100,6 +107,18 @@ export default function Contacts() {
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
   const [focusedField, setFocusedField] = useState<string | null>(null);
+  const phoneInputRef = useRef<HTMLInputElement>(null);
+  const phoneCaretNat = useRef<number | null>(null);
+
+  useLayoutEffect(() => {
+    const el = phoneInputRef.current;
+    const n = phoneCaretNat.current;
+    if (el && n !== null) {
+      const pos = caretFromNationalCount(phone, n);
+      el.setSelectionRange(pos, pos);
+    }
+    phoneCaretNat.current = null;
+  }, [phone]);
 
   useEffect(() => {
     applyPageSeo({
@@ -117,7 +136,7 @@ export default function Contacts() {
   function validate() {
     const errs: { name?: string; phone?: string } = {};
     if (!name.trim()) errs.name = "Введите имя";
-    if (!phone.trim() || phone.replace(/\D/g, "").length < 10) errs.phone = "Введите корректный телефон";
+    if (!isCompleteRuPhone(phone)) errs.phone = "Введите полный номер в формате +7 (___) ___-__-__";
     setErrors(errs);
     return Object.keys(errs).length === 0;
   }
@@ -279,12 +298,22 @@ export default function Contacts() {
                           Телефон *
                         </label>
                         <input
+                          ref={phoneInputRef}
                           type="tel"
-                          placeholder="+7 (900) 000-00-00"
+                          inputMode="tel"
+                          autoComplete="tel"
+                          placeholder={RU_PHONE_PLACEHOLDER}
                           value={phone}
-                          onChange={(e) => setPhone(e.target.value)}
+                          onChange={(e) => {
+                            const el = e.target;
+                            const sel = el.selectionStart ?? el.value.length;
+                            phoneCaretNat.current = nationalDigitsBeforeCursor(el.value, sel);
+                            setErrors((prev) => ({ ...prev, phone: undefined }));
+                            setPhone(formatRuPhoneInput(el.value));
+                          }}
                           onFocus={() => setFocusedField("phone")}
                           onBlur={() => setFocusedField(null)}
+                          aria-invalid={!!errors.phone}
                           style={inputStyle("phone", !!errors.phone)}
                         />
                         {errors.phone && <p style={{ fontSize: 12, color: RED, margin: "6px 0 0" }}>{errors.phone}</p>}
