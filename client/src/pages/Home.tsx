@@ -38,7 +38,6 @@ const services = [
   { slug: "pleseni",      Icon: IconMold,          title: "Удаление плесени",      desc: "Профессиональное удаление плесени и грибка. Обработка антисептиком.",          price: "от 3 500 ₽", guarantee: "2 года",      iconBg: "#f5f3ff", iconColor: "#7c3aed",  methods: ["Антисептик", "Озонация", "УФ-обработка"] },
   { slug: "dezinfektsii", Icon: IconDeodorization, title: "Дезинфекция",           desc: "Уничтожение патогенных микроорганизмов. Для медицины и общепита.",              price: "от 20 ₽/м²", guarantee: "по договору", iconBg: "#ecfdf5", iconColor: "#10b981",  methods: ["Холодный туман", "Орошение", "Озонация"] },
   { slug: "zapahov",      Icon: IconOdor,          title: "Борьба с запахами",     desc: "Устранение неприятных запахов. Озонирование воздуха. Безопасно.",              price: "от 2 500 ₽", guarantee: "по договору", iconBg: "#fffbeb", iconColor: "#f59e0b",  methods: ["Озонация", "Дезодорация", "Обработка вентиляции"] },
-  { slug: "uborka",       Icon: IconGuarantee,     title: "Уборка после смерти",   desc: "Профессиональная биологическая уборка и дезинфекция помещения.",               price: "от 5 000 ₽", guarantee: "по договору", iconBg: "#fef2f2", iconColor: "#dc2626",  methods: ["Биологическая уборка", "Дезинфекция", "Дезодорация"] },
 ];
 
 const methods = [

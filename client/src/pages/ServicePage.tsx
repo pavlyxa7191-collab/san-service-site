@@ -493,7 +493,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 }
 
 // ─── LEAD FORM ────────────────────────────────────────────────────────────────
-function LeadForm({ serviceTitle }: { serviceTitle: string }) {
+function LeadForm({ serviceTitle, serviceSlug }: { serviceTitle: string; serviceSlug: string }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -1048,7 +1048,7 @@ export default function ServicePage() {
             <div style={{ fontSize: "1.375rem", fontWeight: 900, color: WHITE, marginBottom: "1.125rem", letterSpacing: "-0.03em" }}>
               от {service.priceFrom.toLocaleString("ru-RU")} ₽
             </div>
-            <LeadForm serviceTitle={service.title} />
+            <LeadForm serviceTitle={service.title} serviceSlug={serviceSlug} />
           </div>
 
           {/* Phone */}
