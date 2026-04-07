@@ -134,7 +134,16 @@ export default function AdminLeads() {
           <h2 style={{ color: NAVY, fontWeight: 700, fontSize: "1.4rem", marginBottom: 8 }}>Требуется авторизация</h2>
           <p style={{ color: "#718096", marginBottom: 24, lineHeight: 1.6 }}>Для доступа к панели администратора необходимо войти в систему</p>
           <button
-            onClick={() => { window.location.href = getLoginUrl(); }}
+            onClick={() => {
+              const url = getLoginUrl();
+              if (!url) {
+                toast.error(
+                  "Вход не настроен: на сервере при сборке сайта нужны VITE_OAUTH_PORTAL_URL и VITE_APP_ID (как на старом хостинге). Обратитесь к разработчику."
+                );
+                return;
+              }
+              window.location.href = url;
+            }}
             style={{ background: RED, color: "white", border: "none", borderRadius: 8, padding: "12px 32px", fontWeight: 700, fontSize: "1rem", cursor: "pointer" }}
           >
             Войти

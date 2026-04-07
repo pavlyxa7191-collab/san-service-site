@@ -1,9 +1,19 @@
 export { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
 
+/** True when Vite was built with OAuth portal + app id (needed for admin login). */
+export function isOAuthConfigured(): boolean {
+  const base = import.meta.env.VITE_OAUTH_PORTAL_URL?.trim();
+  const appId = import.meta.env.VITE_APP_ID?.trim();
+  return Boolean(base && appId);
+}
+
 // Generate login URL at runtime so redirect URI reflects the current origin.
-export const getLoginUrl = () => {
-  const oauthPortalUrl = import.meta.env.VITE_OAUTH_PORTAL_URL;
-  const appId = import.meta.env.VITE_APP_ID;
+export const getLoginUrl = (): string => {
+  const oauthPortalUrl = import.meta.env.VITE_OAUTH_PORTAL_URL?.trim().replace(/\/$/, "");
+  const appId = import.meta.env.VITE_APP_ID?.trim();
+  if (!oauthPortalUrl || !appId) {
+    return "";
+  }
   const redirectUri = `${window.location.origin}/api/oauth/callback`;
   const state = btoa(redirectUri);
 
