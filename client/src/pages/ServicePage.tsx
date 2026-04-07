@@ -6,6 +6,7 @@ import ReviewsCarousel from "@/components/ReviewsCarousel";
 import CertificatesCarousel from "@/components/CertificatesCarousel";
 import { useState, useEffect, useRef } from "react";
 import { trpc } from "@/lib/trpc";
+import { reachGoal } from "@/lib/metrika";
 import { toast } from "sonner";
 import {
   IconBedbugs, IconCockroaches, IconRodents, IconTicks, IconMold,
@@ -498,6 +499,7 @@ function LeadForm({ serviceTitle }: { serviceTitle: string }) {
   const [submitted, setSubmitted] = useState(false);
   const createLead = trpc.leads.create.useMutation({
     onSuccess: () => {
+      reachGoal(`lead_${serviceSlug}`);
       setSubmitted(true);
       toast.success("Заявка принята! Перезвоним в течение 15 минут.");
     },

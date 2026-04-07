@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Phone, Mail, MapPin, Clock, ArrowRight, CheckCircle, MessageCircle } from "lucide-react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
+import { reachGoal } from "@/lib/metrika";
 import { toast } from "sonner";
 import { applyPageSeo } from "@/lib/seo";
 
@@ -109,7 +110,7 @@ export default function Contacts() {
   }, []);
 
   const createLead = trpc.leads.create.useMutation({
-    onSuccess: () => setSubmitted(true),
+    onSuccess: () => { reachGoal("lead_contacts"); setSubmitted(true); },
     onError: () => toast.error("Ошибка при отправке. Позвоните нам напрямую."),
   });
 

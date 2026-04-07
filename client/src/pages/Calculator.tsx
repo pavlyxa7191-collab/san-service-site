@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { Link, useSearch } from "wouter";
 import { trpc } from "@/lib/trpc";
+import { reachGoal } from "@/lib/metrika";
 import {
   formatRuPhoneInput,
   isCompleteRuPhone,
@@ -248,7 +249,7 @@ export default function CalculatorPage() {
   const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
 
   const submitLead = trpc.leads.create.useMutation({
-    onSuccess: () => setSubmitted(true),
+    onSuccess: () => { reachGoal("lead_calculator"); setSubmitted(true); },
   });
 
   function toggleContactWay(id: string) {
@@ -626,7 +627,7 @@ export default function CalculatorPage() {
             {/* Next / Submit */}
             {step < 4 ? (
               <button
-                onClick={() => canNext && setStep(step + 1)}
+                onClick={() => { if (canNext) { reachGoal(`calc_step_${step + 1}`); setStep(step + 1); } }}
                 disabled={!canNext}
                 style={{
                   display: "flex", alignItems: "center", gap: "0.5rem",

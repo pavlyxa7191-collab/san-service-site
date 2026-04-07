@@ -5,6 +5,7 @@ import { applyPageSeo } from "@/lib/seo";
 import ReviewsCarousel from "@/components/ReviewsCarousel";
 import CertificatesCarousel from "@/components/CertificatesCarousel";
 import { trpc } from "@/lib/trpc";
+import { reachGoal } from "@/lib/metrika";
 import {
   formatRuPhoneInput,
   isCompleteRuPhone,
@@ -143,6 +144,7 @@ export default function Home() {
     setPhoneError("");
     try {
       await createLead.mutateAsync({ ...formData, source: "hero_form" });
+      reachGoal("lead_hero");
       setSubmitted(true);
     } catch {
       setSubmitted(true);

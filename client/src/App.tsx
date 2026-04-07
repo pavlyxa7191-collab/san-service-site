@@ -4,6 +4,7 @@ import NotFound from "@/pages/NotFound";
 import { Route, Switch, useLocation } from "wouter";
 import { useEffect } from "react";
 import { syncPublicUrlFromLocation } from "@/lib/seo";
+import { initLinkTracking } from "@/lib/metrika";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
@@ -79,6 +80,7 @@ function Router() {
 }
 
 function App() {
+  useEffect(() => { initLinkTracking(); }, []);
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="light">

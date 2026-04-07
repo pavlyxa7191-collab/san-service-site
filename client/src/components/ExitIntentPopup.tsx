@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { trpc } from "@/lib/trpc";
+import { reachGoal } from "@/lib/metrika";
 import { toast } from "sonner";
 
 const NAVY = "#0d1f3c";
@@ -27,6 +28,7 @@ export default function ExitIntentPopup() {
 
   const createLead = trpc.leads.create.useMutation({
     onSuccess: () => {
+      reachGoal("lead_exit_popup");
       setSubmitted(true);
       toast.success("Заявка отправлена! Перезвоним в течение 5 минут.");
     },
