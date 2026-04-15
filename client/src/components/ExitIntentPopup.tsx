@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef, useLayoutEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { reachGoal } from "@/lib/metrika";
+import { getTrpcMutationErrorMessage } from "@/lib/trpcErrorMessage";
 import { toast } from "sonner";
 import {
   formatRuPhoneInput,
@@ -42,8 +43,7 @@ export default function ExitIntentPopup() {
       toast.success("Заявка отправлена! Перезвоним в течение 5 минут.");
     },
     onError: (err) => {
-      const msg =
-        err instanceof Error ? err.message : "Позвоните нам напрямую.";
+      const msg = getTrpcMutationErrorMessage(err) || "Позвоните нам напрямую.";
       toast.error(`Ошибка отправки. ${msg}`);
     },
   });

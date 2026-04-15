@@ -84,6 +84,15 @@ function generateId(): string {
   return Math.random().toString(36).substring(2, 15);
 }
 
+function getErrorMessage(error: unknown): string {
+  if (typeof error === "object" && error !== null && "message" in error) {
+    const message = (error as { message?: unknown }).message;
+    if (typeof message === "string" && message.length > 0) return message;
+  }
+  if (typeof error === "string" && error.length > 0) return error;
+  return "Upload failed";
+}
+
 /**
  * Convert File to base64 string (without data URL prefix)
  * Export this for use in uploadFn if your API needs base64
@@ -146,7 +155,7 @@ export function useFileUpload({
               ? {
                   ...f,
                   status: "error" as const,
-                  error: err instanceof Error ? err.message : "Upload failed",
+                  error: getErrorMessage(err),
                 }
               : f
           )

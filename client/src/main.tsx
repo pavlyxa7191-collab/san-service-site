@@ -10,10 +10,18 @@ import "./index.css";
 
 const queryClient = new QueryClient();
 
+function getErrorMessage(error: unknown): string {
+  if (typeof error === "object" && error !== null && "message" in error) {
+    const message = (error as { message?: unknown }).message;
+    if (typeof message === "string") return message;
+  }
+  if (typeof error === "string") return error;
+  return "";
+}
+
 const redirectToLoginIfUnauthorized = (error: unknown) => {
-  if (!(error instanceof Error)) return;
   if (typeof window === "undefined") return;
-  if (error.message !== UNAUTHED_ERR_MSG) return;
+  if (getErrorMessage(error) !== UNAUTHED_ERR_MSG) return;
 
   const url = getLoginUrl();
   if (url) window.location.href = url;
