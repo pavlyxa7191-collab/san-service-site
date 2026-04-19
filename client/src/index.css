@@ -190,7 +190,7 @@
 @layer base {
   *, *::before, *::after {
     box-sizing: border-box;
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
   html {
     overflow-x: hidden;
@@ -838,6 +838,7 @@
 }
 .hero-grid .form-field::placeholder { color: rgba(255,255,255,0.35) !important; }
 .hero-grid .form-field:focus { border-color: rgba(204,0,0,0.6) !important; box-shadow: none !important; }
+.hero-grid select.form-field { background: #1a2535 !important; color: #ffffff !important; }
 
 /* 1024px: tablet landscape */
 @media (max-width: 1024px) {
