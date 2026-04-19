@@ -43,13 +43,24 @@ queryClient.getMutationCache().subscribe(event => {
   }
 });
 
+const transformer = {
+  input: {
+    serialize: (data: unknown) => superjson.serialize(data),
+    deserialize: (data: { json: unknown; meta?: unknown }) => superjson.deserialize(data as Parameters<typeof superjson.deserialize>[0]),
+  },
+  output: {
+    serialize: (data: unknown) => superjson.serialize(data),
+    deserialize: (data: { json: unknown; meta?: unknown }) => superjson.deserialize(data as Parameters<typeof superjson.deserialize>[0]),
+  },
+};
+
 const trpcClient = trpc.createClient({
   links: [
     httpBatchLink({
       url: "/api/trpc",
-      transformer: superjson,
+      transformer,
       fetch(input, init) {
-        return globalThis.fetch(input, {
+        return fetch(input as RequestInfo, {
           ...(init ?? {}),
           credentials: "include",
         });
