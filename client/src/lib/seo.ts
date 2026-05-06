@@ -66,7 +66,7 @@ export function applyPageSeo(opts: PageSeoOptions) {
   ensureMetaProperty("og:title", ogTitle);
   ensureMetaProperty("og:description", ogDesc);
   ensureMetaProperty("og:image", ogImageUrl);
-  ensureMetaProperty("og:site_name", "Экоцентр — Санитарная служба");
+  ensureMetaProperty("og:site_name", "Санитарная служба");
   ensureMetaProperty("og:locale", "ru_RU");
 
   ensureMetaName("twitter:card", "summary_large_image");

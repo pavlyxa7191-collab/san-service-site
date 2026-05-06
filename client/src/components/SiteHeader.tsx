@@ -326,9 +326,6 @@ export default function SiteHeader() {
             </div>
             <div style={{ minWidth: 0 }}>
               <div style={{ fontSize: "0.9rem", fontWeight: 900, color: "white", letterSpacing: "-0.02em", lineHeight: 1.1 }}>
-                Экоцентр
-              </div>
-              <div style={{ fontSize: "0.58rem", color: "rgba(255,255,255,0.4)", letterSpacing: "0.08em", textTransform: "uppercase" }}>
                 Санитарная служба
               </div>
             </div>
@@ -546,7 +543,7 @@ export default function SiteHeader() {
             >
               <span style={{ color: "white", fontWeight: 900, fontSize: "0.8rem" }}>СЭС</span>
             </div>
-            <span style={{ color: "white", fontWeight: 700, fontSize: "0.9rem" }}>Экоцентр</span>
+            <span style={{ color: "white", fontWeight: 700, fontSize: "0.9rem" }}>Санитарная служба</span>
           </Link>
           <button
             onClick={() => setMobileOpen(false)}

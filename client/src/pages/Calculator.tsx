@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { Link, useSearch } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { reachGoal } from "@/lib/metrika";
+import { notifyKvbot } from "@/lib/kvbot";
 import {
   formatRuPhoneInput,
   isCompleteRuPhone,
@@ -254,29 +255,14 @@ export default function CalculatorPage() {
     onSuccess: () => {
       setSubmitted(true);
       reachGoal("lead_calculator");
-
-      // KVallibot: калькулятор не использует <form>, поэтому передаём данные явно
-      try {
-        const KV = (window as unknown as { KV?: { sendForm?: (fd: FormData) => void } }).KV;
-        if (KV && typeof KV.sendForm === "function") {
-          const fd = new FormData();
-          fd.append("name", name);
-          fd.append("phone", phone);
-          if (pest) fd.append("service", pest);
-          if (property) fd.append("propertyType", property);
-          const areaLabel = areaRanges.find(a => a.id === area)?.label;
-          if (areaLabel) fd.append("area", areaLabel);
-          const selectedWaysLabel = contactMethods
-            .filter(m => contactWays.includes(m.id))
-            .map(m => m.label)
-            .join(", ");
-          if (selectedWaysLabel) fd.append("method", selectedWaysLabel);
-          fd.append("source", "calculator");
-          KV.sendForm(fd);
-        }
-      } catch {
-        // если KVallibot не подгружен — не ломаем UX
-      }
+      notifyKvbot({
+        name,
+        phone,
+        service: pest || undefined,
+        propertyType: property,
+        area: areaRanges.find(a => a.id === area)?.label,
+        source: "calculator",
+      });
     },
     onError: (err) => {
       const m = getTrpcMutationErrorMessage(err);
@@ -381,8 +367,7 @@ export default function CalculatorPage() {
               <span style={{ color: WHITE, fontWeight: 900, fontSize: "0.7rem", letterSpacing: "0.02em" }}>СЭС</span>
             </div>
             <div>
-              <div style={{ color: WHITE, fontWeight: 800, fontSize: "0.9rem", lineHeight: 1.2 }}>Экоцентр</div>
-              <div style={{ color: "rgba(255,255,255,0.45)", fontSize: "0.65rem", letterSpacing: "0.08em", textTransform: "uppercase" as const }}>Санитарная служба</div>
+              <div style={{ color: WHITE, fontWeight: 800, fontSize: "0.9rem", lineHeight: 1.2 }}>Санитарная служба</div>
             </div>
           </Link>
           <a href="tel:+74951452169" style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: WHITE, textDecoration: "none", fontSize: "0.85rem", fontWeight: 600 }}>

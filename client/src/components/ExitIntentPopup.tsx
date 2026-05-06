@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef, useLayoutEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { reachGoal } from "@/lib/metrika";
+import { notifyKvbot } from "@/lib/kvbot";
 import { getTrpcMutationErrorMessage } from "@/lib/trpcErrorMessage";
 import { toast } from "sonner";
 import {
@@ -39,6 +40,7 @@ export default function ExitIntentPopup() {
   const createLead = trpc.leads.create.useMutation({
     onSuccess: () => {
       reachGoal("lead_exit_popup");
+      notifyKvbot({ name, phone, source: "exit_popup" });
       setSubmitted(true);
       toast.success("Заявка отправлена! Перезвоним в течение 5 минут.");
     },

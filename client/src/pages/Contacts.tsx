@@ -3,6 +3,7 @@ import { Phone, Mail, MapPin, Clock, ArrowRight, CheckCircle, MessageCircle } fr
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { reachGoal } from "@/lib/metrika";
+import { notifyKvbot } from "@/lib/kvbot";
 import { toast } from "sonner";
 import { applyPageSeo } from "@/lib/seo";
 import {
@@ -62,7 +63,7 @@ const contactCards = [
     label: "WhatsApp",
     value: "Написать в WhatsApp",
     sub: "Ответим за 5 минут",
-    href: "https://wa.me/74951452169",
+    href: "https://wa.me/79099030699",
     isLink: true,
   },
   {
@@ -129,7 +130,11 @@ export default function Contacts() {
   }, []);
 
   const createLead = trpc.leads.create.useMutation({
-    onSuccess: () => { reachGoal("lead_contacts"); setSubmitted(true); },
+    onSuccess: () => {
+      reachGoal("lead_contacts");
+      notifyKvbot({ name, phone, email, message, source: "contact-page" });
+      setSubmitted(true);
+    },
     onError: () => toast.error("Ошибка при отправке. Позвоните нам напрямую."),
   });
 
@@ -399,7 +404,7 @@ export default function Contacts() {
                     }}>
                       <Phone size={13} /> Позвонить
                     </a>
-                    <a href="https://wa.me/74951452169" style={{
+                    <a href="https://wa.me/79099030699" style={{
                       flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
                       background: "rgba(255,255,255,0.1)", color: WHITE, textDecoration: "none",
                       padding: "11px 16px", borderRadius: 8, fontWeight: 700, fontSize: 13,

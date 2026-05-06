@@ -6,8 +6,7 @@ const WHATSAPP_NUMBER = "79099030699";
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
 const TELEGRAM_URL = `https://t.me/dezmasters`;
 
-// Phone SVG icon (proper telephone handset)
-function PhoneIcon({ size = 24, color = "white" }: { size?: number; color?: string }) {
+function PhoneIcon({ size = 20, color = "white" }: { size?: number; color?: string }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.86-.86a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
@@ -15,7 +14,6 @@ function PhoneIcon({ size = 24, color = "white" }: { size?: number; color?: stri
   );
 }
 
-// WhatsApp SVG icon
 function WhatsAppIcon({ size = 20 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="white">
@@ -24,7 +22,6 @@ function WhatsAppIcon({ size = 20 }: { size?: number }) {
   );
 }
 
-// Telegram SVG icon
 function TelegramIcon({ size = 20 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="white">
@@ -35,23 +32,13 @@ function TelegramIcon({ size = 20 }: { size?: number }) {
 
 export default function StickyCallButton() {
   const [visible, setVisible] = useState(false);
-  const [expanded, setExpanded] = useState(false);
 
-  // Show after scrolling past the hero section (~600px)
   useEffect(() => {
-    const handleScroll = () => {
-      setVisible(window.scrollY > 600);
-    };
+    const handleScroll = () => setVisible(window.scrollY > 100);
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  // Auto-collapse after 4 seconds
-  useEffect(() => {
-    if (!expanded) return;
-    const t = setTimeout(() => setExpanded(false), 4000);
-    return () => clearTimeout(t);
-  }, [expanded]);
 
   if (!visible) return null;
 
@@ -59,156 +46,95 @@ export default function StickyCallButton() {
     <>
       <style>{`
         @media (min-width: 768px) {
-          .sticky-call-btn { display: none !important; }
-        }
-        @keyframes pulse-ring {
-          0% { transform: scale(1); opacity: 0.6; }
-          100% { transform: scale(1.6); opacity: 0; }
-        }
-        .pulse-ring {
-          animation: pulse-ring 1.5s ease-out infinite;
-        }
-        @keyframes slide-up {
-          from { opacity: 0; transform: translateY(8px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .slide-up {
-          animation: slide-up 0.2s ease-out;
+          .sticky-bottom-bar { display: none !important; }
         }
       `}</style>
 
       <div
-        className="sticky-call-btn"
+        className="sticky-bottom-bar"
         style={{
           position: "fixed",
-          bottom: 90,
-          right: 16,
+          left: 0,
+          right: 0,
+          bottom: 0,
           zIndex: 9999,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-end",
+          background: "#0d1f3c",
+          borderTop: "1px solid rgba(255,255,255,0.08)",
+          boxShadow: "0 -6px 24px rgba(0,0,0,0.35)",
+          padding: "8px 8px calc(8px + env(safe-area-inset-bottom, 0px))",
+          display: "grid",
+          gridTemplateColumns: "1.4fr 1fr 1fr",
           gap: 8,
         }}
       >
-        {/* Expanded panel */}
-        {expanded && (
-          <div
-            className="slide-up"
-            style={{
-              background: "white",
-              borderRadius: 16,
-              padding: "16px",
-              boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
-              minWidth: 220,
-              border: "1px solid #e2e8f0",
-            }}
-          >
-            <div style={{ color: "#718096", fontSize: "0.72rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 10 }}>
-              Связаться с нами
-            </div>
-            <span className="phoneAllostat"><a
-              href={`tel:+7${PHONE.slice(1)}`}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                background: "#0d1f3c",
-                color: "white",
-                borderRadius: 10,
-                padding: "11px 14px",
-                textDecoration: "none",
-                fontWeight: 700,
-                fontSize: "0.9rem",
-                marginBottom: 8,
-              }}
-            >
-              <PhoneIcon size={18} />
-              {PHONE_DISPLAY}
-            </a></span>
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                background: "#25D366",
-                color: "white",
-                borderRadius: 10,
-                padding: "11px 14px",
-                textDecoration: "none",
-                fontWeight: 700,
-                fontSize: "0.9rem",
-                marginBottom: 8,
-              }}
-            >
-              <WhatsAppIcon size={18} />
-              WhatsApp
-            </a>
-            <a
-              href={TELEGRAM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                background: "#2AABEE",
-                color: "white",
-                borderRadius: 10,
-                padding: "11px 14px",
-                textDecoration: "none",
-                fontWeight: 700,
-                fontSize: "0.9rem",
-              }}
-            >
-              <TelegramIcon size={18} />
-              Telegram
-            </a>
-          </div>
-        )}
-
-        {/* Main button */}
-        <div style={{ position: "relative" }}>
-          {/* Pulse ring */}
-          {!expanded && (
-            <div
-              className="pulse-ring"
-              style={{
-                position: "absolute",
-                inset: 0,
-                borderRadius: "50%",
-                background: "#CC0000",
-                pointerEvents: "none",
-              }}
-            />
-          )}
-          <button
-            onClick={() => setExpanded((v) => !v)}
-            style={{
-              width: 56,
-              height: 56,
-              borderRadius: "50%",
-              background: expanded ? "#0d1f3c" : "#CC0000",
-              border: "none",
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: "0 4px 16px rgba(204,0,0,0.4)",
-              transition: "background 0.2s, transform 0.15s",
-              position: "relative",
-              zIndex: 1,
-            }}
-            aria-label="Позвонить"
-          >
-            {expanded
-              ? <span style={{ color: "white", fontSize: "1.2rem", fontWeight: 700 }}>✕</span>
-              : <PhoneIcon size={24} color="white" />
-            }
-          </button>
-        </div>
+        <a
+          href={`tel:+7${PHONE.slice(1)}`}
+          aria-label={`Позвонить ${PHONE_DISPLAY}`}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 8,
+            background: "#CC0000",
+            color: "white",
+            borderRadius: 10,
+            padding: "12px 10px",
+            textDecoration: "none",
+            fontWeight: 800,
+            fontSize: "0.85rem",
+            letterSpacing: "0.02em",
+            minHeight: 48,
+          }}
+        >
+          <PhoneIcon size={18} color="white" />
+          Позвонить
+        </a>
+        <a
+          href={WHATSAPP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Написать в WhatsApp"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 6,
+            background: "#25D366",
+            color: "white",
+            borderRadius: 10,
+            padding: "12px 10px",
+            textDecoration: "none",
+            fontWeight: 700,
+            fontSize: "0.82rem",
+            minHeight: 48,
+          }}
+        >
+          <WhatsAppIcon size={18} />
+          WhatsApp
+        </a>
+        <a
+          href={TELEGRAM_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Написать в Telegram"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 6,
+            background: "#2AABEE",
+            color: "white",
+            borderRadius: 10,
+            padding: "12px 10px",
+            textDecoration: "none",
+            fontWeight: 700,
+            fontSize: "0.82rem",
+            minHeight: 48,
+          }}
+        >
+          <TelegramIcon size={18} />
+          Telegram
+        </a>
       </div>
     </>
   );

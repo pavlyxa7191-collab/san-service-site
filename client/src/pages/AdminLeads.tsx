@@ -66,7 +66,7 @@ export default function AdminLeads() {
 
   useEffect(() => {
     applyPageSeo({
-      title: "Заявки — админ-панель Экоцентр",
+      title: "Заявки — админ-панель Санитарная служба",
       description: "Управление заявками санитарной службы (закрытый раздел).",
       robots: "noindex, nofollow",
     });

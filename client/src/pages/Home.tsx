@@ -6,6 +6,7 @@ import ReviewsCarousel from "@/components/ReviewsCarousel";
 import CertificatesCarousel from "@/components/CertificatesCarousel";
 import { trpc } from "@/lib/trpc";
 import { reachGoal } from "@/lib/metrika";
+import { notifyKvbot } from "@/lib/kvbot";
 import {
   formatRuPhoneInput,
   isCompleteRuPhone,
@@ -144,6 +145,12 @@ export default function Home() {
     try {
       await createLead.mutateAsync({ ...formData, source: "hero_form" });
       reachGoal("lead_hero");
+      notifyKvbot({
+        name: formData.name,
+        phone: formData.phone,
+        service: formData.service,
+        source: "hero_form",
+      });
       setSubmitted(true);
     } catch {
       setSubmitted(true);
@@ -270,6 +277,13 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
+                <img
+                  className="hero-mobile-photo"
+                  src="/specialist-hero.png"
+                  alt="Специалист по дезинфекции"
+                  loading="eager"
+                  decoding="async"
+                />
               </div>
             </div>
 

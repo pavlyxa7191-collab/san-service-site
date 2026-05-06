@@ -857,7 +857,7 @@
 
 /* 768px: tablet portrait */
 @media (max-width: 768px) {
-  .hero-grid { grid-template-columns: 1fr !important; padding-top: 2rem !important; overflow: hidden !important; max-width: 100% !important; }
+  .hero-grid { grid-template-columns: 1fr !important; padding-top: 0.5rem !important; overflow: hidden !important; max-width: 100% !important; }
   .hero-grid > div:nth-child(1) { padding-right: 0 !important; min-width: 0 !important; overflow: hidden !important; }
   .hero-grid > div:nth-child(3) { padding-left: 0 !important; }
   .services-grid { grid-template-columns: repeat(2, 1fr) !important; }
@@ -880,7 +880,17 @@
   .advantages-grid { grid-template-columns: 1fr !important; }
   .objects-grid { grid-template-columns: 1fr !important; }
   .reviews-grid { grid-template-columns: 1fr !important; }
-  .hero-grid > div:nth-child(3) { display: none !important; }
+  /* Mobile hero form: keep visible, but trim decorative inner padding */
+  .hero-form-col {
+    padding-left: 0 !important;
+    margin-top: 1.5rem !important;
+  }
+  .hero-form-col > div {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 1.5rem 1.25rem !important;
+    border-radius: 12px !important;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -895,11 +905,6 @@
     overflow-x: hidden;
   }
 
-  /* Hero form: hide on mobile (shown in separate section) */
-  .hero-form-col {
-    display: none !important;
-  }
-
   /* Hero image col: hide on small mobile */
   .hero-img-col {
     display: none !important;
@@ -910,14 +915,57 @@
     display: none !important;
   }
 
-  /* Stat blocks: wrap on mobile */
+  /* Stats column on LEFT, large bleeding master photo on RIGHT.
+     Photo bottom = top edge of the form (gap between stats and form).
+     z-index lifts the whole row above the form below in document order. */
+  .hero-bottom-row {
+    position: relative !important;
+    z-index: 5 !important;
+    overflow: visible !important;
+    align-items: flex-start !important;
+    gap: 0 !important;
+    border-top: none !important;
+    border-bottom: 1.5px solid #CC0000 !important;
+    padding-top: 1rem !important;
+    margin-top: 5px !important;
+  }
   .hero-stats {
-    flex-wrap: wrap !important;
-    gap: 0.75rem !important;
+    position: relative !important;
+    z-index: 2 !important;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    gap: 1.5rem !important;
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+    padding-top: 0.5rem !important;
   }
   .hero-stat-item {
+    flex: 0 0 auto !important;
+    width: 100% !important;
     min-width: 0 !important;
-    flex: 1 1 calc(50% - 0.5rem) !important;
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+    border-right: none !important;
+  }
+  .hero-mobile-photo {
+    display: block !important;
+    position: absolute !important;
+    right: -3% !important;
+    bottom: 0 !important;
+    top: auto !important;
+    left: auto !important;
+    width: auto !important;
+    max-width: 92% !important;
+    height: clamp(380px, 130vw, 600px) !important;
+    max-height: none !important;
+    object-fit: contain !important;
+    object-position: right bottom !important;
+    z-index: 10 !important;
+    pointer-events: none !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 24%, rgba(0,0,0,1) 44%, rgba(0,0,0,1) 100%);
+    mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 24%, rgba(0,0,0,1) 44%, rgba(0,0,0,1) 100%);
   }
 
   /* CTA buttons: stack on mobile */
@@ -965,6 +1013,20 @@
   /* Steps: 2 columns on tablet, 1 on small mobile */
   .steps-grid {
     grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* Hero photo inside stats row — only on mobile, hidden on desktop */
+.hero-mobile-photo {
+  display: none;
+}
+
+/* Very narrow phones: keep large photo proportional, slightly less right-bleed */
+@media (max-width: 360px) {
+  .hero-mobile-photo {
+    max-width: 95% !important;
+    height: clamp(340px, 135vw, 480px) !important;
+    right: -2% !important;
   }
 }
 
@@ -1028,6 +1090,18 @@
   .container {
     padding-left: 0.75rem !important;
     padding-right: 0.75rem !important;
+  }
+}
+
+/* Fix the white strip showing between fixed header and hero on mobile.
+   Painting body/html navy makes the main padding-top area match the hero.
+   Also reduce main top padding so hero starts right under the fixed header. */
+@media (max-width: 768px) {
+  html, body {
+    background: #0A0F1E !important;
+  }
+  main {
+    padding-top: 64px !important;
   }
 }
 

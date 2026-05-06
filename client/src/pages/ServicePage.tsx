@@ -7,6 +7,7 @@ import CertificatesCarousel from "@/components/CertificatesCarousel";
 import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { trpc } from "@/lib/trpc";
 import { reachGoal } from "@/lib/metrika";
+import { notifyKvbot } from "@/lib/kvbot";
 import { toast } from "sonner";
 import {
   formatRuPhoneInput,
@@ -511,6 +512,7 @@ function LeadForm({ serviceSlug }: { serviceSlug: string }) {
   const createLead = trpc.leads.create.useMutation({
     onSuccess: () => {
       reachGoal(`lead_${serviceSlug}`);
+      notifyKvbot({ name, phone, service: serviceSlug, source: "service-page" });
       setSubmitted(true);
       toast.success("Заявка принята! Перезвоним в течение 15 минут.");
     },
