@@ -328,7 +328,7 @@ export default function Home() {
                     <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.82rem", marginTop: "0.4rem" }}>Перезвоним в течение 5 минут</p>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                  <form onSubmit={handleSubmit} className="kvallibot-ignore-auto-catch" style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                     <input
                       className="form-field"
                       placeholder="Ваше имя"

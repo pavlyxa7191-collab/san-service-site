@@ -194,7 +194,7 @@ export default function ExitIntentPopup() {
                   Оставьте заявку прямо сейчас — перезвоним за 5 минут и рассчитаем стоимость со скидкой
                 </p>
 
-                <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                <form onSubmit={handleSubmit} className="kvallibot-ignore-auto-catch" style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                   <input
                     type="text"
                     placeholder="Ваше имя"

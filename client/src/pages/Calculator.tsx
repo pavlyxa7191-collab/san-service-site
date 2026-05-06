@@ -254,6 +254,29 @@ export default function CalculatorPage() {
     onSuccess: () => {
       setSubmitted(true);
       reachGoal("lead_calculator");
+
+      // KVallibot: калькулятор не использует <form>, поэтому передаём данные явно
+      try {
+        const KV = (window as unknown as { KV?: { sendForm?: (fd: FormData) => void } }).KV;
+        if (KV && typeof KV.sendForm === "function") {
+          const fd = new FormData();
+          fd.append("name", name);
+          fd.append("phone", phone);
+          if (pest) fd.append("service", pest);
+          if (property) fd.append("propertyType", property);
+          const areaLabel = areaRanges.find(a => a.id === area)?.label;
+          if (areaLabel) fd.append("area", areaLabel);
+          const selectedWaysLabel = contactMethods
+            .filter(m => contactWays.includes(m.id))
+            .map(m => m.label)
+            .join(", ");
+          if (selectedWaysLabel) fd.append("method", selectedWaysLabel);
+          fd.append("source", "calculator");
+          KV.sendForm(fd);
+        }
+      } catch {
+        // если KVallibot не подгружен — не ломаем UX
+      }
     },
     onError: (err) => {
       const m = getTrpcMutationErrorMessage(err);

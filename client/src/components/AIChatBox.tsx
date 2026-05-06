@@ -501,7 +501,7 @@ export function AIChatBox({
       </div>
 
       {/* Input Area */}
-      <form onSubmit={handleSubmit} className="border-t bg-background/50 p-4">
+      <form onSubmit={handleSubmit} className="border-t bg-background/50 p-4 kvallibot-ignore-auto-catch">
         <div className="mx-auto max-w-3xl">
           <div className="flex gap-2">
             <Textarea

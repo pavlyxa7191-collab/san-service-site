@@ -565,7 +565,7 @@ function LeadForm({ serviceSlug }: { serviceSlug: string }) {
     color: WHITE, outline: "none", boxSizing: "border-box", fontFamily: "inherit",
   };
   return (
-    <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.625rem" }}>
+    <form onSubmit={handleSubmit} className="kvallibot-ignore-auto-catch" style={{ display: "flex", flexDirection: "column", gap: "0.625rem" }}>
       <input style={inputStyle} type="text" placeholder="Ваше имя *" value={name} onChange={e => setName(e.target.value)} />
       <div>
         <input

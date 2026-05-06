@@ -373,7 +373,7 @@ export function CtaSection({ title = "Оставьте заявку", subtitle =
           </FadeIn>
         ) : (
           <FadeIn delay={100}>
-            <form onSubmit={handleSubmit} style={{
+            <form onSubmit={handleSubmit} className="kvallibot-ignore-auto-catch" style={{
               background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)",
               borderRadius: 16, padding: "36px 32px", display: "flex", flexDirection: "column" as const, gap: 16,
             }}>
